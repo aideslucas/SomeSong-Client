@@ -10,6 +10,8 @@ import { ProfilePage } from '../pages/profile/profile'
 import { AskQuestionPage } from '../pages/ask-question/ask-question'
 import { QuestionDetailsPage } from '../pages/question-details/question-details'
 
+import { LoginModalPage } from '../pages/login-modal/login-modal'
+
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -21,7 +23,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     BrowseQuestionsPage,
     ProfilePage,
     AskQuestionPage,
-    QuestionDetailsPage
+    QuestionDetailsPage,
+    LoginModalPage
   ],
   imports: [
     BrowserModule,
@@ -35,7 +38,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     BrowseQuestionsPage,
     ProfilePage,
     AskQuestionPage,
-    QuestionDetailsPage
+    QuestionDetailsPage,
+    LoginModalPage
   ],
   providers: [
     StatusBar,
