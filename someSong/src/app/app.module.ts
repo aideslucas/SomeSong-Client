@@ -15,6 +15,18 @@ import { LoginModalPage } from '../pages/login-modal/login-modal'
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+import { AngularFireModule } from 'angularfire2';
+import { AuthService } from '../providers/auth-service';
+
+export const firebaseConfig = {
+  apiKey: "AIzaSyA_MquO5E-MQKjnEdaEUC-fnEXENMjz6Ro",
+  authDomain: "somesong-700c4.firebaseapp.com",
+  databaseURL: "https://somesong-700c4.firebaseio.com",
+  projectId: "somesong-700c4",
+  storageBucket: "somesong-700c4.appspot.com",
+  messagingSenderId: "655905548469"
+};
+
 @NgModule({
   declarations: [
     MyApp,
@@ -29,6 +41,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
+    AngularFireModule.initializeApp(firebaseConfig)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -42,6 +55,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     LoginModalPage
   ],
   providers: [
+    AuthService,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}

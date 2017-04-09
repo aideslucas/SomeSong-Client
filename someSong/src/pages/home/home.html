@@ -9,9 +9,10 @@
     </ion-title>
     <ion-buttons end>
       <button ion-button (click)="openLoginModal()">
-        <ion-icon name="log-in"> Login</ion-icon>
-      </button>
-    </ion-buttons>
+
+        <ion-icon name="log-in" *ngIf="true"> Login</ion-icon>
+        <ion-icon name="log-in" *ngIf="false"> </ion-icon>
+      </button></ion-buttons>
   </ion-navbar>
 </ion-header>
 

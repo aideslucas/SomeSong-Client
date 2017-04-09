@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, ModalController } from 'ionic-angular';
 import { LoginModalPage } from '../login-modal/login-modal'
+import { AuthService } from '../../providers/auth-service';
 
 @Component({
   selector: 'page-home',
@@ -9,7 +10,8 @@ import { LoginModalPage } from '../login-modal/login-modal'
 export class HomePage {
 
   constructor(public navCtrl: NavController,
-              public modalCtrl: ModalController) {
+              public modalCtrl: ModalController,
+              private _auth: AuthService) {
 
   }
 
