@@ -5,18 +5,21 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
-import { BrowseQuestionsPage } from '../pages/browse-questions/browse-questions'
-import { ProfilePage } from '../pages/profile/profile'
-import { AskQuestionPage } from '../pages/ask-question/ask-question'
-import { QuestionDetailsPage } from '../pages/question-details/question-details'
+import { BrowseQuestionsPage } from '../pages/browse-questions/browse-questions';
+import { ProfilePage } from '../pages/profile/profile';
+import { AskQuestionPage } from '../pages/ask-question/ask-question';
+import { QuestionDetailsPage } from '../pages/question-details/question-details';
 
-import { LoginModalPage } from '../pages/login-modal/login-modal'
+import { LoginPage } from '../pages/login/login';
+import { LanguageSelectPage } from '../pages/language-select/language-select';
+import { GenreSelectPage } from '../pages/genre-select/genre-select';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { AngularFireModule } from 'angularfire2';
 import { AuthService } from '../providers/auth-service';
+import { BackendService } from '../providers/backend-service';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyA_MquO5E-MQKjnEdaEUC-fnEXENMjz6Ro",
@@ -36,7 +39,9 @@ export const firebaseConfig = {
     ProfilePage,
     AskQuestionPage,
     QuestionDetailsPage,
-    LoginModalPage
+    LoginPage,
+    LanguageSelectPage,
+    GenreSelectPage
   ],
   imports: [
     BrowserModule,
@@ -52,10 +57,13 @@ export const firebaseConfig = {
     ProfilePage,
     AskQuestionPage,
     QuestionDetailsPage,
-    LoginModalPage
+    LoginPage,
+    LanguageSelectPage,
+    GenreSelectPage
   ],
   providers: [
     AuthService,
+    BackendService,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}

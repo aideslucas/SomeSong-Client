@@ -3,7 +3,7 @@ import { AuthProviders, AngularFireAuth, FirebaseAuthState, AuthMethods } from '
 
 @Injectable()
 export class AuthService {
-  private authState: FirebaseAuthState;
+  public authState: FirebaseAuthState;
 
   constructor(public auth$: AngularFireAuth) {
     this.authState = auth$.getAuth();
@@ -23,15 +23,14 @@ export class AuthService {
     });
   }
 
-  signOut(): void {
-    this.auth$.logout();
+  signInWithGoogle(): firebase.Promise<FirebaseAuthState> {
+    return this.auth$.login({
+      provider: AuthProviders.Google,
+      method: AuthMethods.Popup
+    });
   }
 
-  displayName(): string {
-    if (this.authState != null) {
-      return this.authState.facebook.displayName;
-    } else {
-      return '';
-    }
+  signOut(): void {
+    this.auth$.logout();
   }
 }

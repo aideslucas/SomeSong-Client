@@ -8,11 +8,10 @@
       SomeSong
     </ion-title>
     <ion-buttons end>
-      <button ion-button (click)="openLoginModal()">
-
-        <ion-icon name="log-in" *ngIf="true"> Login</ion-icon>
-        <ion-icon name="log-in" *ngIf="false"> </ion-icon>
-      </button></ion-buttons>
+      <button ion-button (click)="goToProfile()">
+        Hello {{user.displayName}}
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 

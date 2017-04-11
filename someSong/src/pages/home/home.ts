@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController } from 'ionic-angular';
-import { LoginModalPage } from '../login-modal/login-modal'
-import { AuthService } from '../../providers/auth-service';
+import {NavController, NavParams} from 'ionic-angular';
+import {User} from "../../providers/backend-service";
+import {ProfilePage} from "../profile/profile";
 
 @Component({
   selector: 'page-home',
@@ -9,16 +9,14 @@ import { AuthService } from '../../providers/auth-service';
 })
 export class HomePage {
 
+  user: User;
+
   constructor(public navCtrl: NavController,
-              public modalCtrl: ModalController,
-              private _auth: AuthService) {
-
+              public navParams: NavParams,) {
+    this.user = navParams.data;
   }
 
-  openLoginModal() {
-    console.log('enter function');
-    let modal = this.modalCtrl.create(LoginModalPage);
-    modal.present();
+  goToProfile(){
+    this.navCtrl.push(ProfilePage, this.user);
   }
-
 }
