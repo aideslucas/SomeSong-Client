@@ -8,38 +8,40 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var backend_service_1 = require("../../providers/backend-service");
-var genre_select_1 = require("../genre-select/genre-select");
-var LanguageSelectPage = (function () {
-    function LanguageSelectPage(platform, navCtrl, navParams, _backend) {
+var home_1 = require("../home/home");
+var GenreSelectPage = (function () {
+    function GenreSelectPage(platform, navCtrl, navParams, _backend) {
         this.platform = platform;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this._backend = _backend;
-        this.languages = backend_service_1.Languages;
-        this.languagesKeys = Object.keys(this.languages).filter(Number);
+        this.genres = backend_service_1.Genres;
+        this.genresKeys = Object.keys(this.genres).filter(Number);
         this.user = navParams.data;
+        console.log(this.user);
     }
-    LanguageSelectPage.prototype.insertLanguageToArray = function (item, language) {
+    GenreSelectPage.prototype.insertGenreToArray = function (item, genre) {
+        var index = this.user.genres.indexOf(genre, 0);
         if (item.checked) {
-            this.user.languages.push(language);
+            if (index == -1) {
+                this.user.genres.push(genre);
+            }
         }
         else {
-            var index = this.user.languages.indexOf(language, 0);
             if (index > -1) {
-                this.user.languages.splice(index, 1);
+                this.user.genres.splice(index, 1);
             }
         }
     };
-    LanguageSelectPage.prototype.save = function () {
-        this._backend.saveUser(this.user);
-        this.navCtrl.push(genre_select_1.GenreSelectPage, this.user);
+    GenreSelectPage.prototype.save = function () {
+        this.navCtrl.setRoot(home_1.HomePage, this.user);
     };
-    return LanguageSelectPage;
+    return GenreSelectPage;
 }());
-LanguageSelectPage = __decorate([
+GenreSelectPage = __decorate([
     core_1.Component({
-        selector: 'page-language-select',
-        templateUrl: 'language-select.html'
+        selector: 'page-genre-select',
+        templateUrl: 'genre-select.html'
     })
-], LanguageSelectPage);
-exports.LanguageSelectPage = LanguageSelectPage;
+], GenreSelectPage);
+exports.GenreSelectPage = GenreSelectPage;

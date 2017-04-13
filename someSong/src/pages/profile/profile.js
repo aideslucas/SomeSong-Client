@@ -14,10 +14,7 @@ var ProfilePage = (function () {
         this.navParams = navParams;
         this.genres = backend_service_1.Genres;
         this.languages = backend_service_1.Languages;
-        // If we navigated to this page, we will have an item available as a nav param
-        console.log(navParams);
-        this.genresKeys = Object.keys(this.genres).filter(Number);
-        this.languagesKeys = Object.keys(this.languages).filter(Number);
+        this.currentUser = navParams.data;
     }
     return ProfilePage;
 }());

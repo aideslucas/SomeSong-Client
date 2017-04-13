@@ -7,13 +7,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
+var profile_1 = require("../profile/profile");
 var HomePage = (function () {
-    function HomePage(navCtrl, _auth, _backend) {
+    function HomePage(navCtrl, navParams) {
         this.navCtrl = navCtrl;
-        this._auth = _auth;
-        this._backend = _backend;
+        this.navParams = navParams;
+        this.user = navParams.data;
     }
-    HomePage.prototype.getUserProperties = function () {
+    HomePage.prototype.goToProfile = function () {
+        this.navCtrl.push(profile_1.ProfilePage, this.user);
     };
     return HomePage;
 }());

@@ -40,6 +40,7 @@ export class GenreSelectPage {
 
   save()
   {
-    this.navCtrl.setRoot(HomePage, this.user)
+    this._backend.saveUser(this.user);
+    this.navCtrl.setRoot(HomePage, this.user);
   }
 }

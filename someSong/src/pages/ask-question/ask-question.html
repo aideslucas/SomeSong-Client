@@ -7,14 +7,14 @@
     <ion-title>
       SomeSong: Ask a Question
     </ion-title>
-    <ion-buttons end>
-      <button ion-button>
-        <ion-icon name="log-in"> Login</ion-icon>
-      </button>
-    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
 
+<button ion-button (click)="startRecording()">Start Recording</button>
+  <button ion-button (click)="stopRecording()">Stop Recording</button>
+
+  <button ion-button (click)="startPlay()">Start Play</button>
+  <button ion-button (click)="uploadRecording()">Upload Recording</button>
 </ion-content>

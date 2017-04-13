@@ -36,24 +36,23 @@ var User = (function () {
         this.genres = genres;
         this.languages = languages;
     }
-    User.prototype.addLanguage = function (language) {
-        this.languages.push(language);
-    };
-    User.prototype.addGenre = function (genre) {
-        this.genres.push(genre);
-    };
     return User;
 }());
 exports.User = User;
 var BackendService = (function () {
-    function BackendService() {
-        console.log('Hello BackendService Provider');
+    function BackendService(af) {
+        this.af = af;
     }
     BackendService.prototype.getUser = function (userID) {
-        return null;
+        return this.af.database.object('/users/' + userID);
     };
     BackendService.prototype.createUser = function (userID, displayName, email) {
-        return new User(userID, displayName, email, 0, new Array(), new Array());
+        var user = new User(userID, displayName, email, 0, new Array(), new Array());
+        this.af.database.object('/users/' + userID).set(user);
+        return user;
+    };
+    BackendService.prototype.saveUser = function (user) {
+        this.af.database.object('/users/' + user.userID).update(user);
     };
     return BackendService;
 }());
