@@ -24,12 +24,13 @@ export class LoginPage {
       this.onSignInSuccess();
     }
 
+
   }
 
   loginWithFB() {
-    this.testS = "facebppk";
+    this.testS = "0"
     this._auth.signInWithFacebook()
-      .then(() => this.onSignInSuccess());
+      .then(() => {this.testS = "1"; this.onSignInSuccess()});
   }
 
   loginWithGoogle() {
@@ -37,15 +38,13 @@ export class LoginPage {
       .then(() => this.onSignInSuccess());
   }
 
-  test(){
-    this.testS = "pressed";
-  }
-
   private onSignInSuccess(): void {
-    this.testS = "facebook 1";
+    this.testS = "a";
     var firstRun = true;
-    this._backend.getUser(this._auth.authState.uid)
+
+      this._backend.getUser(this._auth.authState.uid)
       .subscribe(user => {
+        this.testS = "b";
         if (firstRun) {
           if (!user.userID) {
             let displayName = '';
@@ -70,12 +69,9 @@ export class LoginPage {
           else {
             this.navCtrl.setRoot(HomePage, user);
           }
-
           firstRun = false;
         }
       });
-
-
   }
 
 }

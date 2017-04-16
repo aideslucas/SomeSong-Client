@@ -3,6 +3,12 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/cordova-lib/package/src/platforms" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/cordova-lib/package/src/plugman/platforms" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/cordova-lib/package/templates/platforms" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/cordova-lib/src/platforms" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/cordova-lib/src/plugman/platforms" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/cordova-lib/templates/platforms" />
       <excludeFolder url="file://$MODULE_DIR$/someSong/platforms" />
       <excludeFolder url="file://$MODULE_DIR$/temp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
