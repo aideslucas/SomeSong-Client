@@ -19,18 +19,12 @@ export class LoginPage {
               public navCtrl: NavController,
               private _auth: AuthService,
               private _backend: BackendService) {
-    if (this._auth.authenticated())
-    {
-      this.onSignInSuccess();
-    }
-
 
   }
 
   loginWithFB() {
-    this.testS = "0"
     this._auth.signInWithFacebook()
-      .then(() => {this.testS = "1"; this.onSignInSuccess()});
+      .then(() => this.onSignInSuccess());
   }
 
   loginWithGoogle() {
@@ -39,9 +33,8 @@ export class LoginPage {
   }
 
   private onSignInSuccess(): void {
-    this.testS = "a";
     var firstRun = true;
-
+  console.log(this._auth.authState);
       this._backend.getUser(this._auth.authState.uid)
       .subscribe(user => {
         this.testS = "b";
