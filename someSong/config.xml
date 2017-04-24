@@ -40,4 +40,5 @@
         <variable name="APP_ID" value="309501022800772" />
         <variable name="APP_NAME" value="SomeSong" />
     </plugin>
+    <plugin name="Media" value="org.apache.cordova.AudioHandler" />
 </widget>
