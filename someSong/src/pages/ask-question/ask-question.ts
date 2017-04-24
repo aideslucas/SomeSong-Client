@@ -1,55 +1,89 @@
 import {Component, Inject} from '@angular/core';
-import {NavController, NavParams, Platform} from 'ionic-angular';
+import {NavController, NavParams, Platform, AlertController} from 'ionic-angular';
 
-import {MediaObject, MediaPlugin} from '@ionic-native/media';
+
 import {FirebaseApp} from "angularfire2";
 import * as firebase from 'firebase';
+
+declare var Media: any;
+declare var navigator: any;
+
+var a;
+var b;
 
 @Component({
   selector: 'page-ask-question',
   templateUrl: 'ask-question.html'
 })
 export class AskQuestionPage {
-  storageRef : any;
-  mediaFile: any;
-  fileRecord: any;
-  pathFile: string;
-  nameFile: string;
 
   constructor(public _platform: Platform,
               public navCtrl: NavController,
               public navParams: NavParams,
-              private media: MediaPlugin,
-              @Inject(FirebaseApp) firebaseApp: firebase.app.App ) {
-    this.storageRef = firebaseApp.storage().ref();
-    this.mediaFile = this.storageRef.child('recordings/recordid.mp3');
+              public alertCtrl: AlertController,
+              @Inject(FirebaseApp) firebaseApp: firebase.app.App) {
+  }
+
+  public captureAudio() {
+    navigator.device.capture.captureAudio(this.captureSuccess, this.captureError, {limit:1})
+  }
+
+  public captureSuccess(mediaFiles) {
+    this.showAlert("Capture Success");
+  }
+
+  public captureError(err) {
+    this.showAlert("Capture Error: " + err + " CODE: " + err.code);
+  }
+
+  public playSong() {
+    a = new Media("http://themushroomkingdom.net/sounds/wav/drm64_mario2.wav", ()=> {
+      this.showAlert("Stopped playing...")
+      }, (e) => {
+        this.showAlert("fail callback: " + JSON.stringify(e));
+      });
+    a.play()
+  }
+
+  public stopSong() {
+    a.stop();
+    a.release();
   }
 
   public startRecording(): void {
-    this.pathFile = this.getPathFileRecordAudio();
-    this.fileRecord = this.media.create(this.pathFile)
-      .then((file: MediaObject) => {
-        file.startRecord();
-        this.fileRecord = file;
-      });
+    b = new Media("myRecording.amr", ()=> {
+      this.showAlert("Stopped Recording...")
+    }, (e) => {
+      this.showAlert("fail First callback: " + JSON.stringify(e));
+    });
+    b.startRecord();
+    this.showAlert("Started Recording...")
   }
 
   public stopRecording(): void {
-    this.fileRecord.stopRecord();
+    b.stopRecord();
+    b.release();
   }
 
-  private startPlay(): void {
-   // this.fileRecord = new MediaPlugin(this.pathFile);
-    this.fileRecord.play();
+  public playRecording(): void {
+    b.play();
   }
 
   private uploadRecording(): void {
-    this.mediaFile.put(this.fileRecord);
   }
 
 
   private getPathFileRecordAudio(): string {
     let path: string = (this._platform.is('ios') ? '../Library/NoCloud/' : '../Documents/');
-    return path + this.nameFile + '-' + '.mp3';
+    return path + 'myRecording' + '.mp3';
+  }
+
+  showAlert(message) {
+    let alert = this.alertCtrl.create({
+      title: 'INFO',
+      subTitle: message,
+      buttons: ['OK']
+    });
+    alert.present();
   }
 }
