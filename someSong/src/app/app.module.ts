@@ -20,11 +20,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { AngularFireModule } from 'angularfire2';
 import { AuthService } from '../providers/auth-service';
 import { BackendService } from '../providers/backend-service';
-import { MediaPlugin } from "@ionic-native/media";
 import { Facebook } from "@ionic-native/facebook";
-import { FileChooser } from "@ionic-native/file-chooser";
-import { FilePath } from "@ionic-native/file-path";
-import {MediaCapture} from '@ionic-native/media-capture';
 
 
 export const firebaseConfig = {
@@ -72,11 +68,7 @@ export const firebaseConfig = {
     BackendService,
     StatusBar,
     SplashScreen,
-    MediaPlugin,
-    FileChooser,
-    FilePath,
     Facebook,
-    MediaCapture,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
