@@ -2,8 +2,10 @@ import {Component, Inject} from '@angular/core';
 import {NavController, NavParams, Platform, AlertController} from 'ionic-angular';
 
 
-import {FirebaseApp} from "angularfire2";
+import {FirebaseApp, AngularFire} from "angularfire2";
 import * as firebase from 'firebase';
+import {FilePath} from "@ionic-native/file-path";
+import {FileChooser} from "@ionic-native/file-chooser";
 
 declare var Media: any;
 declare var navigator: any;
@@ -20,8 +22,11 @@ export class AskQuestionPage {
               public navCtrl: NavController,
               public navParams: NavParams,
               public alertCtrl: AlertController,
-              @Inject(FirebaseApp) firebaseApp: firebase.app.App) {
+              @Inject(FirebaseApp) firebaseApp: any,
+              ){
   }
+
+
 
   public startRecording(): void {
     this.recordingFile = new Media("myRecording.amr", ()=> {
@@ -30,7 +35,7 @@ export class AskQuestionPage {
       this.showAlert("fail to create the recording file: " + JSON.stringify(e));
     });
     this.recordingFile.startRecord();
-    this.showAlert("Started Recording...")
+    this.showAlert("Started Recording...");
   }
 
   public stopRecording(): void {
@@ -43,6 +48,23 @@ export class AskQuestionPage {
   }
 
   private uploadRecording(): void {
+    let ref = firebase.storage().ref().child("client-data/recordings/myRecording.amr");
+
+    // Changed
+    let file = FileChooser;
+    ref.put(file).then(function(snapshot) {
+      console.log('Uploaded a blob or file!');
+    });
+
+
+    let message = 'This is my message.';
+    ref.putString(message)
+      .then((snapshot) => {
+        alert('Uploaded a raw string!');
+      })
+      .catch((error) => {
+        alert(`Error uploading string ${error}`);
+      });
   }
 
   showAlert(message) {
