@@ -50,6 +50,7 @@ export class AskQuestionPage {
     let filePath = "file:///storage/emulated/0/";
     let fileName = "myRecording.amr";
 
+
     this.file.readAsArrayBuffer(filePath, fileName)
       .then((fileData) => {
         let blob = new Blob([fileData], {type: "audio/amr"});
