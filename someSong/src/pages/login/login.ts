@@ -5,6 +5,7 @@ import {BackendService, User} from '../../providers/backend-service'
 import {HomePage} from "../home/home";
 import {AuthProviders} from "angularfire2";
 import {LanguageSelectPage} from "../language-select/language-select";
+import {AskQuestionPage} from '../ask-question/ask-question'
 
 @Component({
   selector: 'page-login',
@@ -30,6 +31,10 @@ export class LoginPage {
   loginWithGoogle() {
     this._auth.signInWithGoogle()
       .then(() => this.onSignInSuccess());
+  }
+
+  testButton(){
+    this.navCtrl.push(AskQuestionPage);
   }
 
   private onSignInSuccess(): void {

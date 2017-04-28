@@ -20,8 +20,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { AngularFireModule } from 'angularfire2';
 import { AuthService } from '../providers/auth-service';
 import { BackendService } from '../providers/backend-service';
-import {MediaPlugin} from "@ionic-native/media";
-import {Facebook} from "@ionic-native/facebook";
+import { Facebook } from "@ionic-native/facebook";
+import {File} from "@ionic-native/file";
 
 export const firebaseConfig = {
   apiKey: "AIzaSyA_MquO5E-MQKjnEdaEUC-fnEXENMjz6Ro",
@@ -68,8 +68,8 @@ export const firebaseConfig = {
     BackendService,
     StatusBar,
     SplashScreen,
-    MediaPlugin,
     Facebook,
+    File,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
