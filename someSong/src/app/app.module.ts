@@ -17,11 +17,14 @@ import { GenreSelectPage } from '../pages/genre-select/genre-select';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { AngularFireModule } from 'angularfire2';
 import { AuthService } from '../providers/auth-service';
 import { BackendService } from '../providers/backend-service';
 import { Facebook } from "@ionic-native/facebook";
 import {File} from "@ionic-native/file";
+
+import firebase from 'firebase'
+import {AngularFire, AngularFireAuth, AngularFireModule} from "angularfire2";
+import {RegisterPage} from "../pages/register/register";
 
 export const firebaseConfig = {
   apiKey: "AIzaSyA_MquO5E-MQKjnEdaEUC-fnEXENMjz6Ro",
@@ -43,7 +46,8 @@ export const firebaseConfig = {
     QuestionDetailsPage,
     LoginPage,
     LanguageSelectPage,
-    GenreSelectPage
+    GenreSelectPage,
+    RegisterPage
   ],
   imports: [
     BrowserModule,
@@ -61,7 +65,8 @@ export const firebaseConfig = {
     QuestionDetailsPage,
     LoginPage,
     LanguageSelectPage,
-    GenreSelectPage
+    GenreSelectPage,
+    RegisterPage
   ],
   providers: [
     AuthService,
@@ -73,4 +78,8 @@ export const firebaseConfig = {
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
-export class AppModule {}
+export class AppModule {
+  constructor() {
+    firebase.initializeApp(firebaseConfig);
+  }
+}

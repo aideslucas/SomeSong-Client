@@ -11,6 +11,7 @@
 </ion-header>
 
 <ion-content padding>
+  <img src="{{currentUser.image}}" height="150px" width="150px" />
   <h2>Hello {{currentUser.displayName}}</h2>
   <h4>This are your genres</h4>
   <ion-list>
@@ -24,5 +25,7 @@
       <ion-label>{{languages[language]}}</ion-label>
     </ion-item>
   </ion-list>
+
+  <button (click)="logout()">LogOut</button>
 
 </ion-content>

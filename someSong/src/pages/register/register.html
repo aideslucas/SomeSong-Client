@@ -1,0 +1,29 @@
+<ion-content>
+
+  <form (ngSubmit)="register()" #registerForm="ngForm">
+
+    <ion-item>
+      <ion-input email="" required="" placeholder="Email" [(ngModel)]="form.email" name="Email"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input type="password" required="" placeholder="Password" [(ngModel)]="form.password" name="password"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input type="password" required="" placeholder="Re-type Password" [(ngModel)]="form.repassword" name="rePassword"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input required="" placeholder="Display Name" [(ngModel)]="form.displayName" name="displayName"></ion-input>
+    </ion-item>
+
+    <button ion-button block [disabled]="!registerForm.form.valid"
+            class="sign-up-btn">Sign Up
+    </button>
+
+    <div padding class="error" *ngIf="error">
+      <p>{{error}}</p>
+    </div>
+  </form>
+</ion-content>

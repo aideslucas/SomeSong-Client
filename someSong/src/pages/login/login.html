@@ -4,13 +4,33 @@
       <img src="../../assets/images/logo2.png"/>
     </ion-col>
   </ion-row>
-  <div>
+    <form (ngSubmit)="loginWithEmail()" #loginForm="ngForm">
+        <ion-item>
+          <ion-input email="" required="" placeholder="Email" [(ngModel)]="form.email" name="email"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input type="password" required="" placeholder="Password" [(ngModel)]="form.password" name="password"></ion-input>
+        </ion-item>
+
       <ion-row>
-        <ion-col>
-          <!--<button ion-button class="facebook-button" full (click)="testButton()">Go To Recording page</button>!-->
-          <button ion-button class="facebook-button" full (click)="loginWithFB()">Login With Facebook</button>
-          <!--<button ion-button class="google-button" full (click)="loginWithGoogle()">Login With Google</button>!-->
-        </ion-col>
+        <button ion-button block [disabled]="!loginForm.form.valid" type="submit" class="login-btn">
+          Log In
+        </button>
+
+        <button ion-button block type="button" class="register-btn" (click)="register()">
+          Register
+        </button>
       </ion-row>
-  </div>
+
+      <button ion-button block class="facebook-btn" type="button" (click)="loginWithFB()">
+        <ion-icon name="logo-facebook">&nbsp; Login With Facebook</ion-icon>
+      </button>
+
+      <div padding class="error" *ngIf="error">
+        <p>{{error}}</p>
+      </div>
+    </form>
+
+  <button ion-button block class="reset-password" (click)="resetPassword()">Forgot My Password</button>
 </ion-content>

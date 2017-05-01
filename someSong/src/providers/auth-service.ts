@@ -1,51 +1,52 @@
 import { Injectable } from '@angular/core';
-import { AuthProviders, AngularFireAuth, FirebaseAuthState, AuthMethods } from 'angularfire2';
 import { Facebook } from  '@ionic-native/facebook';
 import * as firebase from 'firebase';
 import { Platform } from 'ionic-angular';
 
 @Injectable()
 export class AuthService {
-  public authState: FirebaseAuthState;
 
-  constructor(public auth$: AngularFireAuth, public facebook: Facebook, public platform: Platform) {
-    this.authState = auth$.getAuth();
-    auth$.subscribe((state: FirebaseAuthState) => {
-      this.authState = state;
-    });
+  constructor(public facebook: Facebook, public platform: Platform) {
   }
 
-  get authenticated(): boolean {
-    return this.authState !== null;
+  get authState() {
+    return firebase.auth();
+  }
+
+
+  createUserWithEmail(email: string, password: string) : firebase.Promise<any> {
+    return firebase.auth().createUserWithEmailAndPassword(email, password);
+  }
+
+  signInWithEmail(email:string, password: string): firebase.Promise<any> {
+    return firebase.auth().signInWithEmailAndPassword(email, password);
   }
 
   signInWithFacebook(): firebase.Promise<any> {
     if (this.platform.is('cordova'))
     {
-      return this.facebook.login(['email']).then( (response) => {
+      this.facebook.login(['email']).then((response) => {
         const facebookCredential = firebase.auth.FacebookAuthProvider
           .credential(response.authResponse.accessToken);
 
-        return firebase.auth().signInWithCredential(facebookCredential);
+        return firebase.auth().signInWithCredential(facebookCredential).catch(error => { console.log(error)});
       }).catch((error) => { console.log(error) });
     }
     else
     {
-      return this.auth$.login({
-        provider: AuthProviders.Facebook,
-        method: AuthMethods.Popup
+      var provider = new firebase.auth.FacebookAuthProvider();
+      provider.addScope('email');
+      provider.setCustomParameters({
+        'display': 'popup'
+      });
+
+      return firebase.auth().signInWithPopup(provider).catch(function(error) {
+        console.log(error);
       });
     }
   }
 
-  signInWithGoogle(): firebase.Promise<FirebaseAuthState> {
-    return this.auth$.login({
-      provider: AuthProviders.Google,
-      method: AuthMethods.Popup
-    });
-  }
-
   signOut(): void {
-    this.auth$.logout();
+    firebase.auth().signOut();
   }
 }
