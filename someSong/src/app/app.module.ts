@@ -23,8 +23,9 @@ import { Facebook } from "@ionic-native/facebook";
 import {File} from "@ionic-native/file";
 
 import firebase from 'firebase'
-import {AngularFire, AngularFireAuth, AngularFireModule} from "angularfire2";
+import {AngularFireModule} from "angularfire2";
 import {RegisterPage} from "../pages/register/register";
+import {MediaPlugin} from "@ionic-native/media";
 
 export const firebaseConfig = {
   apiKey: "AIzaSyA_MquO5E-MQKjnEdaEUC-fnEXENMjz6Ro",
@@ -75,6 +76,7 @@ export const firebaseConfig = {
     SplashScreen,
     Facebook,
     File,
+    MediaPlugin,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

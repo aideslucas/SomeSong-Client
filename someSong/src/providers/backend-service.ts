@@ -44,8 +44,20 @@ export class User {
 
 @Injectable()
 export class BackendService {
+  currUserID: string;
+
   constructor(public af: AngularFire) {
 
+  }
+
+  setCurrentUser(userID: string)
+  {
+    this.currUserID = userID
+  }
+
+  getCurrentUser()
+  {
+    return this.af.database.object('/users/' + this.currUserID);
   }
 
   getUser(userID: string)
@@ -65,27 +77,87 @@ export class BackendService {
     firebase.database().ref('/users/' + user.userID).update(user);
   }
 
-/*
-  writeNewQuestion(uid, username, picture, title, body) {
-    // A Question entry.
-    var questionData = {
-      author: username,
-      uid: uid,
-      body: body,
-      title: title,
-      starCount: 0,
-      authorPic: picture
-    };
-
-    // Get a key for a new Post.
-    var newQuestionKey = firebase.database().ref().child('questions').push().key;
-
-    // Write the new post's data simultaneously in the posts list and the user's post list.
-    var updates = {};
-    updates['/posts/' + newQuestionKey] = questionData;
-    updates['/users/' + uid + '/Questions/' + newQuestionKey] = true;
-
-    return firebase.database().ref().update(updates);
+  getQuestionDetails(questionID: string)
+  {
+    return firebase.database().ref('/questions/' + questionID).once('value');
   }
-*/
+
+  getRecordURL(path: string)
+  {
+    return firebase.storage().ref(path).getDownloadURL();
+  }
+
+  getAnswerDetails(answerID: string)
+  {
+    return firebase.database().ref('/answers/' + answerID).once('value');
+  }
+
+  writeNewQuestion(genres: Array<Genres>, languages: Array<Languages>, location: any, record: string, userID: string)
+  {
+    var questionKey = firebase.database().ref().child('questions').push().key;
+
+    firebase.database().ref('/questions/' + questionKey).set({
+      languages: languages,
+      genres: genres,
+      time: (new Date()).getUTCDate(),
+      location: location,
+      questionID: questionKey,
+      record: record,
+      user: userID
+    });
+
+    firebase.database().ref('/users/' + userID).once('value').then(data => {
+      var user = data.val();
+
+      if (user.questions == null)
+      {
+        user.questions = new Array<any>();
+      }
+
+      user.questions.push(questionKey);
+
+      firebase.database().ref('/users/' + userID).set(user);
+    });
+  }
+
+  writeNewAnswer(content: string, userID: string, questionID: string)
+  {
+    var ansKey = firebase.database().ref().child('answers').push().key;
+
+    firebase.database().ref('/answers/' + ansKey).set({
+      content: content,
+      question: questionID,
+      time: (new Date()).toUTCString(),
+      user: userID,
+      votes: 0,
+      answerID: ansKey
+    });
+
+
+    firebase.database().ref('/questions/' + questionID).once('value').then(data => {
+      var question = data.val();
+
+      if (question.answers == null)
+      {
+        question.answers = new Array<any>();
+      }
+
+      question.answers.push(ansKey);
+
+      firebase.database().ref('/questions/' + questionID).set(question);
+    });
+
+    firebase.database().ref('/users/' + userID).once('value').then(data => {
+      var user = data.val();
+
+      if (user.answers == null)
+      {
+        user.answers = new Array<any>();
+      }
+
+      user.answers.push(ansKey);
+
+      firebase.database().ref('/users/' + userID).set(user);
+    });
+  }
 }

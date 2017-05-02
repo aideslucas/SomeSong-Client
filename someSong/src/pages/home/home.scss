@@ -1,3 +1,33 @@
 page-home {
+  overflow-y: hidden !important;
 
+  .userImage {
+    padding-left: 25%;
+    width: 75%;
+  }
+
+  .unresolvedQuestions {
+    height: 50%;
+    .scroll-content {
+     padding: 0px !important;
+    }
+
+    ion-list {
+      margin: -1px !important;
+    }
+  }
+
+  .navigation-buttons {
+    width: 75%;
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 10px;
+    margin-left: 7.5%;
+    margin-right: 7.5%;
+    color: white;
+
+    button {
+      font-size: 0.8em;
+    }
+  }
 }

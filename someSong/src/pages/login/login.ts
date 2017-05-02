@@ -42,7 +42,10 @@ export class LoginPage {
               this.navCtrl.setRoot(LanguageSelectPage, newUser);
             }
             else
-              this.navCtrl.setRoot(HomePage, user.val());
+            {
+              this._backend.setCurrentUser(user.key);
+              this.navCtrl.setRoot(HomePage);
+            }
           });
       }
     });
