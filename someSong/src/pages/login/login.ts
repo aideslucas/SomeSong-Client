@@ -39,11 +39,13 @@ export class LoginPage {
 
               var newUser = this._backend.createUser(authUser.uid, displayName, email, image);
 
+              this.authStateChanged();
               this.navCtrl.setRoot(LanguageSelectPage, newUser);
             }
             else
             {
               this._backend.setCurrentUser(user.key);
+              this.authStateChanged();
               this.navCtrl.setRoot(HomePage);
             }
           });
@@ -67,5 +69,4 @@ export class LoginPage {
   loginWithFB() {
     this._auth.signInWithFacebook();
   }
-
 }

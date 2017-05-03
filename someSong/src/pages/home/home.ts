@@ -13,29 +13,34 @@ import {BrowseQuestionsPage} from "../browse-questions/browse-questions";
 export class HomePage {
 
   user: any;
+  userSubscription: any;
 
   constructor(public navCtrl: NavController,
               private backEnd: BackendService) {
     this.user = { image: '' };
-    this.backEnd.getCurrentUser().subscribe((data) =>
+    this.userSubscription = this.backEnd.getCurrentUser().subscribe((data) =>
     {
       this.user = data;
     })
   }
 
   goToProfile(){
+    this.userSubscription.unsubscribe();
     this.navCtrl.push(ProfilePage);
   }
 
   goToQuestion(questionID) {
+    this.userSubscription.unsubscribe();
     this.navCtrl.push(QuestionDetailsPage, questionID);
   }
 
   askAQuestion() {
+    this.userSubscription.unsubscribe();
     this.navCtrl.push(AskQuestionPage);
   }
 
   browseQuestions() {
+    this.userSubscription.unsubscribe();
     this.navCtrl.push(BrowseQuestionsPage);
   }
 }

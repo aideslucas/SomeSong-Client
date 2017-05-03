@@ -12,6 +12,7 @@ export class QuestionDetailsPage {
   genres = Genres;
   languages = Languages;
   answer: any;
+  playing: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private backEnd: BackendService, private media: MediaPlugin) {
     const onStatusUpdate = (status) => console.log(status);
@@ -58,7 +59,15 @@ export class QuestionDetailsPage {
   }
 
   playRecording() {
-    //this.question.file.play();
+    if (this.playing)
+    {
+      //this.question.file.pause();
+      this.playing = false;
+    }
+    else {
+      //this.question.file.play();
+      this.playing = true;
+    }
   }
 
   sendAnswer() {

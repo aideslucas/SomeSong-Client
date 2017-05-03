@@ -42,6 +42,7 @@ export class RegisterPage {
   }
 
   openLoginPage(): void {
+    this.authStateChanged();
     this.navCtrl.setRoot(LoginPage);
   }
 
