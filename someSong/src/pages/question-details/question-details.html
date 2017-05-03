@@ -1,20 +1,95 @@
 <ion-header>
   <ion-navbar>
-
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>
       SomeSong: Question Details
     </ion-title>
-    <ion-buttons end>
-      <button ion-button>
-        <ion-icon name="log-in"> Login</ion-icon>
-      </button>
-    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
+  <h3>Question</h3>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-9>
+        <img src="{{question.user.image}}" width="50px" height="50px"><br/>
+        {{question.user.displayName}}
+      </ion-col>
+      <ion-col col-3>
+        <button ion-button round (click)="playRecording()" id="play-stop">
+          <ion-icon name="play" *ngIf="!playing"></ion-icon>
+          <ion-icon name="pause" *ngIf="playing"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
+  <br/>
+
+  <b>Question Possible Genres:</b><br/>
+  <button ion-button *ngFor="let genre of question.genres">
+    {{genres[genre]}}
+  </button>
+  <br/><br/>
+
+  <b>Question Possible Languages:</b><br/>
+  <button ion-button *ngFor="let language of question.languages">
+    {{languages[language]}}
+  </button>
+
+  <hr />
+
+  <h3>Answers</h3>
+  <ion-list>
+    <ion-item *ngFor="let answer of question.answers">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-3>
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <img class="user-photo" src="{{answer.user.image}}">
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <div class="votes">
+                    <b>votes: </b> {{answer.votes}}
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-col>
+          <ion-col col-9>
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <strong>{{answer.user.displayName}}</strong> <span class="text-muted">commented on {{answer.time}}</span>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  {{answer.content}}
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
 </ion-content>
+
+
+<ion-footer>
+  <form (ngSubmit)="sendAnswer()" #answerForm="ngForm">
+    <ion-toolbar>
+      <ion-textarea placeholder="Suggest answer here..." [(ngModel)]="answer" name="answer"></ion-textarea>
+      <ion-buttons end>
+        <button ion-button type="submit">Send &nbsp;<ion-icon name="send"></ion-icon></button>
+      </ion-buttons>
+    </ion-toolbar>
+  </form>
+</ion-footer>

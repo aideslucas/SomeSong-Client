@@ -1,20 +1,30 @@
 <ion-header>
   <ion-navbar>
-
-      <button ion-button menuToggle>
-        <ion-icon name="menu"></ion-icon>
-      </button>
     <ion-title>
       SomeSong
     </ion-title>
     <ion-buttons end>
       <button ion-button (click)="goToProfile()">
-        Hello {{user.displayName}}
+       <ion-icon name="settings"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content class="no-scroll" padding="5px">
+  <img src="{{user.image}}" class="userImage"/>
+  <h3>My Unresolved Questions</h3>
+  <ion-scroll scrollY="true" class="unresolvedQuestions">
+    <ion-list *ngIf="user && user.questions" >
+      <ion-item *ngFor="let question of user.questions">
+        <button block ion-button (click)="goToQuestion(question)">{{question}}</button>
+      </ion-item>
+    </ion-list>
+  </ion-scroll>
 
+
+  <ion-buttons class="navigation-buttons">
+    <button (click)="browseQuestions()" block ion-button>Browse Unresolved Questions</button>
+    <button (click)="askAQuestion()" block ion-button>Ask a Question</button>
+  </ion-buttons>
 </ion-content>
