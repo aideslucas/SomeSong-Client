@@ -1,23 +1,33 @@
 import { Component } from '@angular/core';
 import { NavController,NavParams, Platform } from 'ionic-angular';
-import {BackendService, Languages, User} from '../../providers/backend-service';
+
 import {GenreSelectPage} from "../genre-select/genre-select";
+import {User} from "../../providers/user";
+import {Language} from "../../providers/language";
 
 @Component({
   selector: 'page-language-select',
   templateUrl: 'language-select.html'
 })
 export class LanguageSelectPage {
-  languages = Languages;
+  languages: any;
   languagesKeys: any;
-  user: User;
+  user: any;
 
   constructor(public platform: Platform,
               public navCtrl: NavController,
               public navParams: NavParams,
-              private _backend: BackendService) {
-    this.languagesKeys = Object.keys(this.languages).filter(Number);
-    this.user = navParams.data;
+              private _user: User,
+              private _language: Language) {
+    var userSubscription = this._user.currentUser.subscribe(data => {
+      this.user = data;
+      userSubscription.unsubscribe();
+    });
+
+    this._language.getLanguages().then(data =>
+    {
+      this.languages = data.val();
+    });
   }
 
   insertLanguageToArray(item, language){
@@ -36,8 +46,8 @@ export class LanguageSelectPage {
 
   save()
   {
-    this._backend.saveUser(this.user);
-    this.navCtrl.push(GenreSelectPage, this.user)
+    this._user.saveUser(this.user);
+    this.navCtrl.push(GenreSelectPage);
   }
 
 }

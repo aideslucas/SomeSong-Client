@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Facebook } from  '@ionic-native/facebook';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 import { Platform } from 'ionic-angular';
 
 @Injectable()
-export class AuthService {
+export class Auth {
 
   constructor(public facebook: Facebook, public platform: Platform) {
   }
@@ -12,7 +12,6 @@ export class AuthService {
   get authState() {
     return firebase.auth();
   }
-
 
   createUserWithEmail(email: string, password: string) : firebase.Promise<any> {
     return firebase.auth().createUserWithEmailAndPassword(email, password);

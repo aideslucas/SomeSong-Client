@@ -3,30 +3,35 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
+
+// Pages
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
 import { BrowseQuestionsPage } from '../pages/browse-questions/browse-questions';
 import { ProfilePage } from '../pages/profile/profile';
 import { AskQuestionPage } from '../pages/ask-question/ask-question';
 import { QuestionDetailsPage } from '../pages/question-details/question-details';
-
+import { RegisterPage } from "../pages/register/register";
 import { LoginPage } from '../pages/login/login';
 import { LanguageSelectPage } from '../pages/language-select/language-select';
 import { GenreSelectPage } from '../pages/genre-select/genre-select';
 
+// Ionic Native
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
-import { AuthService } from '../providers/auth-service';
-import { BackendService } from '../providers/backend-service';
 import { Facebook } from "@ionic-native/facebook";
-import {File} from "@ionic-native/file";
+import { File } from "@ionic-native/file";
+import { MediaPlugin } from "@ionic-native/media";
 
+// Providers
+import { Auth } from '../providers/auth';
+
+// Firebase
 import firebase from 'firebase'
-import {AngularFireModule} from "angularfire2";
-import {RegisterPage} from "../pages/register/register";
-import {MediaPlugin} from "@ionic-native/media";
-
+import {User} from "../providers/user";
+import {Question} from "../providers/question";
+import {Answer} from "../providers/answer";
+import {Genre} from "../providers/genre";
+import {Language} from "../providers/language";
 export const firebaseConfig = {
   apiKey: "AIzaSyA_MquO5E-MQKjnEdaEUC-fnEXENMjz6Ro",
   authDomain: "somesong-700c4.firebaseapp.com",
@@ -40,7 +45,6 @@ export const firebaseConfig = {
   declarations: [
     MyApp,
     HomePage,
-    ListPage,
     BrowseQuestionsPage,
     ProfilePage,
     AskQuestionPage,
@@ -52,14 +56,12 @@ export const firebaseConfig = {
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp),
-    AngularFireModule.initializeApp(firebaseConfig)
+    IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     HomePage,
-    ListPage,
     BrowseQuestionsPage,
     ProfilePage,
     AskQuestionPage,
@@ -70,8 +72,12 @@ export const firebaseConfig = {
     RegisterPage
   ],
   providers: [
-    AuthService,
-    BackendService,
+    Auth,
+    User,
+    Question,
+    Answer,
+    Genre,
+    Language,
     StatusBar,
     SplashScreen,
     Facebook,

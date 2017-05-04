@@ -9,11 +9,7 @@ import {LoginPage} from "../pages/login/login";
   templateUrl: 'app.html'
 })
 export class MyApp {
-  @ViewChild(Nav) nav: Nav;
-
   rootPage: any = LoginPage;
-
-  pages: Array<{title: string, component: any}>;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
     this.initializeApp();
@@ -24,9 +20,5 @@ export class MyApp {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
-  }
-
-  openPage(page) {
-    this.nav.setRoot(page.component);
   }
 }

@@ -1,8 +1,12 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-import {BackendService, Genres, Languages, User} from "../../providers/backend-service";
-import {AuthService} from "../../providers/auth-service";
+import { NavController } from 'ionic-angular';
+
+import {Auth} from "../../providers/auth";
+
 import {LoginPage} from "../login/login";
+import {User} from "../../providers/user";
+import {Genre} from "../../providers/genre";
+import {Language} from "../../providers/language";
 
 @Component({
   selector: 'page-profile',
@@ -12,22 +16,36 @@ export class ProfilePage {
   currentUser: any;
   userSubscription: any;
 
-  genres = Genres;
-  languages = Languages;
+  genres: Array<any>;
+  languages: Array<any>;
 
-  constructor(public navCtrl: NavController, private backEnd: BackendService, private _auth: AuthService) {
+  constructor(public navCtrl: NavController,
+              private _auth: Auth,
+              private _user: User,
+              private _genre: Genre,
+              private _language: Language)
+  {
+    this._genre.getGenres().then(data => {
+      this.genres = data.val();
+    });
+
+    this._language.getLanguages().then(data => {
+      this.languages = data.val();
+    });
+
     this.currentUser = {
       genres: new Array<any>(),
       languages: new Array<any>()
     };
 
-      this.userSubscription = this.backEnd.getCurrentUser().subscribe((data) => {
+      this.userSubscription = this._user.currentUser.subscribe((data) => {
         this.currentUser = data;
       });
   }
 
   logout() {
     this.userSubscription.unsubscribe();
+    this._user.logOut();
     this._auth.signOut();
     this.navCtrl.setRoot(LoginPage);
   }

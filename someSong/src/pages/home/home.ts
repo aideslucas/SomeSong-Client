@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
-import {BackendService, User} from "../../providers/backend-service";
-import {ProfilePage} from "../profile/profile";
-import {QuestionDetailsPage} from "../question-details/question-details";
-import {AskQuestionPage} from "../ask-question/ask-question";
-import {BrowseQuestionsPage} from "../browse-questions/browse-questions";
+import { NavController } from 'ionic-angular';
+
+import { ProfilePage } from "../profile/profile";
+import { QuestionDetailsPage } from "../question-details/question-details";
+import { AskQuestionPage } from "../ask-question/ask-question";
+import { BrowseQuestionsPage } from "../browse-questions/browse-questions";
+
+import { User } from "../../providers/user";
 
 @Component({
   selector: 'page-home',
@@ -16,12 +18,12 @@ export class HomePage {
   userSubscription: any;
 
   constructor(public navCtrl: NavController,
-              private backEnd: BackendService) {
+              private _user: User) {
     this.user = { image: '' };
-    this.userSubscription = this.backEnd.getCurrentUser().subscribe((data) =>
+    this.userSubscription = this._user.currentUser.subscribe((data) =>
     {
       this.user = data;
-    })
+    });
   }
 
   goToProfile(){
