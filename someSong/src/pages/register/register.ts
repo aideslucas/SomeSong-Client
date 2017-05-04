@@ -4,10 +4,11 @@
 import {NavController, LoadingController} from 'ionic-angular';
 import {Component} from '@angular/core';
 
-import {AuthService} from "../../providers/auth-service";
+import {Auth} from "../../providers/auth";
+
 import {LoginPage} from "../login/login";
-import {BackendService} from "../../providers/backend-service";
 import {LanguageSelectPage} from "../language-select/language-select";
+import {User} from "../../providers/user";
 
 @Component({
   templateUrl: 'register.html',
@@ -22,8 +23,8 @@ export class RegisterPage {
   authStateChanged: any;
 
   constructor(private navCtrl: NavController,
-              private auth: AuthService,
-              private _backend: BackendService,
+              private _auth: Auth,
+              private _user: User,
               private loadingCtrl: LoadingController,) {
     this.form = {
       email: '',
@@ -32,11 +33,12 @@ export class RegisterPage {
       displayName: ''
     };
 
-    this.authStateChanged = this.auth.authState.onAuthStateChanged(authUser => {
+    this.authStateChanged = this._auth.authState.onAuthStateChanged(authUser => {
       if (authUser != null) {
         this.loading.dismiss();
         this.authStateChanged();
-        this.navCtrl.setRoot(LanguageSelectPage, this.newUser);
+        this._user.logIn(authUser.uid);
+        this.navCtrl.setRoot(LanguageSelectPage);
       }
     });
   }
@@ -57,11 +59,12 @@ export class RegisterPage {
     });
     this.loading.present();
 
-    this.auth.createUserWithEmail(this.form.email, this.form.password).then(registerData => {
-      this.newUser = this._backend.createUser(registerData.uid, this.form.displayName, this.form.email, "https://freeiconshop.com/wp-content/uploads/edd/person-solid.png");
-      this.auth.signInWithEmail(this.form.email, this.form.password).catch(loginError => {
-        this.loading.dismiss();
-        this.error = loginError;
+    this._auth.createUserWithEmail(this.form.email, this.form.password).then(registerData => {
+      this._user.createUser(registerData.uid, this.form.displayName, this.form.email, "https://freeiconshop.com/wp-content/uploads/edd/person-solid.png").then(() => {
+        this._auth.signInWithEmail(this.form.email, this.form.password).catch(loginError => {
+          this.loading.dismiss();
+          this.error = loginError;
+        });
       });
     }, registerError => {
       this.loading.dismiss();

@@ -1,7 +1,9 @@
 import {Component} from '@angular/core';
 import {NavController, Platform} from 'ionic-angular';
-import {AuthService} from '../../providers/auth-service';
-import {BackendService} from '../../providers/backend-service'
+
+import {Auth} from '../../providers/auth';
+import {User} from "../../providers/user";
+
 import {HomePage} from "../home/home";
 import {LanguageSelectPage} from "../language-select/language-select";
 import {RegisterPage} from "../register/register";
@@ -17,8 +19,8 @@ export class LoginPage {
 
   constructor(public platform: Platform,
               public navCtrl: NavController,
-              private _auth: AuthService,
-              private _backend: BackendService) {
+              private _auth: Auth,
+              private _user: User) {
     this.form = {
       email: '',
       password: ''
@@ -26,7 +28,8 @@ export class LoginPage {
 
     this.authStateChanged = this._auth.authState.onAuthStateChanged(authUser => {
       if (authUser != null) {
-        this._backend.getUser(authUser.uid)
+        this._user.logIn(authUser.uid);
+        this._user.getUser(authUser.uid)
           .then(user => {
             if (user.val() == null) {
               var displayName, email, image;
@@ -37,14 +40,14 @@ export class LoginPage {
                 image = profile.photoURL;
               });
 
-              var newUser = this._backend.createUser(authUser.uid, displayName, email, image);
-
-              this.authStateChanged();
-              this.navCtrl.setRoot(LanguageSelectPage, newUser);
+              this._user.createUser(authUser.uid, displayName, email, image).then(() =>
+              {
+                this.authStateChanged();
+                this.navCtrl.setRoot(LanguageSelectPage);
+              });
             }
             else
             {
-              this._backend.setCurrentUser(user.key);
               this.authStateChanged();
               this.navCtrl.setRoot(HomePage);
             }

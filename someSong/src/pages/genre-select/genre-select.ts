@@ -1,24 +1,31 @@
 import { Component } from '@angular/core';
-import { NavController,NavParams, Platform } from 'ionic-angular';
-import {BackendService, Genres, User} from '../../providers/backend-service';
+import { NavController, Platform } from 'ionic-angular';
 import {HomePage} from "../home/home";
+import {User} from "../../providers/user";
+import {Genre} from "../../providers/genre";
 
 @Component({
   selector: 'page-genre-select',
   templateUrl: 'genre-select.html'
 })
 export class GenreSelectPage {
-  genres = Genres;
-  genresKeys: any;
-  user: User;
+  genres: any;
+  user: any;
 
   constructor(public platform: Platform,
               public navCtrl: NavController,
-              public navParams: NavParams,
-              private _backend: BackendService) {
-    this.genresKeys = Object.keys(this.genres).filter(Number);
-    this.user = navParams.data;
-    console.log(this.user);
+              private _user: User,
+              private _genre: Genre) {
+    var subscription = this._user.currentUser.subscribe(data =>
+    {
+      this.user = data;
+      subscription.unsubscribe();
+    });
+
+    this._genre.getGenres().then(data => {
+      this.genres = data.val();
+    })
+
   }
 
   insertGenreToArray(item, genre){
@@ -40,7 +47,7 @@ export class GenreSelectPage {
 
   save()
   {
-    this._backend.saveUser(this.user);
-    this.navCtrl.setRoot(HomePage, this.user);
+    this._user.saveUser(this.user);
+    this.navCtrl.setRoot(HomePage);
   }
 }
