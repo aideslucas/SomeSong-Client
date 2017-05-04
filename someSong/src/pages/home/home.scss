@@ -1,15 +1,29 @@
 page-home {
   overflow-y: hidden !important;
 
-  .userImage {
-    padding-left: 25%;
-    width: 75%;
+  .label {
+    margin: 0;
+  }
+
+  .item-inner {
+    padding: 0px!important;
   }
 
   .unresolvedQuestions {
-    height: 50%;
+    height: 35%;
     .scroll-content {
      padding: 0px !important;
+    }
+
+    ion-list {
+      margin: -1px !important;
+    }
+  }
+
+  .myAnswers {
+    height: 35%;
+    .scroll-content {
+      padding: 0px !important;
     }
 
     ion-list {

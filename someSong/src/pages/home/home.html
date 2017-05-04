@@ -12,12 +12,21 @@
 </ion-header>
 
 <ion-content class="no-scroll" padding="5px">
-  <img src="{{user.image}}" class="userImage"/>
   <h3>My Unresolved Questions</h3>
   <ion-scroll scrollY="true" class="unresolvedQuestions">
-    <ion-list *ngIf="user && user.questions" >
-      <ion-item *ngFor="let question of user.questions">
+    <ion-list no-lines no-padding>
+      <ion-item *ngFor="let question of user?.questions">
         <button block ion-button (click)="goToQuestion(question)">{{question}}</button>
+      </ion-item>
+    </ion-list>
+  </ion-scroll>
+
+  <h3>My Answers to Questions</h3>
+  <ion-scroll scrollY="true" class="myAnswers">
+    <ion-list no-lines no-padding>
+      <ion-item *ngFor="let answer of user?.answers">
+        <button block ion-button color="secondary" *ngIf="answer.question.correctAnswer == answer.answerID" (click)="goToQuestion(answer?.question)">{{answer?.question}}</button>
+        <button block ion-button *ngIf="answer.question.correctAnswer != answer.answerID" (click)="goToQuestion(answer?.question)">{{answer?.question}}</button>
       </ion-item>
     </ion-list>
   </ion-scroll>
