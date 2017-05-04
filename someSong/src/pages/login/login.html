@@ -1,9 +1,8 @@
 <ion-content class="login-content" padding>
-  <ion-row class="logo-row">
-    <ion-col>
-      <img src="assets/images/logo.png"/>
-    </ion-col>
-  </ion-row>
+  <div class="logo-row">
+    <img src="assets/images/logo.png"/>
+    <h1>SomeSong</h1>
+  </div>
     <form (ngSubmit)="loginWithEmail()" #loginForm="ngForm">
         <ion-item>
           <ion-input email="" required="" placeholder="Email" [(ngModel)]="form.email" name="email"></ion-input>

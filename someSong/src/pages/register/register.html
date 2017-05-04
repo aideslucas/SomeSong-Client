@@ -1,5 +1,15 @@
-<ion-content>
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      Register
+    </ion-title>
+  </ion-navbar>
+</ion-header>
 
+<ion-content>
   <form (ngSubmit)="register()" #registerForm="ngForm">
 
     <ion-item>
