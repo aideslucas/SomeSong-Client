@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 import { ProfilePage } from "../profile/profile";
@@ -27,12 +27,14 @@ export class HomePage {
 
       var fullAnswers = new Array<any>();
 
-      for (let answer of this.user.answers)
-      {
-        this._answer.getAnswerDetails(answer).then(data =>
+      if (this.user.answers) {
+        for (let answer of this.user.answers)
         {
-          fullAnswers.push(data.val());
-        });
+          this._answer.getAnswerDetails(answer).then(data =>
+          {
+            fullAnswers.push(data.val());
+          });
+        }
       }
 
       this.user.answers = fullAnswers;
@@ -40,22 +42,22 @@ export class HomePage {
   }
 
   goToProfile(){
-    this.userSubscription.unsubscribe();
     this.navCtrl.push(ProfilePage);
   }
 
   goToQuestion(questionID) {
-    this.userSubscription.unsubscribe();
     this.navCtrl.push(QuestionDetailsPage, questionID);
   }
 
   askAQuestion() {
-    this.userSubscription.unsubscribe();
     this.navCtrl.push(AskQuestionPage);
   }
 
   browseQuestions() {
-    this.userSubscription.unsubscribe();
     this.navCtrl.push(BrowseQuestionsPage);
+  }
+
+  ionViewWillUnload() {
+    this.userSubscription.unsubscribe();
   }
 }

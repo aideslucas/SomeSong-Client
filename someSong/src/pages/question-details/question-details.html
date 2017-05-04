@@ -13,15 +13,22 @@
   <h3>Question</h3>
   <ion-grid>
     <ion-row>
-      <ion-col col-9>
-        <img src="{{question.user.image}}" width="50px" height="50px"><br/>
-        {{question.user.displayName}}
+      <ion-col col-3 class="startCol">
+        <img src="{{question?.user.image}}" width="50px" height="50px">
       </ion-col>
-      <ion-col col-3>
-        <button ion-button round (click)="playRecording()" id="play-stop">
-          <ion-icon name="play" *ngIf="!playing"></ion-icon>
-          <ion-icon name="pause" *ngIf="playing"></ion-icon>
-        </button>
+      <ion-col col-6></ion-col>
+      <ion-col col-3 class="endCol">
+        <ion-buttons end>
+          <button ion-button round (click)="playRecording()" id="play-stop">
+            <ion-icon name="play" *ngIf="!playing"></ion-icon>
+            <ion-icon name="pause" *ngIf="playing"></ion-icon>
+          </button>
+        </ion-buttons>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="startCol">
+        {{question?.user.displayName}}
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -29,52 +36,46 @@
   <br/>
 
   <b>Question Possible Genres:</b><br/>
-  <button ion-button *ngFor="let genre of question.genres">
-    {{genres[genre]}}
-  </button>
-  <br/><br/>
+  <div *ngIf="genres">
+    <button ion-button *ngFor="let genre of question?.genres">
+      {{genres[genre]}}
+    </button>
+  </div>
+
+  <br/>
 
   <b>Question Possible Languages:</b><br/>
-  <button ion-button *ngFor="let language of question.languages">
-    {{languages[language]}}
-  </button>
+  <div *ngIf="languages">
+    <button ion-button *ngFor="let language of question?.languages">
+      {{languages[language]}}
+    </button>
+  </div>
 
-  <hr />
+  <hr/>
 
   <h3>Answers</h3>
   <ion-list>
-    <ion-item *ngFor="let answer of question.answers">
+    <ion-item *ngFor="let answer of question?.answers">
       <ion-grid>
         <ion-row>
-          <ion-col col-3>
-            <ion-grid>
-              <ion-row>
-                <ion-col>
-                  <img class="user-photo" src="{{answer.user.image}}">
-                </ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col>
-                  <div class="votes">
-                    <b>votes: </b> {{answer.votes}}
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
+          <ion-col col-2 class="startCol">
+            <img class="user-photo" src="{{answer?.user.image}}">
           </ion-col>
-          <ion-col col-9>
-            <ion-grid>
-              <ion-row>
-                <ion-col>
-                  <strong>{{answer.user.displayName}}</strong> <span class="text-muted">commented on {{answer.time}}</span>
-                </ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col>
-                  {{answer.content}}
-                </ion-col>
-              </ion-row>
-            </ion-grid>
+          <ion-col col-8 class="startCol">
+            {{answer?.content}}
+          </ion-col>
+          <ion-col col-2 class="endCol">
+            <div class="votes">
+              <ion-icon name="up"></ion-icon>{{answer?.votes}}<ion-icon name="down"></ion-icon>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="startCol" col-6>
+            <strong>{{answer?.user.displayName}}</strong>
+          </ion-col>
+          <ion-col class="endCol" col-6>
+            <span class="text-muted">{{answer?.time}}</span>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -88,7 +89,8 @@
     <ion-toolbar>
       <ion-textarea placeholder="Suggest answer here..." [(ngModel)]="answer" name="answer"></ion-textarea>
       <ion-buttons end>
-        <button ion-button type="submit">Send &nbsp;<ion-icon name="send"></ion-icon></button>
+        <button ion-button type="submit">Send &nbsp;<ion-icon name="send"></ion-icon>
+        </button>
       </ion-buttons>
     </ion-toolbar>
   </form>
