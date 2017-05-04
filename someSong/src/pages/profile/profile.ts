@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import {LoadingController, NavController} from 'ionic-angular';
 
 import {Auth} from "../../providers/auth";
 
@@ -26,6 +26,7 @@ export class ProfilePage {
               private _language: Language)
   {
     this._genre.getGenres().then(data => {
+      console.log(data.val());
       this.genres = data.val();
     });
 
@@ -33,15 +34,11 @@ export class ProfilePage {
       this.languages = data.val();
     });
 
-    this.currentUser = {
-      genres: new Array<any>(),
-      languages: new Array<any>()
-    };
-
-      this.userSubscription = this._user.currentUser.subscribe((data) => {
-        this.currentUser = data;
-      });
+    this.userSubscription = this._user.currentUser.subscribe((data) => {
+      this.currentUser = data;
+    });
   }
+
 
   logout() {
     this.userSubscription.unsubscribe();

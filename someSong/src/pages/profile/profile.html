@@ -11,17 +11,17 @@
 </ion-header>
 
 <ion-content padding>
-  <img src="{{currentUser.image}}" height="150px" width="150px" />
-  <h2>Hello {{currentUser.displayName}}</h2>
+  <img src="{{currentUser?.image}}" height="150px" width="150px" />
+  <h2>Hello {{currentUser?.displayName}}</h2>
   <h4>This are your genres</h4>
-  <ion-list>
-    <ion-item *ngFor="let genre of currentUser.genres">
+  <ion-list *ngIf="genres != null">
+    <ion-item *ngFor="let genre of currentUser?.genres">
       <ion-label>{{genres[genre]}}</ion-label>
     </ion-item>
   </ion-list>
   <h4>This are your languages</h4>
-  <ion-list>
-    <ion-item *ngFor="let language of currentUser.languages">
+  <ion-list *ngIf="languages != null">
+    <ion-item *ngFor="let language of currentUser?.languages">
       <ion-label>{{languages[language]}}</ion-label>
     </ion-item>
   </ion-list>
