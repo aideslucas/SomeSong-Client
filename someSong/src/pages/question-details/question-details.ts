@@ -78,6 +78,20 @@ export class QuestionDetailsPage {
     });
   }
 
+  upVote(item, answer) {
+    item.close();
+    answer.votes++;
+
+    this._answer.updateAnswer(answer);
+  }
+
+  downVote(item, answer) {
+    item.close();
+    answer.votes--;
+
+    this._answer.updateAnswer(answer);
+  }
+
   playRecording() {
     if (this.playing)
     {
