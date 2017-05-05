@@ -20,12 +20,29 @@ export class Answer {
     localTime.setUTCMinutes(time.minutes);
     localTime.setUTCSeconds(time.seconds);
 
-    return localTime.toLocaleDateString() + " " + localTime.toLocaleTimeString();
+    return this.formatNum(localTime.getDate()) + "/" +
+           this.formatNum(localTime.getMonth()+1) + "/" +
+           this.formatNum(localTime.getFullYear()) + " " +
+           this.formatNum(localTime.getHours()) + ":" +
+           this.formatNum(localTime.getMinutes());
+  }
+
+  formatNum(num) {
+    if (num < 10)
+    {
+      return "0"+num;
+    }
+
+    return num
   }
 
   getAnswerDetails(answerID: string)
   {
     return firebase.database().ref('/answers/' + answerID).once('value');
+  }
+
+  updateAnswer(answer) {
+    return firebase.database().ref('/answers/' + answer.answerID).set(answer);
   }
 
   writeNewAnswer(content: string, userID: string, questionID: string)

@@ -55,31 +55,43 @@
 
   <h3>Answers</h3>
   <ion-list>
-    <ion-item *ngFor="let answer of question?.answers">
-      <ion-grid>
-        <ion-row>
-          <ion-col col-2 class="startCol">
-            <img class="user-photo" src="{{answer?.user.image}}">
-          </ion-col>
-          <ion-col col-8 class="startCol">
-            {{answer?.content}}
-          </ion-col>
-          <ion-col col-2 class="endCol">
-            <div class="votes">
-              <ion-icon name="up"></ion-icon>{{answer?.votes}}<ion-icon name="down"></ion-icon>
-            </div>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col class="startCol" col-6>
-            <strong>{{answer?.user.displayName}}</strong>
-          </ion-col>
-          <ion-col class="endCol" col-6>
-            <span class="text-muted">{{answer?.time}}</span>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-item>
+    <ion-item-sliding *ngFor="let answer of question?.answers" #item>
+      <ion-item>
+        <ion-grid>
+          <ion-row>
+            <ion-col col-2 class="startCol">
+              <img class="user-photo" src="{{answer?.user.image}}">
+            </ion-col>
+            <ion-col col-8 class="startCol">
+              {{answer?.content}}
+            </ion-col>
+            <ion-col col-2 class="endCol">
+              <div class="votes">
+                {{answer?.votes}}
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="startCol" col-6>
+              <strong>{{answer?.user.displayName}}</strong>
+            </ion-col>
+            <ion-col class="endCol" col-6>
+              <span class="text-muted">{{answer?.time}}</span>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      <ion-item-options side="right">
+        <button ion-button small circle color="secondary" (click)="upVote(item, answer)">
+          <ion-icon name="arrow-up"></ion-icon>
+          Vote
+        </button>
+        <button ion-button small circle color="danger" (click)="downVote(item, answer)">
+          <ion-icon name="arrow-down"></ion-icon>
+          Vote
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
 </ion-content>
 
