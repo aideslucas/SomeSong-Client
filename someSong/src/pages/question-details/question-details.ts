@@ -6,6 +6,8 @@ import {Question} from "../../providers/question";
 import {User} from "../../providers/user";
 import {Answer} from "../../providers/answer";
 import {Record} from "../../providers/record";
+import {Genre} from "../../providers/genre";
+import {Language} from "../../providers/language";
 
 @Component({
   selector: 'page-question-details',
@@ -17,6 +19,7 @@ export class QuestionDetailsPage {
   languages: any;
   answer: any;
   playing: boolean = false;
+  questionSubs: any;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -24,29 +27,26 @@ export class QuestionDetailsPage {
               private _question: Question,
               private _record: Record,
               private _user: User,
-              private _answer: Answer)
+              private _answer: Answer,
+              private _genre: Genre,
+              private _language: Language)
   {
     const onStatusUpdate = (status) => console.log(status);
     const onSuccess = () => console.log('Action is successful.');
     const onError = (error) => console.log(error.message);
 
-    this.answer = '';
+    this._genre.getGenres().then(data => {
+      this.genres = data.val();
+    });
 
-    this.question = {
-      genres : new Array<any>(),
-      languages: new Array<any>(),
-      location: 'location',
-      answers: new Array<any>(),
-      user: {
-        image: '',
-        displayName: ''
-      },
-      file: ''
-    };
+    this._language.getLanguages().then(data => {
+      this.languages = data.val();
+    });
 
-    this._question.getQuestionDetails(navParams.data).then(question => {
-      this.question = question.val();
-      this.question.answers = new Array<any>();
+    this.questionSubs = this._question.getQuestionDetails(navParams.data).subscribe(question => {
+      this.question = question;
+
+      var answers = new Array<any>();
 
       this._record.getRecordURL(this.question.record).then(url => {
        // this.question.file = this.media.create(url, onStatusUpdate, onSuccess, onError);
@@ -56,17 +56,25 @@ export class QuestionDetailsPage {
         this.question.user = user.val();
       });
 
-      for (let answer of question.val().answers)
+      if (question.answers)
       {
-        this._answer.getAnswerDetails(answer).then(ans => {
-          var answer = ans.val();
-          this._user.getUser(answer.user).then(user => {
-            answer.user = user.val();
+        for (let answer of question.answers)
+        {
+          this._answer.getAnswerDetails(answer).then(ans => {
+            var answer = ans.val();
 
-            this.question.answers.push(answer);
+            answer.time = this._answer.getLocalTime(answer.timeUTC);
+
+            this._user.getUser(answer.user).then(user => {
+              answer.user = user.val();
+
+              answers.push(answer);
+            });
           });
-        });
+        }
       }
+
+      this.question.answers = answers;
     });
   }
 
@@ -84,5 +92,10 @@ export class QuestionDetailsPage {
 
   sendAnswer() {
     this._answer.writeNewAnswer(this.answer, this.question.user.userID, this.question.questionID);
+    this.answer = '';
+  }
+
+  ionViewWillUnload() {
+    this.questionSubs.unsubscribe();
   }
 }

@@ -1,15 +1,25 @@
 import { Injectable } from '@angular/core';
 import {User} from "./user";
 import firebase from 'firebase';
+import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class Question {
-  constructor(private _userProvider: User) {
+  constructor(private _user: User) {
   }
 
-  getQuestionDetails(questionID: string)
-  {
-    return firebase.database().ref('/questions/' + questionID).once('value');
+  getQuestionDetails(questionID: string) : Observable<any> {
+    return Observable.create(function(observer: any) {
+      function value(snapshot) {
+        observer.next(snapshot.val());
+      }
+
+      firebase.database().ref('/questions/' + questionID).on('value', value);
+
+      return function() {
+        firebase.database().ref('/questions/' + questionID).off('value', value);
+      }
+    });
   }
 
   writeNewQuestion(genres: Array<any>, languages: Array<any>, location: any, record: string, userID: string)
@@ -26,7 +36,7 @@ export class Question {
       user: userID
     });
 
-    this._userProvider.getUser(userID).then(data => {
+    this._user.getUser(userID).then(data => {
       var user = data.val();
 
       if (user.questions == null)
@@ -36,7 +46,7 @@ export class Question {
 
       user.questions.push(questionKey);
 
-      this._userProvider.saveUser(user);
+      this._user.saveUser(user);
     });
   }
 

@@ -24,14 +24,16 @@ import { MediaPlugin } from "@ionic-native/media";
 
 // Providers
 import { Auth } from '../providers/auth';
-
-// Firebase
-import firebase from 'firebase'
 import {User} from "../providers/user";
 import {Question} from "../providers/question";
 import {Answer} from "../providers/answer";
 import {Genre} from "../providers/genre";
 import {Language} from "../providers/language";
+import {Record} from "../providers/record";
+
+// Firebase
+import firebase from 'firebase'
+
 export const firebaseConfig = {
   apiKey: "AIzaSyA_MquO5E-MQKjnEdaEUC-fnEXENMjz6Ro",
   authDomain: "somesong-700c4.firebaseapp.com",
@@ -78,6 +80,7 @@ export const firebaseConfig = {
     Answer,
     Genre,
     Language,
+    Record,
     StatusBar,
     SplashScreen,
     Facebook,

@@ -39,6 +39,9 @@ export class ProfilePage {
     });
   }
 
+  ionViewWillUnload() {
+    this.userSubscription.unsubscribe();
+  }
 
   logout() {
     this.userSubscription.unsubscribe();
