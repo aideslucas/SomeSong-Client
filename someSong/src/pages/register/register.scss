@@ -1,18 +1,15 @@
 page-register {
 
-  .log-in-txt {
-    width: 100%;
-    text-align: right;
-    color: white;
-  }
-
   form {
+    padding-top: 10%;
+    padding-left: 5%;
+    padding-right: 5%;
     width: 95%;
-    margin: auto;
 
-    .sign-up-btn {
-      background-color: rgb(74, 165, 217);
-      margin: auto;
+    ion-item {
+      padding-left: 1%;
+      padding-right: 1%;
+      margin-top: 1%;
     }
   }
 
@@ -25,5 +22,16 @@ page-register {
       color: white;
       font-weight: bold;
     }
+  }
+
+  .sign-up-btn {
+    width: 50%;
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 10px;
+    margin-left: 20%;
+    margin-right: 20%;
+    font-size: 0.8em;
+    color: white;
   }
 }

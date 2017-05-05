@@ -42,13 +42,11 @@ export class LoginPage {
 
               this._user.createUser(authUser.uid, displayName, email, image).then(() =>
               {
-                this.authStateChanged();
                 this.navCtrl.setRoot(LanguageSelectPage);
               });
             }
             else
             {
-              this.authStateChanged();
               this.navCtrl.setRoot(HomePage);
             }
           });
@@ -61,7 +59,6 @@ export class LoginPage {
   }
 
   register() {
-    this.authStateChanged();
     this.navCtrl.push(RegisterPage);
   }
 
@@ -71,5 +68,9 @@ export class LoginPage {
 
   loginWithFB() {
     this._auth.signInWithFacebook();
+  }
+
+  ionViewWillUnload() {
+    this.authStateChanged();
   }
 }
