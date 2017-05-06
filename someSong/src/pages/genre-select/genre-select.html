@@ -13,7 +13,7 @@
   <ion-list *ngIf="genres">
     <ion-item *ngFor="let genre of genres; let i = index">
       <ion-label>{{genre}}</ion-label>
-      <ion-checkbox color="dark" (ionChange)="insertGenreToArray($event, i)" [checked]="selected.indexOf(i) != -1"></ion-checkbox>
+      <ion-checkbox color="primary" (ionChange)="insertGenreToArray($event, i)" [checked]="selected.indexOf(i) != -1"></ion-checkbox>
     </ion-item>
   </ion-list>
 </ion-content>
