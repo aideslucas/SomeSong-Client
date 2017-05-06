@@ -82,14 +82,22 @@ export class QuestionDetailsPage {
     item.close();
     answer.votes++;
 
-    this._answer.updateAnswer(answer);
+    this._answer.updateAnswer(answer).then(data => {
+      this._user.getUser(answer.user).then(user => {
+        answer.user = user.val();
+      });
+    });
   }
 
   downVote(item, answer) {
     item.close();
     answer.votes--;
 
-    this._answer.updateAnswer(answer);
+    this._answer.updateAnswer(answer).then(data => {
+      this._user.getUser(answer.user).then(user => {
+        answer.user = user.val();
+      });
+    });
   }
 
   playRecording() {

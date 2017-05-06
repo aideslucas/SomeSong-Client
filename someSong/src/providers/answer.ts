@@ -42,6 +42,11 @@ export class Answer {
   }
 
   updateAnswer(answer) {
+    if (answer.user.userID != null)
+    {
+      answer.user = answer.user.userID;
+    }
+
     return firebase.database().ref('/answers/' + answer.answerID).set(answer);
   }
 
