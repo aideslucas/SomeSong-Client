@@ -1,10 +1,28 @@
 page-login {
 
+
   .login-content {
+
+    background: url("../assets/images/background.gif") no-repeat center;
+    -moz-background-size: 100% 100%;
+    -o-background-size: 100% 100%;
+    -webkit-background-size: 100% 100%;
+    background-size: 100% 100%;
+
+
+    //    background-color: #f2c1e3;
+
     .logo-row {
       padding-top: 0px;
       padding-bottom: 0px;
       text-align: center;
+
+      .title {
+        font-family: Impact, Charcoal, sans-serif;
+        color: #ffffff;
+        width: 75%;
+        font-size: 4em;
+      }
     }
 
     ion-row {

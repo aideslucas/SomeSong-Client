@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavController, Platform} from 'ionic-angular';
+import {ModalController, NavController, Platform} from 'ionic-angular';
 
 import {Auth} from '../../providers/auth';
 import {User} from "../../providers/user";
@@ -20,6 +20,7 @@ export class LoginPage {
 
   constructor(public platform: Platform,
               public navCtrl: NavController,
+              public modalCtrl: ModalController,
               private _auth: Auth,
               private _user: User) {
     this.form = {
@@ -43,12 +44,25 @@ export class LoginPage {
 
               this._user.createUser(authUser.uid, displayName, email, image).then(() =>
               {
-                var pagesArr = new Array<any>();
-                pagesArr.push(HomePage);
-                pagesArr.push(GenreSelectPage);
-                pagesArr.push(LanguageSelectPage);
+                var user;
+                this._user.currentUser.first().subscribe(data => {
+                  user = data;
+                })
 
-                this.navCtrl.setPages(pagesArr);
+                var languageModal = this.modalCtrl.create(LanguageSelectPage, { selectedLanguages: new Array<any>() });
+                languageModal.onDidDismiss(data => {
+                  user.languages = data;
+                  var genreModal = this.modalCtrl.create(GenreSelectPage, { selectedGenres: new Array<any>() });
+                  genreModal.onDidDismiss(data => {
+                    user.genres = data;
+                    this._user.updateUser(user);
+                    this.navCtrl.setRoot(HomePage);
+                  });
+
+                  genreModal.present();
+                });
+
+                languageModal.present();
               });
             }
             else
@@ -65,6 +79,7 @@ export class LoginPage {
   }
 
   register() {
+    this.authStateChanged();
     this.navCtrl.push(RegisterPage);
   }
 

@@ -1,12 +1,11 @@
 /**
  * Created by Lucas on 01/05/2017.
  */
-import {NavController, LoadingController} from 'ionic-angular';
+import {NavController, LoadingController, ModalController} from 'ionic-angular';
 import {Component} from '@angular/core';
 
 import {Auth} from "../../providers/auth";
 
-import {LoginPage} from "../login/login";
 import {LanguageSelectPage} from "../language-select/language-select";
 import {User} from "../../providers/user";
 import {GenreSelectPage} from "../genre-select/genre-select";
@@ -24,6 +23,7 @@ export class RegisterPage {
   authStateChanged: any;
 
   constructor(private navCtrl: NavController,
+              private modalCtrl: ModalController,
               private _auth: Auth,
               private _user: User,
               private loadingCtrl: LoadingController,) {
@@ -40,12 +40,25 @@ export class RegisterPage {
         this.authStateChanged();
         this._user.logIn(authUser.uid);
 
-        var pagesArr = new Array<any>();
-        pagesArr.push(HomePage);
-        pagesArr.push(GenreSelectPage);
-        pagesArr.push(LanguageSelectPage);
+        var user;
+        this._user.currentUser.first().subscribe(data => {
+          user = data;
+        })
 
-        this.navCtrl.setPages(pagesArr);
+        var languageModal = this.modalCtrl.create(LanguageSelectPage,  { selectedLanguages: new Array<any>() });
+        languageModal.onDidDismiss(data => {
+          user.languages = data;
+          var genreModal = this.modalCtrl.create(GenreSelectPage, { selectedGenres: new Array<any>() });
+          genreModal.onDidDismiss(data => {
+            user.genres = data;
+            this._user.updateUser(user);
+            this.navCtrl.setRoot(HomePage);
+          });
+
+          genreModal.present();
+        });
+
+        languageModal.present();
       }
     });
   }
