@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {LoadingController, NavController, ModalController} from 'ionic-angular';
+import {LoadingController, NavController, ModalController, AlertController} from 'ionic-angular';
 
 import {Auth} from "../../providers/auth";
 
@@ -18,13 +18,14 @@ import {LanguageSelectPage} from "../language-select/language-select";
 export class ProfilePage {
   currentUser: any;
   userSubscription: any;
-  alertCtrl: any;
+
 
   genres: Array<any>;
   languages: Array<any>;
 
   constructor(public navCtrl: NavController,
               public modalCtrl: ModalController,
+              public alertCtrl: AlertController,
               private _auth: Auth,
               private _user: User,
               private _genre: Genre,
@@ -68,6 +69,31 @@ export class ProfilePage {
     });
 
     genreModal.present();
+  }
+
+  confirmLogout() {
+   let confirmModal = this.alertCtrl.create({
+   // let alert = this.alertCtrl.create({
+      title: 'Confirm Log Out',
+      message: 'Are you sure you want to log out?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Log Out',
+          handler: () => {
+            console.log('Logged out');
+            this.logout();
+          }
+        }
+      ]
+    });
+    confirmModal.present();
   }
 
   logout() {
