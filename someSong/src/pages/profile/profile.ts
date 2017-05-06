@@ -7,6 +7,9 @@ import {LoginPage} from "../login/login";
 import {User} from "../../providers/user";
 import {Genre} from "../../providers/genre";
 import {Language} from "../../providers/language";
+import {GenreSelectPage} from "../genre-select/genre-select";
+import {LanguageSelectPage} from "../language-select/language-select";
+
 
 @Component({
   selector: 'page-profile',
@@ -15,6 +18,7 @@ import {Language} from "../../providers/language";
 export class ProfilePage {
   currentUser: any;
   userSubscription: any;
+  alertCtrl: any;
 
   genres: Array<any>;
   languages: Array<any>;
@@ -24,6 +28,7 @@ export class ProfilePage {
               private _user: User,
               private _genre: Genre,
               private _language: Language)
+
   {
     this._genre.getGenres().then(data => {
       console.log(data.val());
@@ -34,6 +39,7 @@ export class ProfilePage {
       this.languages = data.val();
     });
 
+
     this.userSubscription = this._user.currentUser.subscribe((data) => {
       this.currentUser = data;
     });
@@ -41,6 +47,14 @@ export class ProfilePage {
 
   ionViewWillUnload() {
     this.userSubscription.unsubscribe();
+  }
+
+  goToLanguageSelect(){
+    this.navCtrl.push(LanguageSelectPage);
+  }
+
+  goToGanreSelect() {
+    this.navCtrl.push(GenreSelectPage);
   }
 
   logout() {
