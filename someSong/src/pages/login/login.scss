@@ -1,11 +1,28 @@
 page-login {
 
+
   .login-content {
-    background: #1B5E20;
+
+    background: url("../assets/images/background.gif") no-repeat center;
+    -moz-background-size: 100% 100%;
+    -o-background-size: 100% 100%;
+    -webkit-background-size: 100% 100%;
+    background-size: 100% 100%;
+
+
+    //    background-color: #f2c1e3;
 
     .logo-row {
-      padding-top: 50px;
+      padding-top: 0px;
       padding-bottom: 0px;
+      text-align: center;
+
+      .title {
+        font-family: Impact, Charcoal, sans-serif;
+        color: #ffffff;
+        width: 75%;
+        font-size: 4em;
+      }
     }
 
     ion-row {
@@ -13,31 +30,53 @@ page-login {
       text-align: center;
     }
 
-    ion-item {
-      border-radius: 30px !important;
-      padding-left: 30px !important;
-      font-size: 0.9em;
-      border: 1px solid #ffffff;
-      border-bottom: 0px !important;
-      box-shadow: none !important;
+    form {
+      width: 95%;
+
+      ion-item {
+        padding-left: 1%;
+        padding-right: 1%;
+        margin-top: 1%;
+      }
+
+      .login-btn {
+      //  background-color: rgb(74, 165, 217);
+        width: 49.5%;
+        margin-right: 1%;
+      }
+      .register-btn {
+        //background-color: rgb(74, 165, 217);
+        width: 49.5%;
+      }
+
+      .facebook-btn {
+       // background-color: #3b5998;
+        margin: auto;
+        width: 100%;
+        margin-bottom: 5px;
+      }
     }
 
-    .item-inner {
-      border-bottom-color: #ffffff !important;
-      box-shadow: none !important;
+    .error {
+      margin-top: 20px;
+      width: 100%;
+      text-align: center;
+      background-color: rgb(217, 74, 87);
+      p {
+        color: white;
+        font-weight: bold;
+      }
     }
 
-    .facebook-button {
-      background: #2962FF;
-      border-radius: 30px !important;
-      border: 1px solid #ffffff;
-    }
-
-    .google-button {
-      background: #D50000;
-      border-radius: 30px !important;
-      border: 1px solid #ffffff;
+    .reset-password {
+      width: 50%;
+      position:relative;
+      bottom: 0;
+      margin-bottom: 10px;
+      margin-left: 20%;
+      margin-right: 20%;
+      font-size: 0.8em;
+      //color: white;
     }
   }
-
 }

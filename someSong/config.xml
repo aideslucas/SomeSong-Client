@@ -41,4 +41,5 @@
         <variable name="APP_NAME" value="SomeSong" />
     </plugin>
     <plugin name="Media" value="org.apache.cordova.AudioHandler" />
+    <plugin name="com.bunkerpalace.cordova.YoutubeVideoPlayer" spec="https://github.com/Glitchbone/CordovaYoutubeVideoPlayer.git" />
 </widget>

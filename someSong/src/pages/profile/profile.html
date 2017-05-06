@@ -5,24 +5,47 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>
-      SomeSong: Profile
+      Profile
     </ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h2>Hello {{currentUser.displayName}}</h2>
-  <h4>This are your genres</h4>
-  <ion-list>
-    <ion-item *ngFor="let genre of currentUser.genres">
-      <ion-label>{{genres[genre]}}</ion-label>
-    </ion-item>
-  </ion-list>
-  <h4>This are your languages</h4>
-  <ion-list>
-    <ion-item *ngFor="let language of currentUser.languages">
+<ion-content  padding>
+  <img src="{{currentUser?.image}}" height="150px" width="150px" />
+  <h2>Hello {{currentUser?.displayName}}</h2>
+  <ion-label> {{currentUser?.email}}</ion-label>
+
+
+  <div class="profile-block">
+    <h4>My selected ganers</h4>
+    <ion-list *ngIf="genres != null">
+      <ion-item *ngFor="let genre of currentUser?.genres">
+        <ion-label>{{genres[genre]}}</ion-label>
+      </ion-item>
+    </ion-list>
+
+    <button (click)="goToGenreSelect()" ion-button icon-right>
+      Edit
+      <ion-icon name="create"></ion-icon>
+    </button>
+  </div>
+<div class="profile-block" >
+  <h4>My selected langauges:</h4>
+  <ion-list *ngIf="languages != null">
+    <ion-item *ngFor="let language of currentUser?.languages">
       <ion-label>{{languages[language]}}</ion-label>
     </ion-item>
   </ion-list>
+
+  <button (click)="goToLanguageSelect()" ion-button icon-right>
+    Edit
+    <ion-icon name="create"></ion-icon>
+  </button>
+</div>
+
+  <button (click)="logout()" class="logout-btn" ion-button icon-right>
+    Logout
+    <ion-icon name="exit"></ion-icon>
+  </button>
 
 </ion-content>

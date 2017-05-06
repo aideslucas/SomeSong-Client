@@ -1,46 +1,43 @@
 import { Component } from '@angular/core';
-import { NavController,NavParams, Platform } from 'ionic-angular';
-import {BackendService, Genres, User} from '../../providers/backend-service';
+import {NavController, NavParams, Platform, ViewController} from 'ionic-angular';
 import {HomePage} from "../home/home";
+import {User} from "../../providers/user";
+import {Genre} from "../../providers/genre";
 
 @Component({
   selector: 'page-genre-select',
   templateUrl: 'genre-select.html'
 })
 export class GenreSelectPage {
-  genres = Genres;
-  genresKeys: any;
-  user: User;
+  genres: any;
+  selected: any;
 
-  constructor(public platform: Platform,
-              public navCtrl: NavController,
-              public navParams: NavParams,
-              private _backend: BackendService) {
-    this.genresKeys = Object.keys(this.genres).filter(Number);
-    this.user = navParams.data;
-    console.log(this.user);
+  constructor(params: NavParams,
+              private viewController: ViewController,
+              private _genre: Genre) {
+    this.selected = params.get('selectedGenres');
+
+    this._genre.getGenres().then(data => {
+      this.genres = data.val();
+    })
   }
 
   insertGenreToArray(item, genre){
-    var index = this.user.genres.indexOf(genre, 0);
-
     if (item.checked)
     {
-      if (index == -1) {
-        this.user.genres.push(genre);
-      }
+      this.selected.push(genre);
     }
     else
     {
+      var index = this.selected.indexOf(genre, 0);
       if (index > -1) {
-        this.user.genres.splice(index, 1);
+        this.selected.splice(index, 1);
       }
     }
   }
 
   save()
   {
-    this._backend.saveUser(this.user);
-    this.navCtrl.setRoot(HomePage, this.user);
+    this.viewController.dismiss(this.selected);
   }
 }

@@ -1,20 +1,50 @@
 <ion-header>
   <ion-navbar>
-
-      <button ion-button menuToggle>
-        <ion-icon name="menu"></ion-icon>
-      </button>
     <ion-title>
       SomeSong
     </ion-title>
     <ion-buttons end>
       <button ion-button (click)="goToProfile()">
-        Hello {{user.displayName}}
+        <ion-icon name="settings"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content class="no-scroll" padding="5px">
+  <ion-scroll scrollY="true" class="myQuestions">
+    <ion-list no-lines no-padding>
+      <ion-list-header>
+        My Questions
+      </ion-list-header>
+      <button ion-item (click)="goToQuestion(question.questionID)"*ngFor="let question of user?.questions">
+        {{question.questionID}}
+        <ion-icon name="checkmark" item-left color="secondary" *ngIf="question.correctAnswer"></ion-icon>
+        <ion-icon name="close" item-left color="danger" *ngIf="!question.correctAnswer"></ion-icon>
+      </button>
+    </ion-list>
+  </ion-scroll>
 
+  <ion-scroll scrollY="true" class="myAnswers">
+    <ion-list no-lines no-padding>
+      <ion-list-header>
+        My Answers
+      </ion-list-header>
+      <button ion-item *ngFor="let answer of user?.answers" (click)="goToQuestion(answer?.question?.questionID)">
+          {{answer?.question?.questionID}}
+        <ion-icon name="checkmark" *ngIf="answer.question.correctAnswer == answer.answerID" color="secondary" item-left></ion-icon>
+        <ion-icon name="close" *ngIf="answer.question.correctAnswer && answer.question.correctAnswer != answer.answerID" color="danger" item-left></ion-icon>
+        <ion-icon name="help" *ngIf="!answer.question.correctAnswer" item-left></ion-icon>
+        <ion-icon name="ios-thumbs-up" *ngIf="answer.votes > 0" color="secondary" item-right padding-right="20px">&nbsp;{{answer.votes}}</ion-icon>
+        <ion-icon *ngIf="answer.votes == 0" item-right padding-right="20px">{{answer.votes}}</ion-icon>
+        <ion-icon name="ios-thumbs-down" *ngIf="answer.votes < 0" color="danger" item-right padding-right="20px">&nbsp;{{answer.votes}}</ion-icon>
+      </button>
+    </ion-list>
+  </ion-scroll>
+
+
+  <ion-buttons class="navigation-buttons">
+    <button (click)="browseQuestions()" block ion-button>Browse Unresolved Questions</button>
+    <button (click)="askAQuestion()" block ion-button>Ask a Question</button>
+  </ion-buttons>
 </ion-content>

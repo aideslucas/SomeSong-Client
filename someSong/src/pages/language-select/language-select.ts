@@ -1,43 +1,44 @@
 import { Component } from '@angular/core';
-import { NavController,NavParams, Platform } from 'ionic-angular';
-import {BackendService, Languages, User} from '../../providers/backend-service';
-import {GenreSelectPage} from "../genre-select/genre-select";
+import {NavParams, ViewController} from 'ionic-angular';
+
+import {Language} from "../../providers/language";
 
 @Component({
   selector: 'page-language-select',
   templateUrl: 'language-select.html'
 })
 export class LanguageSelectPage {
-  languages = Languages;
-  languagesKeys: any;
-  user: User;
+  languages: any;
+  selected: any;
 
-  constructor(public platform: Platform,
-              public navCtrl: NavController,
-              public navParams: NavParams,
-              private _backend: BackendService) {
-    this.languagesKeys = Object.keys(this.languages).filter(Number);
-    this.user = navParams.data;
+  constructor(params: NavParams,
+              private viewController: ViewController,
+              private _language: Language) {
+    this.selected = params.get('selectedLanguages');
+
+    this._language.getLanguages().then(data =>
+    {
+      this.languages = data.val();
+    });
   }
 
   insertLanguageToArray(item, language){
     if (item.checked)
     {
-      this.user.languages.push(language);
+      this.selected.push(language);
     }
     else
     {
-      var index = this.user.languages.indexOf(language, 0);
+      var index = this.selected.indexOf(language, 0);
       if (index > -1) {
-        this.user.languages.splice(index, 1);
+        this.selected.splice(index, 1);
       }
     }
   }
 
   save()
   {
-    this._backend.saveUser(this.user);
-    this.navCtrl.push(GenreSelectPage, this.user)
+    this.viewController.dismiss(this.selected);
   }
 
 }

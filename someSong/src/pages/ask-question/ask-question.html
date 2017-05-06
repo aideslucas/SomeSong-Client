@@ -5,15 +5,37 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>
-      SomeSong: Ask a Question
+      Ask a Question
     </ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <button ion-button (click)="startRecording()">Start Recording</button>
-  <button ion-button (click)="stopRecording()">Stop Recording</button>
-  <button ion-button (click)="playRecording()">Play Recording</button>
-  <button ion-button (click)="uploadRecording()">Upload Recording</button>
-  <button ion-button (click)="chooseFile()">Choose a File</button>
+<ion-content class="login-content" padding>
+  <div class="logo-row">
+    <img id="microphoneImg" src="assets/images/microphone.jpg"/>
+  </div>
+  <form #loginForm="ngForm">
+    <ion-row>
+      <div class="container">
+        <h3 name="play" *ngIf="!recording">Start Recording!</h3>
+        <input type="checkbox" id="btn" (click)="startRecording()"/>
+        <label for="btn"></label>
+        <div class="time">
+          <div class="h_m"></div>
+          <div class="s_ms"></div>
+        </div>
+      </div>
+    </ion-row>
+
+    <div id='bars' *ngIf="recording">
+      <div class='bar'></div>
+      <div class='bar'></div>
+      <div class='bar'></div>
+      <div class='bar'></div>
+      <div class='bar'></div>
+      <div class='bar'></div>
+      <div class='bar'></div>
+      <div class='bar'></div>
+    </div>
+  </form>
 </ion-content>

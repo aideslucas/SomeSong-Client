@@ -1,10 +1,9 @@
-import {Component, Inject} from '@angular/core';
+import {Component} from '@angular/core';
 import {NavController, NavParams, AlertController} from 'ionic-angular';
-import {FirebaseApp} from "angularfire2";
-import * as firebase from 'firebase';
 import {File} from "@ionic-native/file";
 import {FileChooser} from "@ionic-native/file-chooser";
 import {FilePath} from "@ionic-native/file-path";
+import * as firebase from 'firebase';
 
 declare var Media: any;
 declare var navigator: any;
@@ -17,23 +16,32 @@ export class AskQuestionPage {
 
   private recordingFile: any;
   private date: any = new Date();
+  public recording: boolean = false;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public alertCtrl: AlertController,
-              public file: File,
-              @Inject(FirebaseApp) firebaseApp: any,) {
+              public file: File) {
   }
 
-
   public startRecording(): void {
-    this.recordingFile = new Media("myRecording.amr", ()=> {
-      this.showAlert("Stopped...")
-    }, (e) => {
-      this.showAlert("fail to create the recording file: " + JSON.stringify(e));
-    });
-    this.recordingFile.startRecord();
-    this.showAlert("Started Recording...");
+    if (!this.recording) {
+      this.recording = true;
+      this.recordingFile = new Media("myRecording.amr", ()=> {
+      }, (e) => {
+        this.showAlert("fail to create the recording file: " + JSON.stringify(e));
+      });
+      this.recordingFile.startRecord();
+    }
+    else {
+      this.recording = false;
+      this.stopRecording();
+      //this.navCtrl.push(UploadQuestionPage);
+    }
+  }
+
+  public goToUploadPage(): void {
+    //this.navCtrl.push(UploadQuestionPage);
   }
 
   public stopRecording(): void {
@@ -83,6 +91,7 @@ export class AskQuestionPage {
             alert("Success!" + downloadURL);
           });*/
   }
+
   public chooseFile() {
     new FileChooser().open()
       .then((uri) => {

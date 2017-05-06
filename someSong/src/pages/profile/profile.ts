@@ -1,18 +1,66 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-import {Genres, Languages, User} from "../../providers/backend-service";
+import {LoadingController, NavController} from 'ionic-angular';
+
+import {Auth} from "../../providers/auth";
+
+import {LoginPage} from "../login/login";
+import {User} from "../../providers/user";
+import {Genre} from "../../providers/genre";
+import {Language} from "../../providers/language";
+import {GenreSelectPage} from "../genre-select/genre-select";
+import {LanguageSelectPage} from "../language-select/language-select";
+
 
 @Component({
   selector: 'page-profile',
   templateUrl: 'profile.html'
 })
 export class ProfilePage {
-  currentUser: User;
+  currentUser: any;
+  userSubscription: any;
+  alertCtrl: any;
 
-  genres = Genres;
-  languages = Languages;
+  genres: Array<any>;
+  languages: Array<any>;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-      this.currentUser = navParams.data;
+  constructor(public navCtrl: NavController,
+              private _auth: Auth,
+              private _user: User,
+              private _genre: Genre,
+              private _language: Language)
+
+  {
+    this._genre.getGenres().then(data => {
+      console.log(data.val());
+      this.genres = data.val();
+    });
+
+    this._language.getLanguages().then(data => {
+      this.languages = data.val();
+    });
+
+
+    this.userSubscription = this._user.currentUser.subscribe((data) => {
+      this.currentUser = data;
+    });
+  }
+
+  ionViewWillUnload() {
+    this.userSubscription.unsubscribe();
+  }
+
+  goToLanguageSelect(){
+    this.navCtrl.push(LanguageSelectPage);
+  }
+
+  goToGanreSelect() {
+    this.navCtrl.push(GenreSelectPage);
+  }
+
+  logout() {
+    this.userSubscription.unsubscribe();
+    this._user.logOut();
+    this._auth.signOut();
+    this.navCtrl.setRoot(LoginPage);
   }
 }

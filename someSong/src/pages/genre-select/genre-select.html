@@ -4,20 +4,24 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>
-      Select Preferred Languages
+      Select Genres
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <ion-list>
-    <ion-item *ngFor="let genre of genresKeys">
-      <ion-label>{{genres[genre]}}</ion-label>
-      <ion-checkbox color="dark" (ionChange)="insertGenreToArray($event, genre)"></ion-checkbox>
+  <ion-list *ngIf="genres">
+    <ion-item *ngFor="let genre of genres; let i = index">
+      <ion-label>{{genre}}</ion-label>
+      <ion-checkbox color="dark" (ionChange)="insertGenreToArray($event, i)" [checked]="selected.indexOf(i) != -1"></ion-checkbox>
     </ion-item>
   </ion-list>
-
-  <ion-buttons>
-    <button (click)="save()">Save</button>
-  </ion-buttons>
 </ion-content>
+
+<ion-footer>
+  <ion-buttons>
+    <button ion-button block (click)="save()">
+      Save &nbsp;<ion-icon name="save"></ion-icon>
+    </button>
+  </ion-buttons>
+</ion-footer>

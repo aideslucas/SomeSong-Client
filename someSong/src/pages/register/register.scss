@@ -1,0 +1,43 @@
+page-register {
+  form {
+    font-family: "Arial Black", Gadget, sans-serif;
+
+
+    padding-top: 10%;
+    padding-left: 5%;
+    padding-right: 5%;
+    width: 95%;
+
+    ion-item {
+      padding-left: 1%;
+      padding-right: 1%;
+      margin-top: 1%;
+    }
+
+    ion-input {
+      color: #387ef5;
+    }
+  }
+
+  .error {
+    margin-top: 20px;
+    width: 100%;
+    text-align: center;
+    background-color: rgb(217, 74, 87);
+    p {
+      color: white;
+      font-weight: bold;
+    }
+  }
+
+  .sign-up-btn {
+    width: 50%;
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 10px;
+    margin-left: 20%;
+    margin-right: 20%;
+    font-size: 1.2em;
+    color: white;
+  }
+}
