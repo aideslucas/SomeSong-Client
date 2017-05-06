@@ -100,6 +100,14 @@ export class QuestionDetailsPage {
     });
   }
 
+  resolve(item, answer) {
+    item.close();
+
+    this.question.correctAnswer = answer.answerID;
+
+    this._question.setQuestion(this.question);
+  }
+
   playRecording() {
     if (this.playing)
     {
