@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      SomeSong: Upload Question
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list *ngIf="selectedLanguages != null">
+    <ion-item *ngFor="let language of selectedLanguages">
+      <ion-label>{{language}}</ion-label>
+    </ion-item>
+  </ion-list>
+  <button ion-button (click)="uploadRecording()">Upload!</button>
+</ion-content>

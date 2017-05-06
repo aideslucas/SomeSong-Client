@@ -5,6 +5,8 @@ import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class Question {
+  private date: any = new Date();
+
   constructor(private _user: User) {
   }
 
@@ -28,10 +30,12 @@ export class Question {
 
   writeNewQuestion(questionID:string, genres: Array<any>, languages: Array<any>, location: any, record: string, userID: string)
   {
+    let timeStamp = this.getTimeStamp();
+
     firebase.database().ref('/questions/' + questionID).set({
       languages: languages,
       genres: genres,
-      time: (new Date()).getUTCDate(),
+      time: this.getTimeStamp(),
       location: location,
       questionID: questionID,
       record: record,
@@ -70,5 +74,14 @@ export class Question {
     }
 
     return firebase.database().ref('/questions/' + question.questionID).set(question);
+  }
+
+  private getTimeStamp() {
+    return (this.date.getDate() + "_" +
+    (this.date.getMonth() + 1) + "_" +
+    this.date.getFullYear() + "@" +
+    this.date.getHours() + ":" +
+    this.date.getMinutes() + ":" +
+    this.date.getSeconds());
   }
 }
