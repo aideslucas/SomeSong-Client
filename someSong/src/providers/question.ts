@@ -30,8 +30,6 @@ export class Question {
 
   writeNewQuestion(questionID:string, genres: Array<any>, languages: Array<any>, location: any, record: string, userID: string)
   {
-    let timeStamp = this.getTimeStamp();
-
     firebase.database().ref('/questions/' + questionID).set({
       languages: languages,
       genres: genres,
