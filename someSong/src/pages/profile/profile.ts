@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {LoadingController, NavController} from 'ionic-angular';
+import {LoadingController, NavController, ModalController} from 'ionic-angular';
 
 import {Auth} from "../../providers/auth";
 
@@ -24,6 +24,7 @@ export class ProfilePage {
   languages: Array<any>;
 
   constructor(public navCtrl: NavController,
+              public modalCtrl: ModalController,
               private _auth: Auth,
               private _user: User,
               private _genre: Genre,
@@ -50,11 +51,23 @@ export class ProfilePage {
   }
 
   goToLanguageSelect(){
-    this.navCtrl.push(LanguageSelectPage);
+    var languageModal = this.modalCtrl.create(LanguageSelectPage,  { selectedLanguages: this.currentUser.languages });
+    languageModal.onDidDismiss(data => {
+      this.currentUser.languages = data;
+      this._user.updateUser(this.currentUser);
+    });
+
+    languageModal.present();
   }
 
-  goToGanreSelect() {
-    this.navCtrl.push(GenreSelectPage);
+  goToGenreSelect() {
+    var genreModal = this.modalCtrl.create(GenreSelectPage,  { selectedGenres: this.currentUser.genres });
+    genreModal.onDidDismiss(data => {
+      this.currentUser.genres = data;
+      this._user.updateUser(this.currentUser);
+    });
+
+    genreModal.present();
   }
 
   logout() {
