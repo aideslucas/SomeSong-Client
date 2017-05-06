@@ -52,7 +52,7 @@ export class Question {
     });
   }
 
-  setQuestion(question){
+  updateQuestion(question){
     var answersID = new Array<any>();
     for (let answer of question.answers) {
       if (answer.answerID != null) {

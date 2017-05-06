@@ -82,7 +82,7 @@ export class Answer {
 
       question.answers.push(ansKey);
 
-      this._question.setQuestion(question);
+      this._question.updateQuestion(question);
     });
 
     this._user.getUser(userID).then(data => {

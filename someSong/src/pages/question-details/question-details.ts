@@ -105,7 +105,7 @@ export class QuestionDetailsPage {
 
     this.question.correctAnswer = answer.answerID;
 
-    this._question.setQuestion(this.question);
+    this._question.updateQuestion(this.question);
   }
 
   playRecording() {
