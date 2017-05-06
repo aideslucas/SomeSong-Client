@@ -95,7 +95,7 @@ export class Answer {
 
       user.answers.push(ansKey);
 
-      this._user.saveUser(user);
+      this._user.updateUser(user);
     });
   }
 }
