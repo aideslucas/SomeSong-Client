@@ -19,7 +19,7 @@
       <ion-col col-6></ion-col>
       <ion-col col-3 class="endCol">
         <ion-buttons end>
-          <button ion-button round (click)="playRecording()" id="play-stop">
+          <button ion-button icon-only round (click)="playRecording()" id="play-stop">
             <ion-icon name="play" *ngIf="!playing"></ion-icon>
             <ion-icon name="pause" *ngIf="playing"></ion-icon>
           </button>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, Platform } from 'ionic-angular';
+import {NavController, NavParams, Platform, ViewController} from 'ionic-angular';
 import {HomePage} from "../home/home";
 import {User} from "../../providers/user";
 import {Genre} from "../../providers/genre";
@@ -10,20 +10,12 @@ import {Genre} from "../../providers/genre";
 })
 export class GenreSelectPage {
   genres: any;
-  user: any;
+  selected: any;
 
-  constructor(public platform: Platform,
-              public navCtrl: NavController,
-              private _user: User,
+  constructor(params: NavParams,
+              private viewController: ViewController,
               private _genre: Genre) {
-    this._user.currentUser.first().subscribe(data =>
-    {
-      this.user = data;
-
-      if (this.user.genres == null) {
-        this.user.genres = new Array<any>();
-      }
-    });
+    this.selected = params.get('selectedGenres');
 
     this._genre.getGenres().then(data => {
       this.genres = data.val();
@@ -33,20 +25,19 @@ export class GenreSelectPage {
   insertGenreToArray(item, genre){
     if (item.checked)
     {
-      this.user.genres.push(genre);
+      this.selected.push(genre);
     }
     else
     {
-      var index = this.user.genres.indexOf(genre, 0);
+      var index = this.selected.indexOf(genre, 0);
       if (index > -1) {
-        this.user.genres.splice(index, 1);
+        this.selected.splice(index, 1);
       }
     }
   }
 
   save()
   {
-    this._user.updateUser(this.user);
-    this.navCtrl.pop();
+    this.viewController.dismiss(this.selected);
   }
 }

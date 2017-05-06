@@ -1,7 +1,7 @@
 <ion-content class="login-content" padding>
   <div class="logo-row">
     <img src="assets/images/logo.png"/>
-    <h1>SomeSong</h1>
+    <span class="title">SomeSong</span>
   </div>
     <form (ngSubmit)="loginWithEmail()" #loginForm="ngForm">
         <ion-item>
@@ -23,7 +23,7 @@
       </ion-row>
 
       <button ion-button block class="facebook-btn" type="button" (click)="loginWithFB()">
-        <ion-icon name="logo-facebook">&nbsp; Login With Facebook</ion-icon>
+        <ion-icon name="logo-facebook">&nbsp; Log In With Facebook</ion-icon>
       </button>
 
       <div padding class="error" *ngIf="error">
