@@ -33,6 +33,7 @@ import {Record} from "../providers/record";
 
 // Firebase
 import firebase from 'firebase'
+import {UploadQuestionPage} from "../pages/upload-question/upload-question";
 
 export const firebaseConfig = {
   apiKey: "AIzaSyA_MquO5E-MQKjnEdaEUC-fnEXENMjz6Ro",
@@ -54,7 +55,8 @@ export const firebaseConfig = {
     LoginPage,
     LanguageSelectPage,
     GenreSelectPage,
-    RegisterPage
+    RegisterPage,
+    UploadQuestionPage
   ],
   imports: [
     BrowserModule,
@@ -71,7 +73,8 @@ export const firebaseConfig = {
     LoginPage,
     LanguageSelectPage,
     GenreSelectPage,
-    RegisterPage
+    RegisterPage,
+    UploadQuestionPage
   ],
   providers: [
     Auth,
