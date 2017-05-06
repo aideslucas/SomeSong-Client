@@ -22,16 +22,18 @@ export class Question {
     });
   }
 
-  writeNewQuestion(genres: Array<any>, languages: Array<any>, location: any, record: string, userID: string)
-  {
-    var questionKey = firebase.database().ref().child('questions').push().key;
+  getNewQuestionID() {
+    return firebase.database().ref().child('questions').push().key;
+  }
 
-    firebase.database().ref('/questions/' + questionKey).set({
+  writeNewQuestion(questionID:string, genres: Array<any>, languages: Array<any>, location: any, record: string, userID: string)
+  {
+    firebase.database().ref('/questions/' + questionID).set({
       languages: languages,
       genres: genres,
       time: (new Date()).getUTCDate(),
       location: location,
-      questionID: questionKey,
+      questionID: questionID,
       record: record,
       user: userID
     });
@@ -44,13 +46,29 @@ export class Question {
         user.questions = new Array<any>();
       }
 
-      user.questions.push(questionKey);
+      user.questions.push(questionID);
 
       this._user.saveUser(user);
     });
   }
 
   setQuestion(question){
+    var answersID = new Array<any>();
+    for (let answer of question.answers) {
+      if (answer.answerID != null) {
+        answersID.push(answer.answerID);
+      }
+      else {
+        answersID.push(answer);
+      }
+    }
+
+    question.answers = answersID;
+
+    if (question.user.userID != null) {
+      question.user = question.user.userID;
+    }
+
     return firebase.database().ref('/questions/' + question.questionID).set(question);
   }
 }
