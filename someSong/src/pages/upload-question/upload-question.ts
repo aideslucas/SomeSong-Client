@@ -4,27 +4,42 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import {Question} from '../../providers/question'
+import {User} from "../../providers/user";
+import {File} from "@ionic-native/file";
 import * as firebase from 'firebase';
 
 @Component({
   selector: 'page-upload-question',
-  templateUrl: 'upload-question.html'
+  templateUrl: 'upload-question.html',
 })
+
 export class UploadQuestionPage {
+  private selectedGenres: Array<number>;
+  private selectedLanguages: Array<number> = new Array();
+  private recordPath: string;
+  private userID: string;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private question: Question) {
+              private question: Question,
+              private user: User,
+              private file: File) {
   }
 
   public uploadRecording(): void {
     this.saveRecordingToDB();
-    this.saveRecordingToStorage();
-
+  //this.saveRecordingToStorage();
   }
 
   private saveRecordingToDB(): void {
-    this.question.writeNewQuestion()
+    let questionID = this.question.getNewQuestionID();
+    this.recordPath = "client-data/recordings/myRecording_123.amr";
+
+    this.user.currentUser.first().subscribe((data) => {
+      this.userID = data.userID;
+    });
+
+    this.question.writeNewQuestion(questionID, this.selectedGenres, this.selectedLanguages, null, this.recordPath, this.userID);
   }
 
   private saveRecordingToStorage(): void {
@@ -63,5 +78,15 @@ export class UploadQuestionPage {
      var downloadURL = uploadTask.snapshot.downloadURL;
      alert("Success!" + downloadURL);
      });*/
+  }
+
+  public onSelectLanguage(selectedLanguageArr: any):void {
+    console.log(selectedLanguageArr);
+    this.selectedLanguages = selectedLanguageArr;
+  }
+
+  public onSelectGenre(selectedGenresArr: any) {
+    console.log(selectedGenresArr);
+    this.selectedGenres = selectedGenresArr;
   }
 }

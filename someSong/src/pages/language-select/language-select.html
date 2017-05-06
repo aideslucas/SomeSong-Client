@@ -10,8 +10,9 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-list *ngIf="languages">
-    <ion-item *ngFor="let language of languages; let i = index">
+  <h2>Select Languages</h2>
+  <ion-list *ngIf="allLanguages">
+    <ion-item *ngFor="let language of allLanguages; let i = index">
       <ion-label>{{language}}</ion-label>
       <ion-checkbox color="dark" (ionChange)="insertLanguageToArray($event, i)"></ion-checkbox>
     </ion-item>
@@ -20,6 +21,6 @@
 
 <ion-footer>
   <ion-buttons>
-    <button ion-button block (click)="save()">Save &nbsp;<ion-icon name="save"></ion-icon></button>
+    <button ion-button block (click)="save()" *ngIf="saveButton">Save &nbsp;<ion-icon name="save"></ion-icon></button>
   </ion-buttons>
 </ion-footer>

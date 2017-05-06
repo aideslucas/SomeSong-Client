@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 import { NavController, Platform } from 'ionic-angular';
 import {HomePage} from "../home/home";
 import {User} from "../../providers/user";
@@ -9,43 +9,54 @@ import {Genre} from "../../providers/genre";
   templateUrl: 'genre-select.html'
 })
 export class GenreSelectPage {
-  genres: any;
+  allGenres: any;
+  outPutGenres: any = new Array<number>();
   user: any;
+
+  @Input() saveButton: boolean = true;
+  @Output() selectedGenres = new EventEmitter<number>();
 
   constructor(public platform: Platform,
               public navCtrl: NavController,
               private _user: User,
               private _genre: Genre) {
-    this._user.currentUser.first().subscribe(data =>
-    {
-      this.user = data;
 
-      if (this.user.genres == null) {
+    this._user.currentUser.first().subscribe(userData => {
+      this.user = userData;
+
+      if (userData.genres == null) {
         this.user.genres = new Array<any>();
       }
     });
 
     this._genre.getGenres().then(data => {
-      this.genres = data.val();
+      this.allGenres = data.val();
     })
   }
 
   insertGenreToArray(item, genre){
-    if (item.checked)
-    {
-      this.user.genres.push(genre);
+    if (item.checked) {
+      this.outPutGenres.push(genre);
+      this.updateUserGenres();
+      this.selectedGenres.emit(this.outPutGenres);
     }
     else
     {
-      var index = this.user.genres.indexOf(genre, 0);
+      var index = this.outPutGenres.indexOf(genre, 0);
       if (index > -1) {
-        this.user.genres.splice(index, 1);
+        this.outPutGenres.splice(index, 1);
       }
+
+      this.updateUserGenres();
+      this.selectedGenres.emit(this.outPutGenres);
     }
   }
 
-  save()
-  {
+  updateUserGenres(): void {
+    this.user.genres = this.outPutGenres;
+  }
+
+  save() {
     this._user.updateUser(this.user);
     this.navCtrl.pop();
   }

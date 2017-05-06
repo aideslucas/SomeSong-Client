@@ -9,7 +9,7 @@ export class User {
   constructor() {
   }
 
-  logIn(userID: string)
+  public logIn(userID: string)
   {
     this.currentUser = Observable.create(function(observer: any) {
       function value(snapshot) {
@@ -24,16 +24,16 @@ export class User {
     });
   }
 
-  logOut() {
+  public logOut() {
     this.currentUser = null;
   }
 
-  getUser(userID: string)
+  public getUser(userID: string)
   {
     return firebase.database().ref('/users/' + userID).once('value');
   }
 
-  createUser(userID: string, displayName: string, email: string, image: string) {
+  public createUser(userID: string, displayName: string, email: string, image: string) {
     return firebase.database().ref('/users/' + userID).set({
       userID: userID,
       displayName: displayName,
@@ -42,7 +42,7 @@ export class User {
     });
   }
 
-  updateUser(user) {
+  public updateUser(user) {
     if (user.answers != null) {
       var answersID = new Array<any>();
       for (let answer of user.answers)

@@ -1,7 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 import { NavController,NavParams, Platform } from 'ionic-angular';
-
-import {GenreSelectPage} from "../genre-select/genre-select";
 import {User} from "../../providers/user";
 import {Language} from "../../providers/language";
 
@@ -10,45 +8,54 @@ import {Language} from "../../providers/language";
   templateUrl: 'language-select.html'
 })
 export class LanguageSelectPage {
-  languages: any;
+  allLanguages: any;
+  outPutLanguages: any = new Array<number>();
   user: any;
+
+  @Input() saveButton: boolean = true;
+  @Output() selectedLanguages = new EventEmitter<number>();
 
   constructor(public platform: Platform,
               public navCtrl: NavController,
               private _user: User,
               private _language: Language) {
-    this._user.currentUser.first().subscribe(data => {
-      this.user = data;
-      if (this.user.languages == null)
-      {
+
+    this._user.currentUser.first().subscribe(userData => {
+      if (userData.languages === null) {
         this.user.languages = new Array<any>();
       }
+      this.user = userData;
     });
 
-    this._language.getLanguages().then(data =>
-    {
-      this.languages = data.val();
-    });
+    this._language.getLanguages()
+      .then(data => {
+        this.allLanguages = data.val();
+      });
   }
 
   insertLanguageToArray(item, language){
-    if (item.checked)
-    {
-      this.user.languages.push(language);
+    if (item.checked) {
+      this.outPutLanguages.push(language);
+      this.updateUserLanguages();
+      this.selectedLanguages.emit(this.outPutLanguages);
     }
-    else
-    {
-      var index = this.user.languages.indexOf(language, 0);
+    else {
+      let index = this.outPutLanguages.indexOf(language, 0);
       if (index > -1) {
-        this.user.languages.splice(index, 1);
+        this.outPutLanguages.splice(index, 1);
       }
+
+      this.updateUserLanguages();
+      this.selectedLanguages.emit(this.outPutLanguages);
     }
   }
 
-  save()
-  {
+  private updateUserLanguages(): void {
+    this.user.languages = this.outPutLanguages;
+  }
+
+  save() {
     this._user.updateUser(this.user);
     this.navCtrl.pop();
   }
-
 }

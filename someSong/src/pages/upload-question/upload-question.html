@@ -9,7 +9,9 @@
   </ion-navbar>
 </ion-header>
 
+
 <ion-content padding>
-  <page-language-select></page-language-select>
-  <button ion-button block class="button-inner" (click)="uploadRecording()">Upload Recording</button>
+  <page-genre-select [saveButton]="false" (selectedGenres)="onSelectGenre($event)"></page-genre-select>
+  <page-language-select [saveButton]="false" (selectedLanguages)="onSelectLanguage($event)"></page-language-select>
+<button ion-button (click)="uploadRecording()">Upload!</button>
 </ion-content>

@@ -10,8 +10,9 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-list *ngIf="genres">
-    <ion-item *ngFor="let genre of genres; let i = index">
+  <h2>Select Genres</h2>
+  <ion-list *ngIf="allGenres">
+    <ion-item *ngFor="let genre of allGenres; let i = index">
       <ion-label>{{genre}}</ion-label>
       <ion-checkbox color="dark" (ionChange)="insertGenreToArray($event, i)"></ion-checkbox>
     </ion-item>
@@ -20,7 +21,7 @@
 
 <ion-footer>
   <ion-buttons>
-    <button ion-button block (click)="save()">
+    <button ion-button block (click)="save()" *ngIf="saveButton">
       Save &nbsp;<ion-icon name="save"></ion-icon>
     </button>
   </ion-buttons>
