@@ -40,17 +40,17 @@ page-login {
       }
 
       .login-btn {
-        background-color: rgb(74, 165, 217);
+      //  background-color: rgb(74, 165, 217);
         width: 49.5%;
         margin-right: 1%;
       }
       .register-btn {
-        background-color: rgb(74, 165, 217);
+        //background-color: rgb(74, 165, 217);
         width: 49.5%;
       }
 
       .facebook-btn {
-        background-color: #3b5998;
+       // background-color: #3b5998;
         margin: auto;
         width: 100%;
         margin-bottom: 5px;
@@ -70,13 +70,13 @@ page-login {
 
     .reset-password {
       width: 50%;
-      position: absolute;
+      position:relative;
       bottom: 0;
       margin-bottom: 10px;
       margin-left: 20%;
       margin-right: 20%;
       font-size: 0.8em;
-      color: white;
+      //color: white;
     }
   }
 }
