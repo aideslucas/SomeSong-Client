@@ -11,4 +11,9 @@
 
 <ion-content padding>
 
+  <ion-list *ngIf="questions">
+      <button ion-button *ngFor="let question of questions">
+          {{question?.user}}
+      </button>
+  </ion-list>
 </ion-content>
