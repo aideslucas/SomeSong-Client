@@ -11,17 +11,18 @@ import {Language} from "../../providers/language";
 })
 export class LanguageSelectPage {
   languages: any;
-  languagesKeys: any;
   user: any;
 
   constructor(public platform: Platform,
               public navCtrl: NavController,
-              public navParams: NavParams,
               private _user: User,
               private _language: Language) {
-    var userSubscription = this._user.currentUser.subscribe(data => {
+    this._user.currentUser.first().subscribe(data => {
       this.user = data;
-      userSubscription.unsubscribe();
+      if (this.user.languages == null)
+      {
+        this.user.languages = new Array<any>();
+      }
     });
 
     this._language.getLanguages().then(data =>
@@ -46,8 +47,8 @@ export class LanguageSelectPage {
 
   save()
   {
-    this._user.saveUser(this.user);
-    this.navCtrl.push(GenreSelectPage);
+    this._user.updateUser(this.user);
+    this.navCtrl.pop();
   }
 
 }

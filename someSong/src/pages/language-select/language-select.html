@@ -4,20 +4,22 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>
-      Select Preferred Languages
+      Select Languages
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <ion-list>
-    <ion-item *ngFor="let language of languagesKeys">
-      <ion-label>{{languages[language]}}</ion-label>
-      <ion-checkbox color="dark" (ionChange)="insertLanguageToArray($event, language)"></ion-checkbox>
+  <ion-list *ngIf="languages">
+    <ion-item *ngFor="let language of languages; let i = index">
+      <ion-label>{{language}}</ion-label>
+      <ion-checkbox color="dark" (ionChange)="insertLanguageToArray($event, i)"></ion-checkbox>
     </ion-item>
   </ion-list>
-
-  <ion-buttons>
-    <button (click)="save()">Next ></button>
-  </ion-buttons>
 </ion-content>
+
+<ion-footer>
+  <ion-buttons>
+    <button ion-button block (click)="save()">Save &nbsp;<ion-icon name="save"></ion-icon></button>
+  </ion-buttons>
+</ion-footer>

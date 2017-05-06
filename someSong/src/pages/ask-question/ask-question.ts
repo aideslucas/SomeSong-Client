@@ -4,7 +4,6 @@ import {File} from "@ionic-native/file";
 import {FileChooser} from "@ionic-native/file-chooser";
 import {FilePath} from "@ionic-native/file-path";
 import * as firebase from 'firebase';
-import {UploadQuestionPage} from "../upload-question/upload-question";
 
 declare var Media: any;
 declare var navigator: any;
@@ -37,12 +36,12 @@ export class AskQuestionPage {
     else {
       this.recording = false;
       this.stopRecording();
-      this.navCtrl.push(UploadQuestionPage);
+      //this.navCtrl.push(UploadQuestionPage);
     }
   }
 
   public goToUploadPage(): void {
-    this.navCtrl.push(UploadQuestionPage);
+    //this.navCtrl.push(UploadQuestionPage);
   }
 
   public stopRecording(): void {

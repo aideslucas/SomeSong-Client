@@ -16,29 +16,28 @@ export class GenreSelectPage {
               public navCtrl: NavController,
               private _user: User,
               private _genre: Genre) {
-    var subscription = this._user.currentUser.subscribe(data =>
+    this._user.currentUser.first().subscribe(data =>
     {
       this.user = data;
-      subscription.unsubscribe();
+
+      if (this.user.genres == null) {
+        this.user.genres = new Array<any>();
+      }
     });
 
     this._genre.getGenres().then(data => {
       this.genres = data.val();
     })
-
   }
 
   insertGenreToArray(item, genre){
-    var index = this.user.genres.indexOf(genre, 0);
-
     if (item.checked)
     {
-      if (index == -1) {
-        this.user.genres.push(genre);
-      }
+      this.user.genres.push(genre);
     }
     else
     {
+      var index = this.user.genres.indexOf(genre, 0);
       if (index > -1) {
         this.user.genres.splice(index, 1);
       }
@@ -47,7 +46,7 @@ export class GenreSelectPage {
 
   save()
   {
-    this._user.saveUser(this.user);
-    this.navCtrl.setRoot(HomePage);
+    this._user.updateUser(this.user);
+    this.navCtrl.pop();
   }
 }

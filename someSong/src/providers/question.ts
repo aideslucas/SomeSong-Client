@@ -48,7 +48,7 @@ export class Question {
 
       user.questions.push(questionID);
 
-      this._user.saveUser(user);
+      this._user.updateUser(user);
     });
   }
 

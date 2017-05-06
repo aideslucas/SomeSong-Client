@@ -9,6 +9,8 @@ import {Auth} from "../../providers/auth";
 import {LoginPage} from "../login/login";
 import {LanguageSelectPage} from "../language-select/language-select";
 import {User} from "../../providers/user";
+import {GenreSelectPage} from "../genre-select/genre-select";
+import {HomePage} from "../home/home";
 
 @Component({
   templateUrl: 'register.html',
@@ -18,7 +20,6 @@ import {User} from "../../providers/user";
 export class RegisterPage {
   error: any;
   form: any;
-  newUser: any;
   loading: any;
   authStateChanged: any;
 
@@ -38,14 +39,15 @@ export class RegisterPage {
         this.loading.dismiss();
         this.authStateChanged();
         this._user.logIn(authUser.uid);
-        this.navCtrl.setRoot(LanguageSelectPage);
+
+        var pagesArr = new Array<any>();
+        pagesArr.push(HomePage);
+        pagesArr.push(GenreSelectPage);
+        pagesArr.push(LanguageSelectPage);
+
+        this.navCtrl.setPages(pagesArr);
       }
     });
-  }
-
-  openLoginPage(): void {
-    this.authStateChanged();
-    this.navCtrl.setRoot(LoginPage);
   }
 
   register() {
@@ -70,5 +72,9 @@ export class RegisterPage {
       this.loading.dismiss();
       this.error = registerError;
     });
+  }
+
+  ionViewWillUnload() {
+    this.authStateChanged();
   }
 }

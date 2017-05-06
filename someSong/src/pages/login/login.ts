@@ -7,6 +7,7 @@ import {User} from "../../providers/user";
 import {HomePage} from "../home/home";
 import {LanguageSelectPage} from "../language-select/language-select";
 import {RegisterPage} from "../register/register";
+import {GenreSelectPage} from "../genre-select/genre-select";
 
 @Component({
   selector: 'page-login',
@@ -42,7 +43,12 @@ export class LoginPage {
 
               this._user.createUser(authUser.uid, displayName, email, image).then(() =>
               {
-                this.navCtrl.setRoot(LanguageSelectPage);
+                var pagesArr = new Array<any>();
+                pagesArr.push(HomePage);
+                pagesArr.push(GenreSelectPage);
+                pagesArr.push(LanguageSelectPage);
+
+                this.navCtrl.setPages(pagesArr);
               });
             }
             else
