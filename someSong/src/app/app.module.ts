@@ -14,6 +14,7 @@ import { RegisterPage } from "../pages/register/register";
 import { LoginPage } from '../pages/login/login';
 import { LanguageSelectPage } from '../pages/language-select/language-select';
 import { GenreSelectPage } from '../pages/genre-select/genre-select';
+import { UploadQuestionPage } from '../pages/upload-question/upload-question'
 
 // Ionic Native
 import { StatusBar } from '@ionic-native/status-bar';
@@ -54,7 +55,8 @@ export const firebaseConfig = {
     LoginPage,
     LanguageSelectPage,
     GenreSelectPage,
-    RegisterPage
+    RegisterPage,
+    UploadQuestionPage
   ],
   imports: [
     BrowserModule,
@@ -71,7 +73,8 @@ export const firebaseConfig = {
     LoginPage,
     LanguageSelectPage,
     GenreSelectPage,
-    RegisterPage
+    RegisterPage,
+    UploadQuestionPage
   ],
   providers: [
     Auth,

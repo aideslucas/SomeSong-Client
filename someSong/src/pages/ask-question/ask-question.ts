@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams, AlertController} from 'ionic-angular';
+import {NavController, NavParams, AlertController, ModalController} from 'ionic-angular';
 import {File} from "@ionic-native/file";
-import {FileChooser} from "@ionic-native/file-chooser";
-import {FilePath} from "@ionic-native/file-path";
-import * as firebase from 'firebase';
+import {UploadQuestionPage} from "../upload-question/upload-question";
+import {LanguageSelectPage} from "../language-select/language-select";
+import {GenreSelectPage} from "../genre-select/genre-select";
+import {User} from "../../providers/user";
 
 declare var Media: any;
 declare var navigator: any;
@@ -15,13 +16,15 @@ declare var navigator: any;
 export class AskQuestionPage {
 
   private recordingFile: any;
-  private date: any = new Date();
   public recording: boolean = false;
+  private selectedLanguages: any = new Array<number>();
+  private selectedGenres: any = new Array<number>();
 
   constructor(public navCtrl: NavController,
-              public navParams: NavParams,
               public alertCtrl: AlertController,
-              public file: File) {
+              public file: File,
+              private modalCtrl: ModalController,
+              private user: User) {
   }
 
   public startRecording(): void {
@@ -29,19 +32,15 @@ export class AskQuestionPage {
       this.recording = true;
       this.recordingFile = new Media("myRecording.amr", ()=> {
       }, (e) => {
-        this.showAlert("fail to create the recording file: " + JSON.stringify(e));
+        this.showAlert("failed to create the recording file: " + JSON.stringify(e));
       });
       this.recordingFile.startRecord();
     }
     else {
       this.recording = false;
       this.stopRecording();
-      //this.navCtrl.push(UploadQuestionPage);
+      this.startUploadProcess();
     }
-  }
-
-  public goToUploadPage(): void {
-    //this.navCtrl.push(UploadQuestionPage);
   }
 
   public stopRecording(): void {
@@ -53,58 +52,53 @@ export class AskQuestionPage {
     this.recordingFile.play();
   }
 
-  public uploadRecording(): void {
-    let ref = firebase.storage().ref().child(`client-data/recordings/myRecording_${this.getTimeStamp()}.amr`);
-    let filePath = "file:///storage/emulated/0/";
-    let fileName = "myRecording.amr";
+  public startUploadProcess(): void {
 
+    this.user.currentUser.first().subscribe((userData) => {
 
-    this.file.readAsArrayBuffer(filePath, fileName)
-      .then((fileData) => {
-        let blob = new Blob([fileData], {type: "audio/amr"});
-        ref.put(blob)
-          .then((_) => {
-            this.showAlert(`Uploaded song!`);
-          })
-          .catch((error) => {
-            this.showAlert(`could not upload file: ${JSON.stringify(error)}`)
+      let languageModal = this.modalCtrl.create(LanguageSelectPage, {selectedLanguages: userData.languages});
+      languageModal.onDidDismiss((data) => {
+
+        this.selectedLanguages = data;
+        let genreModal = this.modalCtrl.create(GenreSelectPage, {selectedGenres: userData.genres});
+
+        genreModal.onDidDismiss(data => {
+
+          this.selectedGenres = data;
+          let uploadModal = this.modalCtrl.create(UploadQuestionPage, {
+            selectedGenres: this.selectedGenres,
+            selectedLanguages: this.selectedLanguages
           });
-      })
-      .catch((error) => {
-        this.showAlert(`could not read file: ${JSON.stringify(error)}`);
+
+          uploadModal.onDidDismiss(() => {
+
+            this.showAlert("Uploaded Song!");
+          });
+
+          uploadModal.present();
+        });
+
+        genreModal.present();
       });
 
-      //TODO: Can be used to track upload progress for progress bar
-      /*    let uploadTask = ref.put(blob);
-            uploadTask.on('state_changed', function(snapshot){
-            // Observe state change events such as progress, pause, and resume
-            // See below for more detail
-            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            alert('Upload is ' + progress + '% done');
-          }, function(error) {
-            // Handle unsuccessful uploads
-            alert("Error uploading: " + error)
-          }, function() {
-            // Handle successful uploads on complete
-            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-            var downloadURL = uploadTask.snapshot.downloadURL;
-            alert("Success!" + downloadURL);
-          });*/
+      languageModal.present();
+    });
   }
 
-  public chooseFile() {
-    new FileChooser().open()
-      .then((uri) => {
-        this.showAlert(`File native path: ${uri}`);
-        new FilePath().resolveNativePath(uri)
-          .then((resolvedURI) => {
-            this.showAlert(`File resolved path: ${resolvedURI}`);
-          });
-      })
-      .catch((error) => {
-        this.showAlert(`could not choose file: ${JSON.stringify(error)}`);
-      })
-  }
+
+  /*  public chooseFile() {
+   new FileChooser().open()
+   .then((uri) => {
+   this.showAlert(`File native path: ${uri}`);
+   new FilePath().resolveNativePath(uri)
+   .then((resolvedURI) => {
+   this.showAlert(`File resolved path: ${resolvedURI}`);
+   });
+   })
+   .catch((error) => {
+   this.showAlert(`could not choose file: ${JSON.stringify(error)}`);
+   })
+   }*/
 
   private showAlert(message) {
     let alert = this.alertCtrl.create({
@@ -113,14 +107,5 @@ export class AskQuestionPage {
       buttons: ['OK']
     });
     alert.present();
-  }
-
-  private getTimeStamp(){
-    return (this.date.getDate() + "_" +
-            (this.date.getMonth() + 1) + "_" +
-            this.date.getFullYear() + "@" +
-            this.date.getHours() + ":" +
-            this.date.getMinutes() + ":" +
-            this.date.getSeconds());
   }
 }
