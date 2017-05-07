@@ -16,6 +16,7 @@ export class GenreSelectPage {
               private viewController: ViewController,
               private _genre: Genre) {
     this.selected = params.get('selectedGenres');
+    console.log(this.selected);
 
     this._genre.getGenres().then(data => {
       this.genres = data.val();

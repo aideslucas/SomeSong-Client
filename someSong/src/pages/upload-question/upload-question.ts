@@ -34,6 +34,16 @@ export class UploadQuestionPage {
 
     this.selectedGenres = navParams.get('selectedGenres');
     this.selectedLanguages = navParams.get('selectedLanguages');
+
+    this.language.getLanguages().then(data => {
+      this.allLanguages = data.val();
+      console.log(this.allLanguages)
+      console.log(this.allLanguages[3]);
+    });
+
+    this.genre.getGenres().then(data => {
+      this.allGenres = data.val();
+    });
   }
 
   public uploadRecording(): void {

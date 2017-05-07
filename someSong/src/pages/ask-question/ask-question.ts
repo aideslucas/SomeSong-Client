@@ -4,6 +4,7 @@ import {File} from "@ionic-native/file";
 import {UploadQuestionPage} from "../upload-question/upload-question";
 import {LanguageSelectPage} from "../language-select/language-select";
 import {GenreSelectPage} from "../genre-select/genre-select";
+import {User} from "../../providers/user";
 
 declare var Media: any;
 declare var navigator: any;
@@ -22,7 +23,8 @@ export class AskQuestionPage {
   constructor(public navCtrl: NavController,
               public alertCtrl: AlertController,
               public file: File,
-              private modalCtrl: ModalController) {
+              private modalCtrl: ModalController,
+              private user: User) {
   }
 
   public startRecording(): void {
@@ -51,45 +53,52 @@ export class AskQuestionPage {
   }
 
   public startUploadProcess(): void {
-    let languageModal = this.modalCtrl.create(LanguageSelectPage, {selectedLanguages: new Array<any>()});
 
-    languageModal.onDidDismiss((data) => {
-      this.selectedLanguages = data;
-      let genreModal = this.modalCtrl.create(GenreSelectPage, {selectedGenres: new Array<any>()});
+    this.user.currentUser.first().subscribe((userData) => {
 
-      genreModal.onDidDismiss(data => {
-        this.selectedGenres = data;
-        let uploadModal = this.modalCtrl.create(UploadQuestionPage, {
-          selectedGenres: this.selectedGenres,
-          selectedLanguages: this.selectedLanguages
+      let languageModal = this.modalCtrl.create(LanguageSelectPage, {selectedLanguages: userData.languages});
+      languageModal.onDidDismiss((data) => {
+
+        this.selectedLanguages = data;
+        let genreModal = this.modalCtrl.create(GenreSelectPage, {selectedGenres: userData.genres});
+
+        genreModal.onDidDismiss(data => {
+
+          this.selectedGenres = data;
+          let uploadModal = this.modalCtrl.create(UploadQuestionPage, {
+            selectedGenres: this.selectedGenres,
+            selectedLanguages: this.selectedLanguages
+          });
+
+          uploadModal.onDidDismiss(() => {
+
+            this.showAlert("Uploaded Song!");
+          });
+
+          uploadModal.present();
         });
 
-        uploadModal.onDidDismiss(() => {
-          this.showAlert("Uploaded Song!");
-        });
-
-        uploadModal.present();
+        genreModal.present();
       });
 
-      genreModal.present();
+      languageModal.present();
     });
-
-    languageModal.present();
   }
 
-/*  public chooseFile() {
-    new FileChooser().open()
-      .then((uri) => {
-        this.showAlert(`File native path: ${uri}`);
-        new FilePath().resolveNativePath(uri)
-          .then((resolvedURI) => {
-            this.showAlert(`File resolved path: ${resolvedURI}`);
-          });
-      })
-      .catch((error) => {
-        this.showAlert(`could not choose file: ${JSON.stringify(error)}`);
-      })
-  }*/
+
+  /*  public chooseFile() {
+   new FileChooser().open()
+   .then((uri) => {
+   this.showAlert(`File native path: ${uri}`);
+   new FilePath().resolveNativePath(uri)
+   .then((resolvedURI) => {
+   this.showAlert(`File resolved path: ${resolvedURI}`);
+   });
+   })
+   .catch((error) => {
+   this.showAlert(`could not choose file: ${JSON.stringify(error)}`);
+   })
+   }*/
 
   private showAlert(message) {
     let alert = this.alertCtrl.create({
