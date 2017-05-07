@@ -71,8 +71,6 @@ export class AskQuestionPage {
           });
 
           uploadModal.onDidDismiss(() => {
-
-            this.showAlert("Uploaded Song!");
           });
 
           uploadModal.present();
