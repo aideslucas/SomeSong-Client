@@ -12,6 +12,12 @@ export class Question {
     return firebase.database().ref('/questions/').once('value');
   }
 
+  getAllUnresolvedQuestions() {
+    var ref = firebase.database().ref('/questions/');
+
+    return ref.orderByChild('correctAnswer').equalTo(null).once('value');
+  }
+
   getQuestionDetails(questionID: string) : Observable<any> {
     return Observable.create(function(observer: any) {
       function value(snapshot) {
