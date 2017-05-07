@@ -28,12 +28,24 @@
   <!--</ion-list>-->
   <ion-grid>
     <ion-row>Filters: </ion-row>
-    <ion-row>
-      <ion-icon name="checkbox"> by friends </ion-icon>
-      <ion-icon name="checkbox"> by genre </ion-icon>
-      <ion-icon name="checkbox"> by language </ion-icon>
-      <ion-icon name="checkbox"> by location </ion-icon>
-    </ion-row>
+    <ion-item>
+      <ion-label>friends</ion-label>
+      <ion-checkbox></ion-checkbox>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>genre</ion-label>
+      <ion-checkbox></ion-checkbox>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>language</ion-label>
+      <ion-checkbox></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <ion-label>location</ion-label>
+      <ion-checkbox></ion-checkbox>
+    </ion-item>
     <ion-list *ngIf="questions">
         <button ion-item (click)="goToQuestion(question.questionID)" *ngFor="let question of questions">
             {{question.questionID}}
