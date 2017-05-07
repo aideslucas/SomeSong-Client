@@ -42,4 +42,5 @@
     </plugin>
     <plugin name="Media" value="org.apache.cordova.AudioHandler" />
     <plugin name="com.bunkerpalace.cordova.YoutubeVideoPlayer" spec="https://github.com/Glitchbone/CordovaYoutubeVideoPlayer.git" />
+    <plugin name="ionic-plugin-deploy" spec="~0.6.6" />
 </widget>

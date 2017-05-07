@@ -13,7 +13,7 @@
   <ion-list *ngIf="languages">
     <ion-item *ngFor="let language of languages; let i = index">
       <ion-label>{{language}}</ion-label>
-      <ion-checkbox color="dark" (ionChange)="insertLanguageToArray($event, i)" [checked]="(selected.indexOf(i.toString()) != -1) || (selected.indexOf(i) != -1)"></ion-checkbox>
+      <ion-checkbox color="primary" (ionChange)="insertLanguageToArray($event, i)" [checked]="(selected.indexOf(i.toString()) != -1) || (selected.indexOf(i) != -1)"></ion-checkbox>
     </ion-item>
   </ion-list>
 </ion-content>

@@ -10,6 +10,10 @@ export class Question {
   constructor(private _user: User) {
   }
 
+  getAllQuestions() {
+    return firebase.database().ref('/questions/').once('value');
+  }
+
   getQuestionDetails(questionID: string) : Observable<any> {
     return Observable.create(function(observer: any) {
       function value(snapshot) {
@@ -23,6 +27,8 @@ export class Question {
       }
     });
   }
+
+
 
   getNewQuestionID() {
     return firebase.database().ref().child('questions').push().key;

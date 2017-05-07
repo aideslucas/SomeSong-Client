@@ -18,7 +18,7 @@
     "@angular/http": "4.0.0",
     "@angular/platform-browser": "4.0.0",
     "@angular/platform-browser-dynamic": "4.0.0",
-    "@ionic-native/core": "^3.5.0",
+    "@ionic-native/core": "^3.6.1",
     "@ionic-native/facebook": "^3.4.4",
     "@ionic-native/file": "^3.5.0",
     "@ionic-native/file-chooser": "^3.5.0",

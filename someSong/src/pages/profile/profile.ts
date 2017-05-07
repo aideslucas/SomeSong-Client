@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {LoadingController, NavController} from 'ionic-angular';
+import {LoadingController, NavController, ModalController, AlertController} from 'ionic-angular';
 
 import {Auth} from "../../providers/auth";
 
@@ -18,12 +18,14 @@ import {LanguageSelectPage} from "../language-select/language-select";
 export class ProfilePage {
   currentUser: any;
   userSubscription: any;
-  alertCtrl: any;
+
 
   genres: Array<any>;
   languages: Array<any>;
 
   constructor(public navCtrl: NavController,
+              public modalCtrl: ModalController,
+              public alertCtrl: AlertController,
               private _auth: Auth,
               private _user: User,
               private _genre: Genre,
@@ -50,11 +52,48 @@ export class ProfilePage {
   }
 
   goToLanguageSelect(){
-    this.navCtrl.push(LanguageSelectPage);
+    var languageModal = this.modalCtrl.create(LanguageSelectPage,  { selectedLanguages: this.currentUser.languages });
+    languageModal.onDidDismiss(data => {
+      this.currentUser.languages = data;
+      this._user.updateUser(this.currentUser);
+    });
+
+    languageModal.present();
   }
 
-  goToGanreSelect() {
-    this.navCtrl.push(GenreSelectPage);
+  goToGenreSelect() {
+    var genreModal = this.modalCtrl.create(GenreSelectPage,  { selectedGenres: this.currentUser.genres });
+    genreModal.onDidDismiss(data => {
+      this.currentUser.genres = data;
+      this._user.updateUser(this.currentUser);
+    });
+
+    genreModal.present();
+  }
+
+  confirmLogout() {
+   let confirmModal = this.alertCtrl.create({
+   // let alert = this.alertCtrl.create({
+      title: 'Confirm Log Out',
+      message: 'Are you sure you want to log out?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Log Out',
+          handler: () => {
+            console.log('Logged out');
+            this.logout();
+          }
+        }
+      ]
+    });
+    confirmModal.present();
   }
 
   logout() {
