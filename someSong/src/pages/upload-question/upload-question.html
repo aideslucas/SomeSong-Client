@@ -4,7 +4,7 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>
-      SomeSong: Upload Question
+      Upload Question
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -23,5 +23,11 @@
       <ion-label>{{allGenres[genre]}}</ion-label>
     </ion-item>
   </ion-list>
-  <button ion-button (click)="uploadRecording()">Upload!</button>
+  <form (ngSubmit)="uploadRecording()" #loginForm="ngForm">
+    <ion-item>
+      <ion-label floating primary> <ion-icon name="alert"></ion-icon> Question Title</ion-label>
+      <ion-input required="" [(ngModel)]="title" name="title"></ion-input>
+    </ion-item>
+  <button ion-button type="submit">Upload &nbsp;<ion-icon name="cloud-upload"></ion-icon></button>
+  </form>
 </ion-content>

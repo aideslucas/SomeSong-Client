@@ -10,42 +10,48 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content  padding>
-  <img src="{{currentUser?.image}}" height="150px" width="150px" />
-  <h2>Hello {{currentUser?.displayName}}</h2>
-  <ion-label> {{currentUser?.email}}</ion-label>
-
+<ion-content padding>
+  <div class="image-row">
+    <img src="{{currentUser?.image}}" height="150px" width="150px"/>
+    <h3>
+      {{currentUser?.displayName}}
+    </h3>
+    <ion-label>
+      {{currentUser?.email}}
+    </ion-label>
+  </div>
 
   <div class="profile-block">
-    <h4>My selected ganers</h4>
-    <ion-list *ngIf="genres != null">
+    <ion-list *ngIf="genres != null" no-lines no-padding>
+      <ion-list-header>
+        My Genres
+        <button ion-button item-right (click)="goToGenreSelect()">
+          <ion-icon name="build"></ion-icon>
+        </button>
+      </ion-list-header>
       <ion-item *ngFor="let genre of currentUser?.genres">
         <ion-label>{{genres[genre]}}</ion-label>
       </ion-item>
     </ion-list>
-
-    <button (click)="goToGenreSelect()" ion-button icon-right>
-      Edit
-      <ion-icon name="create"></ion-icon>
-    </button>
   </div>
-<div class="profile-block" >
-  <h4>My selected langauges:</h4>
-  <ion-list *ngIf="languages != null">
-    <ion-item *ngFor="let language of currentUser?.languages">
-      <ion-label>{{languages[language]}}</ion-label>
-    </ion-item>
-  </ion-list>
 
-  <button (click)="goToLanguageSelect()" ion-button icon-right>
-    Edit
-    <ion-icon name="create"></ion-icon>
-  </button>
-</div>
-
-  <button (click)="confirmLogout()" class="logout-btn" ion-button icon-right>
-    Logout
-    <ion-icon name="exit"></ion-icon>
-  </button>
-
+  <div class="profile-block">
+    <ion-list *ngIf="languages != null" no-lines no-padding>
+      <ion-list-header>
+        My Languages
+        <button ion-button item-right (click)="goToLanguageSelect()">
+          <ion-icon name="build"></ion-icon>
+        </button>
+      </ion-list-header>
+      <ion-item *ngFor="let language of currentUser?.languages">
+        <ion-label>{{languages[language]}}</ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
 </ion-content>
+
+<ion-footer>
+  <button (click)="confirmLogout()" class="logout-btn" ion-button>
+    Logout &nbsp;<ion-icon name="exit"></ion-icon>
+  </button>
+</ion-footer>

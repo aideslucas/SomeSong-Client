@@ -22,6 +22,7 @@ export class UploadQuestionPage {
   public selectedLanguages: Array<number> = new Array();
   private recordPath: string;
   private userID: string;
+  private title: string;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -32,6 +33,7 @@ export class UploadQuestionPage {
               private genre: Genre,
               private language: Language) {
 
+    this.title = '';
     this.selectedGenres = navParams.get('selectedGenres');
     this.selectedLanguages = navParams.get('selectedLanguages');
 
@@ -57,9 +59,9 @@ export class UploadQuestionPage {
     this.recordPath = `client-data/recordings/myRecording_${questionID}.amr`;
     this.user.currentUser.first().subscribe((data) => {
       this.userID = data.userID;
-    });
 
-    this.question.writeNewQuestion(questionID, this.selectedGenres, this.selectedLanguages, null, this.recordPath, this.userID);
+      this.question.writeNewQuestion(questionID, this.selectedGenres, this.selectedLanguages, null, this.recordPath, this.userID, this.title);
+    });
   }
 
   private saveRecordingToStorage(questionID: string): void {

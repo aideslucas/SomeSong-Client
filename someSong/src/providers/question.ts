@@ -40,16 +40,26 @@ export class Question {
     return firebase.database().ref().child('questions').push().key;
   }
 
-  writeNewQuestion(questionID:string, genres: Array<any>, languages: Array<any>, location: any, record: string, userID: string)
+  writeNewQuestion(questionID:string, genres: Array<any>, languages: Array<any>, location: any, record: string, userID: string, title: string)
   {
+    var time = new Date();
+
     firebase.database().ref('/questions/' + questionID).set({
       languages: languages,
       genres: genres,
-      time: this.getTimeStamp(),
+      timeUTC: {
+        date: time.getUTCDate(),
+        month: time.getUTCMonth(),
+        year: time.getUTCFullYear(),
+        hours: time.getUTCHours(),
+        minutes: time.getUTCMinutes(),
+        seconds: time.getUTCSeconds()
+      },
       location: location,
       questionID: questionID,
       record: record,
-      user: userID
+      user: userID,
+      title: title
     });
 
     this._user.getUser(userID).then(data => {

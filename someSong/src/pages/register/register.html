@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content>
-  <form (ngSubmit)="register()" #registerForm="ngForm">
+  <form #registerForm="ngForm">
 
     <ion-item>
       <ion-label floating primary> <ion-icon name="mail"></ion-icon> Email</ion-label>
@@ -32,12 +32,14 @@
       <ion-input required="" [(ngModel)]="form.displayName" name="displayName"></ion-input>
     </ion-item>
 
-    <button ion-button block [disabled]="!registerForm.form.valid"
-            class="sign-up-btn">Sign Up
-    </button>
-
     <div padding class="error" *ngIf="error">
       <p>{{error}}</p>
     </div>
   </form>
 </ion-content>
+
+<ion-footer>
+  <button ion-button block [disabled]="!registerForm.form.valid" (click)="register()"
+          class="sign-up-btn">Register &nbsp;<ion-icon name="create"></ion-icon>
+  </button>
+</ion-footer>
