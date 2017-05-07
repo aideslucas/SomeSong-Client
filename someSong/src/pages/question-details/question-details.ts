@@ -9,6 +9,8 @@ import {Record} from "../../providers/record";
 import {Genre} from "../../providers/genre";
 import {Language} from "../../providers/language";
 
+declare var Media: any;
+
 @Component({
   selector: 'page-question-details',
   templateUrl: 'question-details.html'
@@ -49,7 +51,10 @@ export class QuestionDetailsPage {
       var answers = new Array<any>();
 
       this._record.getRecordURL(this.question.record).then(url => {
-       // this.question.file = this.media.create(url, onStatusUpdate, onSuccess, onError);
+        this.question.file = new Media(url, ()=> {
+        }, (e) => {
+          alert("failed to create the recording file: " + JSON.stringify(e));
+        });
       });
 
       this._user.getUser(this.question.user).then(user => {
@@ -111,11 +116,11 @@ export class QuestionDetailsPage {
   playRecording() {
     if (this.playing)
     {
-      //this.question.file.pause();
+      this.question.file.pause();
       this.playing = false;
     }
     else {
-      //this.question.file.play();
+      this.question.file.play();
       this.playing = true;
     }
   }
