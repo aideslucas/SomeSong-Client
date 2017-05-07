@@ -11,9 +11,33 @@
 
 <ion-content padding>
 
-  <ion-list *ngIf="questions">
-      <button ion-button *ngFor="let question of questions">
-          {{question?.user}}
-      </button>
-  </ion-list>
+  <!--<ion-searchbar [(ngModel)]="searchQuery" (input)="getItems($event)" placeholder="Filter by text"></ion-searchbar>-->
+  <!--<ion-list>-->
+    <!--<ion-item *ngFor="let item of genrs">-->
+      <!--<ion-label> {{item.genresID}}</ion-label>-->
+      <!--<ion-checkbox [checked]="item.genresID === selected.genresID" (click)="select(item)"></ion-checkbox>-->
+    <!--</ion-item>-->
+  <!--</ion-list>-->
+  <!--<ion-list *ngIf="genrs">-->
+    <!--<ion-item>-->
+      <!--<ion-label>by genre</ion-label>-->
+      <!--<ion-select [(ngModel)]="gaming">-->
+        <!--<ion-option value="nes">NES</ion-option>-->
+      <!--</ion-select>-->
+    <!--</ion-item>-->
+  <!--</ion-list>-->
+  <ion-grid>
+    <ion-row>Filters: </ion-row>
+    <ion-row>
+      <ion-icon name="checkbox"> by friends </ion-icon>
+      <ion-icon name="checkbox"> by genre </ion-icon>
+      <ion-icon name="checkbox"> by language </ion-icon>
+      <ion-icon name="checkbox"> by location </ion-icon>
+    </ion-row>
+    <ion-list *ngIf="questions">
+        <button ion-item (click)="goToQuestion(question.questionID)" *ngFor="let question of questions">
+            {{question.questionID}}
+        </button>
+    </ion-list>
+  </ion-grid>
 </ion-content>
