@@ -13,19 +13,23 @@
   <form (ngSubmit)="register()" #registerForm="ngForm">
 
     <ion-item>
-      <ion-input email="" required="" placeholder="Email" [(ngModel)]="form.email" name="Email"></ion-input>
+      <ion-label floating primary> <ion-icon name="mail"></ion-icon> Email</ion-label>
+      <ion-input email="" required="" [(ngModel)]="form.email" name="Email"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input type="password" required="" placeholder="Password" [(ngModel)]="form.password" name="password"></ion-input>
+      <ion-label floating primary> <ion-icon name="key"></ion-icon> Password</ion-label>
+      <ion-input type="password" required="" [(ngModel)]="form.password" name="password"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input type="password" required="" placeholder="Re-type Password" [(ngModel)]="form.repassword" name="rePassword"></ion-input>
+      <ion-label floating primary> <ion-icon name="key"></ion-icon> Retype Password</ion-label>
+      <ion-input type="password" required="" [(ngModel)]="form.repassword" name="rePassword"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input required="" placeholder="Display Name" [(ngModel)]="form.displayName" name="displayName"></ion-input>
+      <ion-label floating primary> <ion-icon name="person"></ion-icon> Display Name</ion-label>
+      <ion-input required="" [(ngModel)]="form.displayName" name="displayName"></ion-input>
     </ion-item>
 
     <button ion-button block [disabled]="!registerForm.form.valid"

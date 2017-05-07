@@ -5,20 +5,22 @@
   </div>
     <form (ngSubmit)="loginWithEmail()" #loginForm="ngForm">
         <ion-item>
-          <ion-input email="" required="" placeholder="Email" [(ngModel)]="form.email" name="email"></ion-input>
+          <ion-label floating primary> <ion-icon name="mail"></ion-icon> Email</ion-label>
+          <ion-input email="" required="" [(ngModel)]="form.email" name="email"></ion-input>
         </ion-item>
 
         <ion-item>
-          <ion-input type="password" required="" placeholder="Password" [(ngModel)]="form.password" name="password"></ion-input>
+          <ion-label floating primary> <ion-icon name="key"></ion-icon> Password</ion-label>
+          <ion-input type="password" required="" [(ngModel)]="form.password" name="password"></ion-input>
         </ion-item>
 
       <ion-row>
         <button ion-button block [disabled]="!loginForm.form.valid" type="submit" class="login-btn">
-          Log In
+          Log In &nbsp;<ion-icon name="log-in"></ion-icon>
         </button>
 
         <button ion-button block type="button" class="register-btn" (click)="register()">
-          Register
+          Register &nbsp;<ion-icon name="create"></ion-icon>
         </button>
       </ion-row>
 

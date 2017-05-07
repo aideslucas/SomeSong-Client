@@ -3,7 +3,7 @@ page-login {
 
   .login-content {
 
-    background: url("../assets/images/backg.jpg") no-repeat center;
+    background: url("../assets/images/background.gif")  center;
     -moz-background-size: 100% 100%;
     -o-background-size: 100% 100%;
     -webkit-background-size: 100% 100%;
@@ -32,11 +32,15 @@ page-login {
 
     form {
       width: 95%;
-
       ion-item {
         padding-left: 1%;
         padding-right: 1%;
         margin-top: 1%;
+        background: transparent;
+
+        ion-label {
+          color: #ffffff;
+        }
       }
 
       .login-btn {

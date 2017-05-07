@@ -12,10 +12,11 @@ page-register {
       padding-left: 1%;
       padding-right: 1%;
       margin-top: 1%;
-    }
+      background: transparent;
 
-    ion-input {
-      color: #387ef5;
+      ion-label {
+        color: #ffffff;
+      }
     }
   }
 
