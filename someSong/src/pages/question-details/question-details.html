@@ -66,8 +66,13 @@
               {{answer?.content}}
             </ion-col>
             <ion-col col-2 class="endCol">
-              <div class="votes">
-                {{answer?.votes}}
+              <div class="votes" *ngIf="answer.answerID != question.correctAnswer">
+                {{answer?.votes}} &nbsp;
+                <ion-icon name="thumbs-up" color="secondary" *ngIf="answer.votes > 0"></ion-icon>
+                <ion-icon name="thumbs-down" color="danger" *ngIf="answer.votes < 0"></ion-icon>
+              </div>
+              <div class="votes" *ngIf="answer.answerID == question.correctAnswer">
+                <ion-icon name="checkmark" color="secondary"></ion-icon>
               </div>
             </ion-col>
           </ion-row>

@@ -87,22 +87,14 @@ export class QuestionDetailsPage {
     item.close();
     answer.votes++;
 
-    this._answer.updateAnswer(answer).then(data => {
-      this._user.getUser(answer.user).then(user => {
-        answer.user = user.val();
-      });
-    });
+    this._answer.updateAnswer(answer);
   }
 
   downVote(item, answer) {
     item.close();
     answer.votes--;
 
-    this._answer.updateAnswer(answer).then(data => {
-      this._user.getUser(answer.user).then(user => {
-        answer.user = user.val();
-      });
-    });
+    this._answer.updateAnswer(answer);
   }
 
   resolve(item, answer) {
@@ -126,8 +118,10 @@ export class QuestionDetailsPage {
   }
 
   sendAnswer() {
-    this._answer.writeNewAnswer(this.answer, this.question.user.userID, this.question.questionID);
-    this.answer = '';
+    this._user.currentUser.first().subscribe(data => {
+      this._answer.writeNewAnswer(this.answer, data.userID, this.question.questionID);
+      this.answer = '';
+    });
   }
 
   ionViewWillUnload() {

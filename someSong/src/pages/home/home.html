@@ -18,9 +18,9 @@
   <ion-scroll scrollY="true" class="myQuestions">
     <ion-list no-lines no-padding>
       <button ion-item (click)="goToQuestion(question.questionID)"*ngFor="let question of user?.questions">
-        {{question.questionID}}
+        {{question?.title}}
         <ion-icon name="checkmark" item-left color="secondary" *ngIf="question.correctAnswer"></ion-icon>
-        <ion-icon name="close" item-left color="danger" *ngIf="!question.correctAnswer"></ion-icon>
+        <ion-icon name="help" item-left color="dark" *ngIf="!question.correctAnswer"></ion-icon>
       </button>
     </ion-list>
   </ion-scroll>
@@ -32,7 +32,7 @@
   <ion-scroll scrollY="true" class="myAnswers">
     <ion-list no-lines no-padding>
       <button ion-item *ngFor="let answer of user?.answers" (click)="goToQuestion(answer?.question?.questionID)">
-          {{answer?.question?.questionID}}
+          {{answer?.question?.title}}
         <ion-icon name="checkmark" *ngIf="answer.question.correctAnswer == answer.answerID" color="secondary" item-left></ion-icon>
         <ion-icon name="close" *ngIf="answer.question.correctAnswer && answer.question.correctAnswer != answer.answerID" color="danger" item-left></ion-icon>
         <ion-icon name="help" *ngIf="!answer.question.correctAnswer" item-left></ion-icon>

@@ -48,7 +48,7 @@
     </ion-item>
     <ion-list *ngIf="questions">
         <button ion-item (click)="goToQuestion(question.questionID)" *ngFor="let question of questions">
-            {{question.questionID}}
+            {{question.title}}
         </button>
     </ion-list>
   </ion-grid>

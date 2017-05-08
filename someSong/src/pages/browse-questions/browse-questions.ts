@@ -17,7 +17,6 @@ export class BrowseQuestionsPage {
               public navParams: NavParams,
               private _question: Question,
               private _genrs: Genre) {
-    console.log("llalala");
     // If we navigated to this page, we will have an item available as a nav param
     this._question.getAllUnresolvedQuestions().then(data =>
     {
