@@ -3,11 +3,7 @@ page-login {
 
   .login-content {
 
-    background: url("../assets/images/background.gif")  center;
-    -moz-background-size: 100% 100%;
-    -o-background-size: 100% 100%;
-    -webkit-background-size: 100% 100%;
-    background-size: 100% 100%;
+    background: #ffffff;
 
 
     //    background-color: #f2c1e3;
@@ -16,12 +12,14 @@ page-login {
       padding-top: 0px;
       padding-bottom: 0px;
       text-align: center;
+      align-content: center;
+      justify-content: center;
 
       .title {
         font-family: Impact, Charcoal, sans-serif;
-        color: #ffffff;
+        color: #000;
         width: 75%;
-        font-size: 4em;
+        font-size: 3em;
       }
     }
 
@@ -39,7 +37,7 @@ page-login {
         background: transparent;
 
         ion-label {
-          color: #ffffff;
+          color: #000;
         }
       }
 

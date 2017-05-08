@@ -1,39 +1,48 @@
 <ion-content class="login-content" padding>
   <div class="logo-row">
-    <img src="assets/images/logo.png" width="70%" height="70%"/>
+    <img src="assets/images/logo.png" width="30%" height="30%"/> <br />
     <span class="title">SomeSong</span>
   </div>
-    <form (ngSubmit)="loginWithEmail()" #loginForm="ngForm">
-        <ion-item>
-          <ion-label floating primary> <ion-icon name="mail"></ion-icon> Email</ion-label>
-          <ion-input email="" required="" [(ngModel)]="form.email" name="email"></ion-input>
-        </ion-item>
+  <form (ngSubmit)="loginWithEmail()" #loginForm="ngForm">
+    <div class="loginDetails">
+      <ion-item>
+        <ion-label floating primary>
+          <ion-icon name="mail"></ion-icon>
+          Email
+        </ion-label>
+        <ion-input email="" required="" [(ngModel)]="form.email" name="email"></ion-input>
+      </ion-item>
 
-        <ion-item>
-          <ion-label floating primary> <ion-icon name="key"></ion-icon> Password</ion-label>
-        </ion-item>
-      <ion-input type="password" required="" [(ngModel)]="form.password" name="password"></ion-input>
-
-      <ion-row>
-        <button ion-button block [disabled]="!loginForm.form.valid" type="submit" class="login-btn">
-          Log In &nbsp;<ion-icon name="log-in"></ion-icon>
-        </button>
-
-        <button ion-button block type="button" class="register-btn" (click)="register()">
-          Register &nbsp;<ion-icon name="create"></ion-icon>
-        </button>
-      </ion-row>
-
-      <button ion-button block class="facebook-btn" type="button" (click)="loginWithFB()">
-        <ion-icon name="logo-facebook">&nbsp; Log In With Facebook</ion-icon>
+      <ion-item>
+        <ion-label floating primary>
+          <ion-icon name="key"></ion-icon>
+          Password
+        </ion-label>
+        <ion-input type="password" required="" [(ngModel)]="form.password" name="password"></ion-input>
+      </ion-item>
+    </div>
+    <ion-row>
+      <button ion-button block [disabled]="!loginForm.form.valid" type="submit" class="login-btn">
+        Log In &nbsp;<ion-icon name="log-in"></ion-icon>
       </button>
 
-      <div padding class="error" *ngIf="error">
-        <p>{{error}}</p>
-      </div>
-    </form>
+      <button ion-button block type="button" class="register-btn" (click)="register()">
+        Register &nbsp;<ion-icon name="create"></ion-icon>
+      </button>
+    </ion-row>
+
+    <button ion-button block class="facebook-btn" type="button" (click)="loginWithFB()">
+      <ion-icon name="logo-facebook">&nbsp; Log In With Facebook</ion-icon>
+    </button>
+
+    <div padding class="error" *ngIf="error">
+      <p>{{error}}</p>
+    </div>
+  </form>
 </ion-content>
 
 <ion-footer>
-  <button ion-button block class="reset-password" (click)="resetPassword()">Forgot My Password &nbsp; <ion-icon name="help-circle"></ion-icon></button>
+  <button ion-button block class="reset-password" (click)="resetPassword()">Forgot My Password &nbsp;
+    <ion-icon name="help-circle"></ion-icon>
+  </button>
 </ion-footer>
