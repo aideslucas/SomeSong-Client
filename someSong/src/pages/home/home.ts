@@ -32,7 +32,7 @@ export class HomePage {
 
         for (let question of this.user.questions)
         {
-          this._question.getQuestionDetails(question).first().subscribe(data =>
+          this._question.getQuestionDetails(question).subscribe(data =>
           {
             fullQuestions.push(data);
           });
@@ -60,11 +60,20 @@ export class HomePage {
 
         for (let answer of this.user.answers)
         {
-          this._answer.getAnswerDetails(answer).then(data =>
+          this._answer.getAnswerDetails(answer).first().subscribe(data =>
           {
-            var fullAnswer = data.val();
+            var fullAnswer = data;
 
-            this._question.getQuestionDetails(fullAnswer.question).first().subscribe(data => {
+            this._answer.getAnswerDetails(answer).subscribe(ansdata =>
+            {
+              var ansIndex = this.user.answers.findIndex(x => x.answerID == ansdata.answerID);
+              this._question.getQuestionDetails(ansdata.question).first().subscribe(qdata => {
+                ansdata.question = qdata;
+                this.user.answers[ansIndex] = ansdata;
+              });
+            });
+
+            this._question.getQuestionDetails(fullAnswer.question).subscribe(data => {
               fullAnswer.question = data;
               fullAnswers.push(fullAnswer);
             });
