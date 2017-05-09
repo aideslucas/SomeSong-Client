@@ -10,4 +10,8 @@ export class Language {
   getLanguages() {
     return firebase.database().ref('/languages/').once('value');
   }
+
+  static getLanguages() {
+    return firebase.database().ref('/languages/').once('value');
+  }
 }

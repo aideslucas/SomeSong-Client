@@ -41,7 +41,7 @@ export class QuestionDetailsPage {
       this.genres = data.val();
     });
 
-    this._language.getLanguages().then(data => {
+    Language.getLanguages().then(data => {
       this.languages = data.val();
     });
 

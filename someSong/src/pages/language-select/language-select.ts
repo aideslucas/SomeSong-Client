@@ -16,7 +16,7 @@ export class LanguageSelectPage {
               private _language: Language) {
     this.selected = params.get('selectedLanguages');
 
-    this._language.getLanguages().then(data =>
+    Language.getLanguages().then(data =>
     {
       this.languages = data.val();
     });

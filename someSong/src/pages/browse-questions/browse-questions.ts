@@ -3,6 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { Question } from "../../providers/question";
 import { QuestionDetailsPage } from "../question-details/question-details";
 import {Genre} from "../../providers/genre";
+import {Language} from "../../providers/language";
 
 @Component({
   selector: 'page-browse-questions',
@@ -14,6 +15,9 @@ export class BrowseQuestionsPage {
   genresDict: any;
   genresArray: any = [];
   filteredGenres: any = [];
+  filteredLanguages: any = [];
+  languagesArray: any = [];
+  languagesDict: any = [];
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -36,10 +40,19 @@ export class BrowseQuestionsPage {
     });
 
     this._genres.getGenres().then(data =>{
-      console.log("lalala");
       this.genresDict = data.val();
-      for (var key in this.genresDict) this.genresArray.push(this.genresDict[key]);
-      console.log(this.genresDict);
+      for (var key in this.genresDict) {
+        this.genresArray.push(this.genresDict[key]);
+      }
+      this.filteredGenres = this.genresArray;
+    });
+
+    Language.getLanguages().then(data =>{
+      this.languagesDict = data.val();
+      for ( var key in this.languagesDict) {
+        this.languagesArray.push(this.languagesDict[key]);
+      }
+      this.filteredLanguages = this.languagesArray;
     });
 
   }
@@ -59,30 +72,26 @@ export class BrowseQuestionsPage {
   getAllEnabledQuestions(){
     console.log(this.questions);
     var enabledQuestions = [];
-    var filteredGenresKeys = this.arrayGenresToKeysGenres(this.filteredGenres);
-    console.log(filteredGenresKeys);
+    var filteredGenresKeys = this.valuesArrayToKeysArray(this.filteredGenres, this.genresDict);
+    var filteredLanguagesKeys = this.valuesArrayToKeysArray(this.filteredLanguages, this.languagesDict);
+
     for (var i =0; i<this.questions.length; i++){
-      var b = this.findOne(this.questions[i]["genres"],filteredGenresKeys);
-      console.log(this.questions[i]["genres"]);
-      console.log(filteredGenresKeys);
-      console.log(b);
-      if ( !b){
+      if ( this.findOne(this.questions[i]["genres"],filteredGenresKeys) &&
+            this.findOne(this.questions[i]["languages"],filteredLanguagesKeys)){
         enabledQuestions.push(this.questions[i]);
       }
     }
 
-    console.log(enabledQuestions);
     return enabledQuestions;
   }
 
-  arrayGenresToKeysGenres(genresNamesArray){
-    var genresKeyArray = [];
-    for (var i=0; i<genresNamesArray.length; i++){
-      var genreKey = this.getKeyByValue(this.genresDict, genresNamesArray[i]);
-      genresKeyArray.push(parseInt(genreKey));
+  valuesArrayToKeysArray(array, dict){
+    var keysArray = [];
+    for (var i=0; i<array.length; i++){
+      var genreKey = this.getKeyByValue(dict, array[i]);
+      keysArray.push(parseInt(genreKey));
     }
-
-    return genresKeyArray;
+    return keysArray;
   }
 
   goToQuestion(questionID) {
