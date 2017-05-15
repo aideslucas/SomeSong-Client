@@ -3,6 +3,7 @@ import firebase from 'firebase';
 import {User} from "./user";
 import {Question} from "./question";
 import 'rxjs/add/operator/first'
+import {Observable} from "rxjs";
 
 @Injectable()
 export class Answer {
@@ -38,7 +39,17 @@ export class Answer {
 
   getAnswerDetails(answerID: string)
   {
-    return firebase.database().ref('/answers/' + answerID).once('value');
+    return Observable.create(function(observer: any) {
+      function value(snapshot) {
+        observer.next(snapshot.val());
+      }
+
+      firebase.database().ref('/answers/' + answerID).on('value', value);
+
+      return function() {
+        firebase.database().ref('/answers/' + answerID).off('value', value);
+      }
+    });
   }
 
   updateAnswer(answer) {

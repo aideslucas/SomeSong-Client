@@ -65,8 +65,8 @@ export class QuestionDetailsPage {
       {
         for (let answer of question.answers)
         {
-          this._answer.getAnswerDetails(answer).then(ans => {
-            var answer = ans.val();
+          this._answer.getAnswerDetails(answer).first().subscribe(ans => {
+            var answer = ans;
 
             answer.time = this._answer.getLocalTime(answer.timeUTC);
 
@@ -87,14 +87,22 @@ export class QuestionDetailsPage {
     item.close();
     answer.votes++;
 
-    this._answer.updateAnswer(answer);
+    this._answer.updateAnswer(answer).then(data => {
+      this._user.getUser(answer.user).then(userData => {
+        answer.user = userData.val();
+      });
+    });
   }
 
   downVote(item, answer) {
     item.close();
     answer.votes--;
 
-    this._answer.updateAnswer(answer);
+    this._answer.updateAnswer(answer).then(data => {
+      this._user.getUser(answer.user).then(userData => {
+        answer.user = userData.val();
+      });
+    });
   }
 
   resolve(item, answer) {
@@ -118,8 +126,8 @@ export class QuestionDetailsPage {
   }
 
   sendAnswer() {
-    this._user.currentUser.first().subscribe(data => {
-      this._answer.writeNewAnswer(this.answer, data.userID, this.question.questionID);
+    this._user.currentUser.first().subscribe(currUser => {
+      this._answer.writeNewAnswer(this.answer, currUser.userID, this.question.questionID);
       this.answer = '';
     });
   }
