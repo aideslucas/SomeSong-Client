@@ -16,10 +16,8 @@ import {Language} from "../../providers/language";
 })
 
 export class UploadQuestionPage {
-  public allGenres: Array<string>;
-  public allLanguages: Array<string>;
-  public selectedGenres: Array<number>;
-  public selectedLanguages: Array<number> = new Array();
+  public selectedGenres: {};
+  public selectedLanguages: {};
   private recordPath: string;
   private userID: string;
   private title: string;
@@ -29,23 +27,11 @@ export class UploadQuestionPage {
               private question: Question,
               private user: User,
               private file: File,
-              private viewController: ViewController,
-              private genre: Genre,
-              private language: Language) {
+              private viewController: ViewController) {
 
     this.title = '';
     this.selectedGenres = navParams.get('selectedGenres');
     this.selectedLanguages = navParams.get('selectedLanguages');
-
-    this.language.getLanguages().then(data => {
-      this.allLanguages = data.val();
-      console.log(this.allLanguages)
-      console.log(this.allLanguages[3]);
-    });
-
-    this.genre.getGenres().then(data => {
-      this.allGenres = data.val();
-    });
   }
 
   public uploadRecording(): void {

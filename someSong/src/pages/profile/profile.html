@@ -22,29 +22,29 @@
   </div>
 
   <div class="profile-block">
-    <ion-list *ngIf="genres != null" no-lines no-padding>
+    <ion-list *ngIf="currentUser?.genres" no-lines no-padding>
       <ion-list-header>
         My Genres
         <button ion-button item-right (click)="goToGenreSelect()">
           <ion-icon name="build"></ion-icon>
         </button>
       </ion-list-header>
-      <ion-item *ngFor="let genre of currentUser?.genres">
-        <ion-label>{{genres[genre]}}</ion-label>
+      <ion-item *ngFor="let genre of currentUser.genres | keyValueFilter">
+        <ion-label>{{genre.value}}</ion-label>
       </ion-item>
     </ion-list>
   </div>
 
   <div class="profile-block">
-    <ion-list *ngIf="languages != null" no-lines no-padding>
+    <ion-list *ngIf="currentUser?.languages" no-lines no-padding>
       <ion-list-header>
         My Languages
         <button ion-button item-right (click)="goToLanguageSelect()">
           <ion-icon name="build"></ion-icon>
         </button>
       </ion-list-header>
-      <ion-item *ngFor="let language of currentUser?.languages">
-        <ion-label>{{languages[language]}}</ion-label>
+      <ion-item *ngFor="let language of currentUser.languages | keyValueFilter">
+        <ion-label>{{language.value}}</ion-label>
       </ion-item>
     </ion-list>
   </div>

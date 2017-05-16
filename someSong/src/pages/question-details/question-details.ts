@@ -6,8 +6,6 @@ import {Question} from "../../providers/question";
 import {User} from "../../providers/user";
 import {Answer} from "../../providers/answer";
 import {Record} from "../../providers/record";
-import {Genre} from "../../providers/genre";
-import {Language} from "../../providers/language";
 
 declare var Media: any;
 
@@ -17,8 +15,6 @@ declare var Media: any;
 })
 export class QuestionDetailsPage {
   question: any;
-  genres: any;
-  languages: any;
   answer: any;
   playing: boolean = false;
   questionSubs: any;
@@ -29,21 +25,11 @@ export class QuestionDetailsPage {
               private _question: Question,
               private _record: Record,
               private _user: User,
-              private _answer: Answer,
-              private _genre: Genre,
-              private _language: Language)
+              private _answer: Answer)
   {
     const onStatusUpdate = (status) => console.log(status);
     const onSuccess = () => console.log('Action is successful.');
     const onError = (error) => console.log(error.message);
-
-    this._genre.getGenres().then(data => {
-      this.genres = data.val();
-    });
-
-    this._language.getLanguages().then(data => {
-      this.languages = data.val();
-    });
 
     this.questionSubs = this._question.getQuestionDetails(navParams.data).subscribe(question => {
       this.question = question;

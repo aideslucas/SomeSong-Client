@@ -8,31 +8,27 @@ import {Language} from "../../providers/language";
   templateUrl: 'language-select.html'
 })
 export class LanguageSelectPage {
-  languages: any;
-  selected: any;
+  languages = [];
+  selected : {[id: string] : string};
 
   constructor(params: NavParams,
               private viewController: ViewController,
               private _language: Language) {
-    this.selected = params.get('selectedLanguages');
+    this.selected= params.get('selectedLanguages');
 
-    this._language.getLanguages().then(data =>
-    {
-      this.languages = data.val();
+    this._language.getLanguages().orderByValue().on('child_added', (data) => {
+      this.languages.push(data);
     });
   }
 
   insertLanguageToArray(item, language){
     if (item.checked)
     {
-      this.selected.push(language);
+      this.selected[language.key] = language.val();
     }
     else
     {
-      var index = this.selected.indexOf(language, 0);
-      if (index > -1) {
-        this.selected.splice(index, 1);
-      }
+      delete this.selected[language.key];
     }
   }
 

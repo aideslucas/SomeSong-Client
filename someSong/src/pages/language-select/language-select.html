@@ -11,9 +11,9 @@
 
 <ion-content padding>
   <ion-list *ngIf="languages">
-    <ion-item *ngFor="let language of languages; let i = index">
-      <ion-label>{{language}}</ion-label>
-      <ion-checkbox color="primary" (ionChange)="insertLanguageToArray($event, i)" [checked]="(selected.indexOf(i) != -1)"></ion-checkbox>
+    <ion-item *ngFor="let language of languages">
+      <ion-label>{{language.val()}}</ion-label>
+      <ion-checkbox color="primary" (ionChange)="insertLanguageToArray($event, language)" [checked]="(selected[language.key] != null)"></ion-checkbox>
     </ion-item>
   </ion-list>
 </ion-content>

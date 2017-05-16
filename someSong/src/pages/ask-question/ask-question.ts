@@ -17,8 +17,8 @@ export class AskQuestionPage {
 
   private recordingFile: any;
   public recording: boolean = false;
-  private selectedLanguages: any = new Array<number>();
-  private selectedGenres: any = new Array<number>();
+  private selectedLanguages: any = {};
+  private selectedGenres: any = {};
 
   constructor(public navCtrl: NavController,
               public alertCtrl: AlertController,

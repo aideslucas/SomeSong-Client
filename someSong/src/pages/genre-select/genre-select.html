@@ -11,9 +11,9 @@
 
 <ion-content padding>
   <ion-list *ngIf="genres">
-    <ion-item *ngFor="let genre of genres; let i = index">
-      <ion-label>{{genre}}</ion-label>
-      <ion-checkbox color="primary" (ionChange)="insertGenreToArray($event, i)" [checked]="(selected.indexOf(i) != -1)"></ion-checkbox>
+    <ion-item *ngFor="let genre of genres">
+      <ion-label>{{genre.val()}}</ion-label>
+      <ion-checkbox color="primary" (ionChange)="insertGenreToArray($event, genre)" [checked]="(selected[genre.key] != null)"></ion-checkbox>
     </ion-item>
   </ion-list>
 </ion-content>

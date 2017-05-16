@@ -49,10 +49,10 @@ export class LoginPage {
                   user = data;
                 })
 
-                var languageModal = this.modalCtrl.create(LanguageSelectPage, { selectedLanguages: new Array<any>() });
+                var languageModal = this.modalCtrl.create(LanguageSelectPage, { selectedLanguages: {} });
                 languageModal.onDidDismiss(data => {
                   user.languages = data;
-                  var genreModal = this.modalCtrl.create(GenreSelectPage, { selectedGenres: new Array<any>() });
+                  var genreModal = this.modalCtrl.create(GenreSelectPage, { selectedGenres: {} });
                   genreModal.onDidDismiss(data => {
                     user.genres = data;
                     this._user.updateUser(user);

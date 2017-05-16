@@ -35,6 +35,8 @@ import {Record} from "../providers/record";
 // Firebase
 import firebase from 'firebase'
 
+import { keyValueFilterPipe} from '../assets/keyValueFilter';
+
 export const firebaseConfig = {
   apiKey: "AIzaSyA_MquO5E-MQKjnEdaEUC-fnEXENMjz6Ro",
   authDomain: "somesong-700c4.firebaseapp.com",
@@ -56,7 +58,8 @@ export const firebaseConfig = {
     LanguageSelectPage,
     GenreSelectPage,
     RegisterPage,
-    UploadQuestionPage
+    UploadQuestionPage,
+    keyValueFilterPipe
   ],
   imports: [
     BrowserModule,

@@ -40,7 +40,7 @@ export class Question {
     return firebase.database().ref().child('questions').push().key;
   }
 
-  writeNewQuestion(questionID:string, genres: Array<any>, languages: Array<any>, location: any, record: string, userID: string, title: string)
+  writeNewQuestion(questionID:string, genres: {}, languages: {}, location: any, record: string, userID: string, title: string)
   {
     var time = new Date();
 

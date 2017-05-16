@@ -36,18 +36,18 @@
   <br/>
 
   <b>Question Possible Genres:</b><br/>
-  <div *ngIf="genres">
-    <button ion-button *ngFor="let genre of question?.genres">
-      {{genres[genre]}}
+  <div *ngIf="question?.genres">
+    <button ion-button *ngFor="let genre of question?.genres | keyValueFilter">
+      {{genre.value}}
     </button>
   </div>
 
   <br/>
 
   <b>Question Possible Languages:</b><br/>
-  <div *ngIf="languages">
-    <button ion-button *ngFor="let language of question?.languages">
-      {{languages[language]}}
+  <div *ngIf="question?.languages">
+    <button ion-button *ngFor="let language of question?.languages | keyValueFilter">
+      {{language.value}}
     </button>
   </div>
 
