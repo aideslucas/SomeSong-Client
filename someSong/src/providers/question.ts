@@ -34,8 +34,6 @@ export class Question {
     });
   }
 
-
-
   getNewQuestionID() {
     return firebase.database().ref().child('questions').push().key;
   }
@@ -67,10 +65,10 @@ export class Question {
 
       if (user.questions == null)
       {
-        user.questions = new Array<any>();
+        user.questions = {};
       }
 
-      user.questions.push(questionID);
+      user.questions[questionID] = true;
 
       this._user.updateUser(user);
     });

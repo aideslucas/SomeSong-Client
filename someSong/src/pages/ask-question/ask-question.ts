@@ -30,11 +30,11 @@ export class AskQuestionPage {
   public startRecording(): void {
     if (!this.recording) {
       this.recording = true;
-      this.recordingFile = new Media("myRecording.amr", ()=> {
+   /*   this.recordingFile = new Media("myRecording.amr", ()=> {
       }, (e) => {
         this.showAlert("failed to create the recording file: " + JSON.stringify(e));
       });
-      this.recordingFile.startRecord();
+      this.recordingFile.startRecord();*/
     }
     else {
       this.recording = false;
@@ -44,8 +44,8 @@ export class AskQuestionPage {
   }
 
   public stopRecording(): void {
-    this.recordingFile.stopRecord();
-    this.recordingFile.release();
+ /*   this.recordingFile.stopRecord();
+    this.recordingFile.release();*/
   }
 
   public playRecording(): void {
