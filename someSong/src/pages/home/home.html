@@ -32,7 +32,7 @@
   <ion-scroll scrollY="true" class="myAnswers">
     <ion-list no-lines no-padding>
       <button ion-item *ngFor="let answer of userAnswers | keyValueFilter" (click)="goToQuestion(answer.value.question.questionID)">
-          {{answer.value.question.questionID}}
+          {{answer.value.question.title}}
         <ion-icon name="checkmark" *ngIf="answer.value.question.correctAnswer == answer.key" color="secondary" item-left></ion-icon>
         <ion-icon name="close" *ngIf="answer.value.question.correctAnswer && answer.value.question.correctAnswer != answer.key" color="danger" item-left></ion-icon>
         <ion-icon name="help" *ngIf="!answer.value.question.correctAnswer" item-left></ion-icon>

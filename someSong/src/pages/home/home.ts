@@ -9,6 +9,7 @@ import { BrowseQuestionsPage } from "../browse-questions/browse-questions";
 import { User } from "../../providers/user";
 import {Answer} from "../../providers/answer";
 import {Question} from "../../providers/question";
+import DictionaryHelpFunctions from "../../assets/dictionaryHelpFunctions";
 
 @Component({
   selector: 'page-home',
@@ -32,37 +33,19 @@ export class HomePage {
 
       this._user.getUserQuestions(this.user.userID).on('child_added', userQuestion => {
         this._question.getQuestionDetails(userQuestion.key).subscribe((questionDetail) => {
-          this.userQuestions = this.addToDictionary(this.userQuestions, userQuestion.key, questionDetail);
+          this.userQuestions = DictionaryHelpFunctions.addToDictionary(this.userQuestions, userQuestion.key, questionDetail);
         });
       });
 
       this._user.getUserAnswers(this.user.userID).on('child_added', userAnswer => {
         this._answer.getAnswerDetails(userAnswer.key).subscribe((answerDetail) => {
-          this.userAnswers = this.addToDictionary(this.userAnswers, userAnswer.key, answerDetail);
+          this.userAnswers = DictionaryHelpFunctions.addToDictionary(this.userAnswers, userAnswer.key, answerDetail);
           this._question.getQuestionDetails(answerDetail.question).subscribe((questionDetail) => {
             this.userAnswers[userAnswer.key].question = questionDetail;
-            //this.userAnswers = this.updateDictionary(this.userAnswers);
           });
         });
       });
     });
-  }
-
-  addToDictionary (oldDict,new_key,new_val){
-    var newDict = {};
-    for (let key of Object.keys(oldDict)) {
-      newDict[key] = oldDict[key];
-    }
-    newDict[new_key] = new_val;
-    return newDict;
-  };
-
-  updateDictionary (dictionary) {
-    var newDict = {};
-    for (let key of Object.keys(dictionary)) {
-      newDict[key] = dictionary[key];
-    }
-    return newDict;
   }
 
   goToProfile(){

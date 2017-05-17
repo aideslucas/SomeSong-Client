@@ -75,23 +75,11 @@ export class Question {
   }
 
   updateQuestion(question){
-    var answersID = new Array<any>();
-    for (let answer of question.answers) {
-      if (answer.answerID != null) {
-        answersID.push(answer.answerID);
-      }
-      else {
-        answersID.push(answer);
-      }
-    }
-
-    question.answers = answersID;
-
-    if (question.user.userID != null) {
-      question.user = question.user.userID;
-    }
-
     return firebase.database().ref('/questions/' + question.questionID).set(question);
+  }
+
+  getQuestionAnswers(questionID) {
+    return firebase.database().ref('/questions/' + questionID + '/answers/');
   }
 
   private getTimeStamp() {
