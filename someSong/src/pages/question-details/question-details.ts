@@ -61,8 +61,8 @@ export class QuestionDetailsPage {
     answer.votes++;
 
     this._answer.updateAnswer(answer).then(data => {
-      this._user.getUser(answer.user).then(user => {
-        answer.user = user.val();
+      this._user.getUser(answer.user).then(userData => {
+        answer.user = userData.val();
       });
     });
   }
@@ -72,8 +72,8 @@ export class QuestionDetailsPage {
     answer.votes--;
 
     this._answer.updateAnswer(answer).then(data => {
-      this._user.getUser(answer.user).then(user => {
-        answer.user = user.val();
+      this._user.getUser(answer.user).then(userData => {
+        answer.user = userData.val();
       });
     });
   }
