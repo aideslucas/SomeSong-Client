@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 import { ProfilePage } from "../profile/profile";
@@ -9,6 +9,7 @@ import { BrowseQuestionsPage } from "../browse-questions/browse-questions";
 import { User } from "../../providers/user";
 import {Answer} from "../../providers/answer";
 import {Question} from "../../providers/question";
+import DictionaryHelpFunctions from "../../assets/dictionaryHelpFunctions";
 
 @Component({
   selector: 'page-home',
@@ -17,9 +18,12 @@ import {Question} from "../../providers/question";
 export class HomePage {
 
   user: any;
+  userQuestions : { [id: string] : any} = {};
+  userAnswers = {};
   userSubscription: any;
 
   constructor(public navCtrl: NavController,
+              private ref: ChangeDetectorRef,
               private _user: User,
               private _answer: Answer,
               private _question: Question) {
@@ -27,61 +31,20 @@ export class HomePage {
     {
       this.user = data;
 
-      if (this.user.questions) {
-        var fullQuestions = new Array<any>();
-
-        for (let question of this.user.questions)
-        {
-          this._question.getQuestionDetails(question).subscribe(data =>
-          {
-            fullQuestions.push(data);
-          });
-        }
-
-        fullQuestions.sort(function (a, b){
-          if (a.correctAnswer && b.correctAnswer) {
-            return a.questionID-b.questionID;
-          }
-          else if (a.correctAnswer) {
-            return 1;
-          }
-          else if (b.correctAnswer) {
-            return -1;
-          }
-          else {
-            return a.questionID-b.questionID;
-          }
+      this._user.getUserQuestions(this.user.userID).on('child_added', userQuestion => {
+        this._question.getQuestionDetails(userQuestion.key).subscribe((questionDetail) => {
+          this.userQuestions = DictionaryHelpFunctions.addToDictionary(this.userQuestions, userQuestion.key, questionDetail);
         });
-        this.user.questions = fullQuestions;
-      }
+      });
 
-      if (this.user.answers) {
-        var fullAnswers = new Array<any>();
-
-        for (let answer of this.user.answers)
-        {
-          this._answer.getAnswerDetails(answer).first().subscribe(data =>
-          {
-            var fullAnswer = data;
-
-            this._answer.getAnswerDetails(answer).subscribe(ansdata =>
-            {
-              var ansIndex = this.user.answers.findIndex(x => x.answerID == ansdata.answerID);
-              this._question.getQuestionDetails(ansdata.question).first().subscribe(qdata => {
-                ansdata.question = qdata;
-                this.user.answers[ansIndex] = ansdata;
-              });
-            });
-
-            this._question.getQuestionDetails(fullAnswer.question).subscribe(data => {
-              fullAnswer.question = data;
-              fullAnswers.push(fullAnswer);
-            });
+      this._user.getUserAnswers(this.user.userID).on('child_added', userAnswer => {
+        this._answer.getAnswerDetails(userAnswer.key).subscribe((answerDetail) => {
+          this.userAnswers = DictionaryHelpFunctions.addToDictionary(this.userAnswers, userAnswer.key, answerDetail);
+          this._question.getQuestionDetails(answerDetail.question).subscribe((questionDetail) => {
+            this.userAnswers[userAnswer.key].question = questionDetail;
           });
-        }
-
-        this.user.answers = fullAnswers;
-      }
+        });
+      });
     });
   }
 

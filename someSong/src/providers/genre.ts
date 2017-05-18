@@ -8,6 +8,6 @@ export class Genre {
   }
 
   getGenres() {
-    return firebase.database().ref('/genres/').once('value');
+    return firebase.database().ref('/genres/');
   }
 }

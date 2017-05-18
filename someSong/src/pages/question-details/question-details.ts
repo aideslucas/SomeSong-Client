@@ -6,8 +6,7 @@ import {Question} from "../../providers/question";
 import {User} from "../../providers/user";
 import {Answer} from "../../providers/answer";
 import {Record} from "../../providers/record";
-import {Genre} from "../../providers/genre";
-import {Language} from "../../providers/language";
+import DictionaryHelpFunctions from "../../assets/dictionaryHelpFunctions";
 
 declare var Media: any;
 
@@ -17,8 +16,8 @@ declare var Media: any;
 })
 export class QuestionDetailsPage {
   question: any;
-  genres: any;
-  languages: any;
+  questionAnswers = {};
+  questionUser: any;
   answer: any;
   playing: boolean = false;
   questionSubs: any;
@@ -29,57 +28,31 @@ export class QuestionDetailsPage {
               private _question: Question,
               private _record: Record,
               private _user: User,
-              private _answer: Answer,
-              private _genre: Genre,
-              private _language: Language)
+              private _answer: Answer)
   {
-    const onStatusUpdate = (status) => console.log(status);
-    const onSuccess = () => console.log('Action is successful.');
-    const onError = (error) => console.log(error.message);
-
-    this._genre.getGenres().then(data => {
-      this.genres = data.val();
-    });
-
-    this._language.getLanguages().then(data => {
-      this.languages = data.val();
-    });
-
     this.questionSubs = this._question.getQuestionDetails(navParams.data).subscribe(question => {
       this.question = question;
 
-      var answers = new Array<any>();
-
-      this._record.getRecordURL(this.question.record).then(url => {
+    /*  this._record.getRecordURL(this.question.record).then(url => {
         this.question.file = new Media(url, ()=> {
         }, (e) => {
           alert("failed to create the recording file: " + JSON.stringify(e));
         });
-      });
+      });*/
 
       this._user.getUser(this.question.user).then(user => {
-        this.question.user = user.val();
+        this.questionUser = user.val();
       });
 
-      if (question.answers)
-      {
-        for (let answer of question.answers)
-        {
-          this._answer.getAnswerDetails(answer).first().subscribe(ans => {
-            var answer = ans;
-
-            answer.time = this._answer.getLocalTime(answer.timeUTC);
-
-            this._user.getUser(answer.user).then(user => {
-              answer.user = user.val();
-
-              answers.push(answer);
-            });
+      this._question.getQuestionAnswers(this.question.questionID).on('child_added', questionAnswer => {
+        this._answer.getAnswerDetails(questionAnswer.key).subscribe((answerDetail) => {
+          this.questionAnswers = DictionaryHelpFunctions.addToDictionary(this.questionAnswers, questionAnswer.key, answerDetail);
+          this._user.getUser(answerDetail.user).then((userDetail) => {
+            this.questionAnswers[questionAnswer.key].user = userDetail.val();
           });
-        }
-      }
-
-      this.question.answers = answers;
+          this.questionAnswers[questionAnswer.key].time = this._answer.getLocalTime(this.questionAnswers[questionAnswer.key].timeUTC);
+        });
+      });
     });
   }
 
@@ -126,10 +99,8 @@ export class QuestionDetailsPage {
   }
 
   sendAnswer() {
-    this._user.currentUser.first().subscribe(currUser => {
-      this._answer.writeNewAnswer(this.answer, currUser.userID, this.question.questionID);
-      this.answer = '';
-    });
+    this._answer.writeNewAnswer(this.answer, this.questionUser.userID, this.question.questionID);
+    this.answer = '';
   }
 
   ionViewWillUnload() {

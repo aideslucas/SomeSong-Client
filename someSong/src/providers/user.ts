@@ -43,36 +43,16 @@ export class User {
   }
 
   updateUser(user) {
-    if (user.answers != null) {
-      var answersID = new Array<any>();
-      for (let answer of user.answers)
-      {
-        if (answer.answerID != null)
-        {
-          answersID.push(answer.answerID);
-        }
-        else {
-          answersID.push(answer);
-        }
-      }
-      user.answers = answersID;
-    }
-
-    if (user.questions != null) {
-      var questionsID = new Array<any>();
-      for (let question of user.questions)
-      {
-        if (question.questionID != null)
-        {
-          questionsID.push(question.questionID);
-        }
-        else {
-          questionsID.push(question);
-        }
-      }
-      user.questions = questionsID;
-    }
-
     firebase.database().ref('/users/' + user.userID).update(user);
+  }
+
+
+  getUserQuestions(userID) {
+    return firebase.database().ref('/users/' + userID + '/questions/');
+  }
+
+
+  getUserAnswers(userID) {
+    return firebase.database().ref('/users/' + userID + '/answers/');
   }
 }

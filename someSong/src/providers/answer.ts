@@ -3,7 +3,7 @@ import firebase from 'firebase';
 import {User} from "./user";
 import {Question} from "./question";
 import 'rxjs/add/operator/first'
-import {Observable} from "rxjs";
+import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class Answer {
@@ -88,10 +88,10 @@ export class Answer {
 
       if (question.answers == null)
       {
-        question.answers = new Array<any>();
+        question.answers = {};
       }
 
-      question.answers.push(ansKey);
+      question.answers[ansKey] = true;
 
       this._question.updateQuestion(question);
     });
@@ -101,10 +101,10 @@ export class Answer {
 
       if (user.answers == null)
       {
-        user.answers = new Array<any>();
+        user.answers = {};
       }
 
-      user.answers.push(ansKey);
+      user.answers[ansKey] = true;
 
       this._user.updateUser(user);
     });

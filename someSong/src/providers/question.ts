@@ -34,13 +34,11 @@ export class Question {
     });
   }
 
-
-
   getNewQuestionID() {
     return firebase.database().ref().child('questions').push().key;
   }
 
-  writeNewQuestion(questionID:string, genres: Array<any>, languages: Array<any>, location: any, record: string, userID: string, title: string)
+  writeNewQuestion(questionID:string, genres: {}, languages: {}, location: any, record: string, userID: string, title: string)
   {
     var time = new Date();
 
@@ -67,33 +65,21 @@ export class Question {
 
       if (user.questions == null)
       {
-        user.questions = new Array<any>();
+        user.questions = {};
       }
 
-      user.questions.push(questionID);
+      user.questions[questionID] = true;
 
       this._user.updateUser(user);
     });
   }
 
   updateQuestion(question){
-    var answersID = new Array<any>();
-    for (let answer of question.answers) {
-      if (answer.answerID != null) {
-        answersID.push(answer.answerID);
-      }
-      else {
-        answersID.push(answer);
-      }
-    }
-
-    question.answers = answersID;
-
-    if (question.user.userID != null) {
-      question.user = question.user.userID;
-    }
-
     return firebase.database().ref('/questions/' + question.questionID).set(question);
+  }
+
+  getQuestionAnswers(questionID) {
+    return firebase.database().ref('/questions/' + questionID + '/answers/');
   }
 
   private getTimeStamp() {

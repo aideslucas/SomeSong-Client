@@ -12,15 +12,15 @@
 
 <ion-content padding>
   <h3>Your song's languages</h3>
-  <ion-list *ngIf="allLanguages != null">
-    <ion-item *ngFor="let language of selectedLanguages">
-      <ion-label>{{allLanguages[language]}}</ion-label>
+  <ion-list *ngIf="selectedLanguages">
+    <ion-item *ngFor="let language of selectedLanguages | keyValueFilter">
+      <ion-label>{{language.value}}</ion-label>
     </ion-item>
   </ion-list>
   <h3>Your song's genres</h3>
-  <ion-list *ngIf="allGenres != null">
-    <ion-item *ngFor="let genre of selectedGenres">
-      <ion-label>{{allGenres[genre]}}</ion-label>
+  <ion-list *ngIf="selectedGenres">
+    <ion-item *ngFor="let genre of selectedGenres | keyValueFilter">
+      <ion-label>{{genre.value}}</ion-label>
     </ion-item>
   </ion-list>
   <form (ngSubmit)="uploadRecording()" #loginForm="ngForm">

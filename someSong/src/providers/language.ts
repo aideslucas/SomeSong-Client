@@ -8,6 +8,6 @@ export class Language {
   }
 
   getLanguages() {
-    return firebase.database().ref('/languages/').once('value');
+    return firebase.database().ref('/languages/');
   }
 }

@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Question } from "../../providers/question";
 import { QuestionDetailsPage } from "../question-details/question-details";
-import {Genre} from "../../providers/genre";
 
 @Component({
   selector: 'page-browse-questions',
@@ -11,15 +10,10 @@ import {Genre} from "../../providers/genre";
 export class BrowseQuestionsPage {
   questions: any;
   user: any;
-  genresDict: any;
-  genresArray: any = [];
-  filteredGenres: any = [];
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private _question: Question,
-              private _genres: Genre) {
-
+              private _question: Question) {
     // If we navigated to this page, we will have an item available as a nav param
     this._question.getAllUnresolvedQuestions().then(data =>
     {
@@ -34,16 +28,7 @@ export class BrowseQuestionsPage {
       }
       console.log(this.questions);
     });
-
-    this._genres.getGenres().then(data =>{
-      console.log("lalala");
-      this.genresDict = data.val();
-      for (var key in this.genresDict) this.genresArray.push(this.genresDict[key]);
-      console.log(this.genresDict);
-    });
-
-  }
-
+ }
   // Functions
   // TODO: this function should be in utils file.
   getKeyByValue(object, value) {

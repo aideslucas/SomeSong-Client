@@ -9,31 +9,27 @@ import {Genre} from "../../providers/genre";
   templateUrl: 'genre-select.html'
 })
 export class GenreSelectPage {
-  genres: any;
-  selected: any;
+  genres = [];
+  selected: {[id: string] : string};
 
   constructor(params: NavParams,
               private viewController: ViewController,
               private _genre: Genre) {
     this.selected = params.get('selectedGenres');
-    console.log(this.selected);
 
-    this._genre.getGenres().then(data => {
-      this.genres = data.val();
-    })
+    this._genre.getGenres().orderByValue().on('child_added', (data) => {
+      this.genres.push(data);
+    });
   }
 
   insertGenreToArray(item, genre){
     if (item.checked)
     {
-      this.selected.push(genre);
+      this.selected[genre.key] = genre.val();
     }
     else
     {
-      var index = this.selected.indexOf(genre, 0);
-      if (index > -1) {
-        this.selected.splice(index, 1);
-      }
+      delete this.selected[genre.key];
     }
   }
 
