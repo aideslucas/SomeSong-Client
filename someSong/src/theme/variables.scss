@@ -23,14 +23,14 @@ $font-path: "../assets/fonts";
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
 $text-color: #000000;
-$background-color: #fdfffc;
+$background-color: #F5F5F5;
 $toolbar-background: #0D47A1;
 
 $colors: (
   primary: #0D47A1,
   secondary: #00C853,
-  danger:     #D50000,
-  light:      #f44b47,
+  danger:     #f44b47,
+  light:      #D50000,
   dark:       #222
 );
 

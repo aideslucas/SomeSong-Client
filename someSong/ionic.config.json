@@ -1,6 +1,5 @@
 {
   "name": "someSong",
   "app_id": "a6d7b536",
-  "v2": true,
-  "typescript": true
+  "type": "ionic-angular"
 }

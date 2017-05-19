@@ -44,16 +44,15 @@ export class BrowseQuestionsPage {
   getAllEnabledQuestions(){
     console.log(this.questions);
     var enabledQuestions = [];
-    var filteredGenresKeys = this.arrayGenresToKeysGenres(this.filteredGenres);
-    console.log(filteredGenresKeys);
+ //   var filteredGenresKeys = this.arrayGenresToKeysGenres(this.filteredGenres);
+ //   console.log(filteredGenresKeys);
     for (var i =0; i<this.questions.length; i++){
-      var b = this.findOne(this.questions[i]["genres"],filteredGenresKeys);
+ //     var b = this.findOne(this.questions[i]["genres"],filteredGenresKeys);
       console.log(this.questions[i]["genres"]);
-      console.log(filteredGenresKeys);
-      console.log(b);
-      if ( !b){
+ //     console.log(filteredGenresKeys);
+//      if ( !b){
         enabledQuestions.push(this.questions[i]);
-      }
+ //     }
     }
 
     console.log(enabledQuestions);
@@ -63,8 +62,8 @@ export class BrowseQuestionsPage {
   arrayGenresToKeysGenres(genresNamesArray){
     var genresKeyArray = [];
     for (var i=0; i<genresNamesArray.length; i++){
-      var genreKey = this.getKeyByValue(this.genresDict, genresNamesArray[i]);
-      genresKeyArray.push(parseInt(genreKey));
+//      var genreKey = this.getKeyByValue(this.genresDict, genresNamesArray[i]);
+//      genresKeyArray.push(parseInt(genreKey));
     }
 
     return genresKeyArray;

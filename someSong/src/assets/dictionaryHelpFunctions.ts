@@ -15,4 +15,9 @@ export default class DictionaryHelpFunctions {
     }
     return newDict;
   }
+
+
+  static isEmpty(dictionary) {
+    return Object.keys(dictionary).length == 0;
+  }
 }
