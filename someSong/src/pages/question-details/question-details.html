@@ -117,7 +117,7 @@
 </ion-content>
 
 
-<ion-footer *ngIf="currentUser?.userID !== question?.user">
+<ion-footer>
   <form (ngSubmit)="sendAnswer()" #answerForm="ngForm">
     <ion-toolbar>
       <ion-textarea placeholder="Suggest answer here..." [(ngModel)]="answer" name="answer"></ion-textarea>
