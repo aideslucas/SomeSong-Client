@@ -35,7 +35,7 @@ export class QuestionDetailsPage {
   {
     this._user.currentUser.first().subscribe(data => {
       this.currentUser = data;
-    })
+    });
 
     this.questionSubs = this._question.getQuestionDetails(navParams.data).subscribe(question => {
       this.question = question;
