@@ -15,43 +15,78 @@ page-home {
     padding: 0px!important;
   }
 
-  .myQuestions {
-    height: 33%;
-    .scroll-content {
-     padding: 0px !important;
+  .scrollableContent {
+    height: 50%;
+    position: relative;
+
+    .list-header {
+      //background: #EEEEEE;
     }
 
-    ion-list {
-      margin: -1px !important;
-    }
-  }
-
-  .myAnswers {
-    height: 33%;
     .scroll-content {
       padding: 0px !important;
     }
 
+    ion-scroll {
+      height: 85%;
+    }
+
     ion-list {
+      height: 100%;
       margin: -1px !important;
 
       .right-icons {
         padding-right: 25px !important;
       }
     }
+
+    .footer-button {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+
+      button {
+        padding: 0;
+        height: 50px;
+        width: 50px;
+        border-radius: 100% !important;
+      }
+    }
   }
 
-  .navigation-buttons {
-    width: 75%;
-    position: absolute;
-    bottom: 0;
-    margin-bottom: 10px;
-    margin-left: 7.5%;
-    margin-right: 7.5%;
-    color: white;
+  .loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 2s linear infinite;
+  }
 
-    button {
-      font-size: 0.8em;
-    }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .contentCentered {
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  .contentCentered:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -.25em; /* Adjusts for spacing */
+  }
+
+  .contentCentered > * {
+    display: inline-block;
+    vertical-align: middle;
   }
 }

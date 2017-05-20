@@ -16,6 +16,8 @@ import DictionaryHelpFunctions from "../../assets/dictionaryHelpFunctions";
   templateUrl: 'home.html'
 })
 export class HomePage {
+  questionLoading = true;
+  answerLoading = true;
 
   user: any;
   userQuestions : { [id: string] : any} = {};
@@ -31,21 +33,38 @@ export class HomePage {
     {
       this.user = data;
 
+      if (!this.user.questions) {
+        this.questionLoading = false;
+      }
+
       this._user.getUserQuestions(this.user.userID).on('child_added', userQuestion => {
         this._question.getQuestionDetails(userQuestion.key).subscribe((questionDetail) => {
           this.userQuestions = DictionaryHelpFunctions.addToDictionary(this.userQuestions, userQuestion.key, questionDetail);
+
+          this.questionLoading = false;
+
         });
       });
+
+      if (!this.user.answers) {
+        this.answerLoading = false;
+      }
 
       this._user.getUserAnswers(this.user.userID).on('child_added', userAnswer => {
         this._answer.getAnswerDetails(userAnswer.key).subscribe((answerDetail) => {
           this.userAnswers = DictionaryHelpFunctions.addToDictionary(this.userAnswers, userAnswer.key, answerDetail);
           this._question.getQuestionDetails(answerDetail.question).subscribe((questionDetail) => {
             this.userAnswers[userAnswer.key].question = questionDetail;
+
+            this.answerLoading = false;
           });
         });
       });
     });
+  }
+
+  isEmpty(dictionary) {
+    return DictionaryHelpFunctions.isEmpty(dictionary);
   }
 
   goToProfile(){
