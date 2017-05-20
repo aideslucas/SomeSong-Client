@@ -10,13 +10,12 @@
 </ion-header>
 
 <ion-content padding>
-  <h3>Question</h3>
   <ion-grid>
     <ion-row>
-      <ion-col col-3 class="startCol">
+      <ion-col col-2 class="startCol">
         <img src="{{questionUser?.image}}" width="50px" height="50px">
       </ion-col>
-      <ion-col col-6></ion-col>
+      <ion-col col-7 class="startCol">{{question?.title}}</ion-col>
       <ion-col col-3 class="endCol">
         <ion-buttons end>
           <button ion-button icon-only round (click)="playRecording()" id="play-stop">
@@ -30,82 +29,95 @@
       <ion-col class="startCol">
         {{questionUser?.displayName}}
       </ion-col>
+      <ion-col class="endCol">
+      {{questionTime}}
+    </ion-col>
     </ion-row>
   </ion-grid>
-
-  <br/>
-
   <b>Question Possible Genres:</b><br/>
   <div *ngIf="question?.genres">
-    <button ion-button *ngFor="let genre of question?.genres | keyValueFilter">
+    <button ion-button small *ngFor="let genre of question?.genres | keyValueFilter">
       {{genre.value}}
     </button>
   </div>
 
-  <br/>
-
   <b>Question Possible Languages:</b><br/>
   <div *ngIf="question?.languages">
-    <button ion-button *ngFor="let language of question?.languages | keyValueFilter">
+    <button ion-button small *ngFor="let language of question?.languages | keyValueFilter">
       {{language.value}}
     </button>
   </div>
 
-  <hr/>
+  <div class="scrollableContent">
+    <ion-list-header class="list-header">
+      Answers
+    </ion-list-header>
+    <ion-scroll scrollY="true">
+      <ion-list *ngIf="!isEmpty(questionAnswers) && !answerLoading">
+        <ion-item-sliding *ngFor="let answer of questionAnswers | keyValueFilter" #item>
+          <ion-item>
+            <ion-grid>
+              <ion-row>
+                <ion-col col-2 class="startCol">
+                  <img class="user-photo" src="{{answer.value.user?.image}}">
+                </ion-col>
+                <ion-col col-8 class="startCol">
+                  {{answer.value.content}}
+                </ion-col>
+                <ion-col col-2 class="endCol">
+                  <div class="votes" *ngIf="answer.key != question.correctAnswer">
+                    {{answer.value.votes}} &nbsp;
+                    <ion-icon name="thumbs-up" color="secondary" *ngIf="answer.value.votes > 0"></ion-icon>
+                    <ion-icon name="thumbs-down" color="danger" *ngIf="answer.value.votes < 0"></ion-icon>
+                  </div>
+                  <div class="votes" *ngIf="answer.key == question.correctAnswer">
+                    <ion-icon name="checkmark" color="secondary"></ion-icon>
+                  </div>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col class="startCol" col-6>
+                  <strong>{{answer.value.user?.displayName}}</strong>
+                </ion-col>
+                <ion-col class="endCol" col-6>
+                  <span class="text-muted">{{answer.value?.time}}</span>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+          <ion-item-options side="right" *ngIf="currentUser?.userID !== question.user && currentUser?.userID !== answer.value.user.userID">
+            <button ion-button small circle color="secondary" (click)="upVote(item, answer.value)">
+              <ion-icon name="arrow-up"></ion-icon>
+              UpVote
+            </button>
+            <button ion-button small circle color="danger" (click)="downVote(item, answer.value)">
+              <ion-icon name="arrow-down"></ion-icon>
+              DownVote
+            </button>
+          </ion-item-options>
+          <ion-item-options side="right" *ngIf="currentUser?.userID === question.user">
+            <button ion-button small circle (click)="resolve(item, answer.value)">
+              <ion-icon name="checkmark"></ion-icon>
+              Correct Answer
+            </button>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+      <div *ngIf="isEmpty(questionAnswers) && !answerLoading" class="contentCentered">
+        <div>
+          No answers posted yet.
+        </div>
+      </div>
+      <div *ngIf="answerLoading" class="contentCentered">
+        <div class="loader"></div>
+      </div>
+    </ion-scroll>
+  </div>
 
-  <h3>Answers</h3>
-  <ion-list>
-    <ion-item-sliding *ngFor="let answer of questionAnswers | keyValueFilter" #item>
-      <ion-item>
-        <ion-grid>
-          <ion-row>
-            <ion-col col-2 class="startCol">
-              <img class="user-photo" src="{{answer.value.user?.image}}">
-            </ion-col>
-            <ion-col col-8 class="startCol">
-              {{answer.value.content}}
-            </ion-col>
-            <ion-col col-2 class="endCol">
-              <div class="votes" *ngIf="answer.key != question.correctAnswer">
-                {{answer.value.votes}} &nbsp;
-                <ion-icon name="thumbs-up" color="secondary" *ngIf="answer.value.votes > 0"></ion-icon>
-                <ion-icon name="thumbs-down" color="danger" *ngIf="answer.value.votes < 0"></ion-icon>
-              </div>
-              <div class="votes" *ngIf="answer.key == question.correctAnswer">
-                <ion-icon name="checkmark" color="secondary"></ion-icon>
-              </div>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col class="startCol" col-6>
-              <strong>{{answer.value.user?.displayName}}</strong>
-            </ion-col>
-            <ion-col class="endCol" col-6>
-              <span class="text-muted">{{answer.value?.time}}</span>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-item>
-      <ion-item-options side="right">
-        <button ion-button small circle color="secondary" (click)="upVote(item, answer.value)">
-          <ion-icon name="arrow-up"></ion-icon>
-          Vote
-        </button>
-        <button ion-button small circle color="danger" (click)="downVote(item, answer.value)">
-          <ion-icon name="arrow-down"></ion-icon>
-          Vote
-        </button>
-        <button ion-button small circle (click)="resolve(item, answer.value)">
-          <ion-icon name="checkmark"></ion-icon>
-          Correct
-        </button>
-      </ion-item-options>
-    </ion-item-sliding>
-  </ion-list>
 </ion-content>
 
 
-<ion-footer>
+<ion-footer *ngIf="currentUser?.userID !== question?.user">
   <form (ngSubmit)="sendAnswer()" #answerForm="ngForm">
     <ion-toolbar>
       <ion-textarea placeholder="Suggest answer here..." [(ngModel)]="answer" name="answer"></ion-textarea>

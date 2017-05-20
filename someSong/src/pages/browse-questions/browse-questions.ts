@@ -26,7 +26,6 @@ export class BrowseQuestionsPage {
         question["enabled"]=true;
         this.questions.push(question);
       }
-      console.log(this.questions);
     });
  }
   // Functions
@@ -42,13 +41,11 @@ export class BrowseQuestionsPage {
   }
 
   getAllEnabledQuestions(){
-    console.log(this.questions);
     var enabledQuestions = [];
  //   var filteredGenresKeys = this.arrayGenresToKeysGenres(this.filteredGenres);
  //   console.log(filteredGenresKeys);
     for (var i =0; i<this.questions.length; i++){
  //     var b = this.findOne(this.questions[i]["genres"],filteredGenresKeys);
-      console.log(this.questions[i]["genres"]);
  //     console.log(filteredGenresKeys);
 //      if ( !b){
         enabledQuestions.push(this.questions[i]);

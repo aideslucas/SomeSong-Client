@@ -21,6 +21,9 @@ export class QuestionDetailsPage {
   answer: any;
   playing: boolean = false;
   questionSubs: any;
+  currentUser: any;
+  answerLoading = true;
+  questionTime: any;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -30,8 +33,13 @@ export class QuestionDetailsPage {
               private _user: User,
               private _answer: Answer)
   {
+    this._user.currentUser.first().subscribe(data => {
+      this.currentUser = data;
+    })
+
     this.questionSubs = this._question.getQuestionDetails(navParams.data).subscribe(question => {
       this.question = question;
+      this.questionTime = this._answer.getLocalTime(this.question.timeUTC);
 
     /*  this._record.getRecordURL(this.question.record).then(url => {
         this.question.file = new Media(url, ()=> {
@@ -44,6 +52,10 @@ export class QuestionDetailsPage {
         this.questionUser = user.val();
       });
 
+      if (!this.question.answers) {
+        this.answerLoading = false;
+      }
+
       this._question.getQuestionAnswers(this.question.questionID).on('child_added', questionAnswer => {
         this._answer.getAnswerDetails(questionAnswer.key).subscribe((answerDetail) => {
           this.questionAnswers = DictionaryHelpFunctions.addToDictionary(this.questionAnswers, questionAnswer.key, answerDetail);
@@ -51,31 +63,31 @@ export class QuestionDetailsPage {
             this.questionAnswers[questionAnswer.key].user = userDetail.val();
           });
           this.questionAnswers[questionAnswer.key].time = this._answer.getLocalTime(this.questionAnswers[questionAnswer.key].timeUTC);
+
+          this.answerLoading = false;
         });
       });
     });
   }
 
+
+  isEmpty(dictionary) {
+    return DictionaryHelpFunctions.isEmpty(dictionary);
+  }
+
+
   upVote(item, answer) {
     item.close();
     answer.votes++;
 
-    this._answer.updateAnswer(answer).then(data => {
-      this._user.getUser(answer.user).then(userData => {
-        answer.user = userData.val();
-      });
-    });
+    this._answer.updateAnswer(answer);
   }
 
   downVote(item, answer) {
     item.close();
     answer.votes--;
 
-    this._answer.updateAnswer(answer).then(data => {
-      this._user.getUser(answer.user).then(userData => {
-        answer.user = userData.val();
-      });
-    });
+    this._answer.updateAnswer(answer);
   }
 
   resolve(item, answer) {
@@ -99,7 +111,7 @@ export class QuestionDetailsPage {
   }
 
   sendAnswer() {
-    this._answer.writeNewAnswer(this.answer, this.questionUser.userID, this.question.questionID);
+    this._answer.writeNewAnswer(this.answer, this.currentUser.userID, this.question.questionID);
     this.answer = '';
   }
 
