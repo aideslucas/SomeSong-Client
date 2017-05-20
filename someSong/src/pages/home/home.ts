@@ -33,6 +33,10 @@ export class HomePage {
     {
       this.user = data;
 
+      if (!this.user.questions) {
+        this.questionLoading = false;
+      }
+
       this._user.getUserQuestions(this.user.userID).on('child_added', userQuestion => {
         this._question.getQuestionDetails(userQuestion.key).subscribe((questionDetail) => {
           this.userQuestions = DictionaryHelpFunctions.addToDictionary(this.userQuestions, userQuestion.key, questionDetail);
@@ -41,6 +45,10 @@ export class HomePage {
 
         });
       });
+
+      if (!this.user.answers) {
+        this.answerLoading = false;
+      }
 
       this._user.getUserAnswers(this.user.userID).on('child_added', userAnswer => {
         this._answer.getAnswerDetails(userAnswer.key).subscribe((answerDetail) => {

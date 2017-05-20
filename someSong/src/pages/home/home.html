@@ -17,14 +17,14 @@
       My Questions
     </ion-list-header>
     <ion-scroll scrollY="true">
-      <ion-list no-lines no-padding *ngIf="userQuestions && !isEmpty(userQuestions) && !questionLoading">
+      <ion-list no-lines no-padding *ngIf="!isEmpty(userQuestions) && !questionLoading">
         <button ion-item *ngFor="let question of userQuestions | keyValueFilter" (click)="goToQuestion(question.key)">
           {{question.value.title}}
           <ion-icon name="checkmark" item-left color="secondary" *ngIf="question.value.correctAnswer"></ion-icon>
           <ion-icon name="help" item-left color="dark" *ngIf="!question.value.correctAnswer"></ion-icon>
         </button>
       </ion-list>
-      <div *ngIf="userQuestions && isEmpty(userQuestions) && !questionLoading" class="contentCentered">
+      <div *ngIf="isEmpty(userQuestions) && !questionLoading" class="contentCentered">
         <div>
           No questions asked yet. <br>
           Press the
@@ -48,11 +48,11 @@
       My Answers
     </ion-list-header>
     <ion-scroll scrollY="true">
-      <ion-list no-lines no-padding *ngIf="userAnswers && !isEmpty(userAnswers) && !answerLoading">
+      <ion-list no-lines no-padding *ngIf="!isEmpty(userAnswers) && !answerLoading">
         <button ion-item *ngFor="let answer of userAnswers | keyValueFilter"
                 (click)="goToQuestion(answer.value.question.questionID)">
           {{answer.value.question.title}}
-          <ion-icon name="checkmark" *ngIf="answer.value.question.correctAnswer == answer.key" color="secondary"
+          <ion-icon name="checkmark" *ngIf="answer.value.question.correctAnswer === answer.key" color="secondary"
                     item-left></ion-icon>
           <ion-icon name="close"
                     *ngIf="answer.value.question.correctAnswer && answer.value.question.correctAnswer != answer.key"
@@ -61,13 +61,13 @@
           <ion-icon name="ios-thumbs-up" *ngIf="answer.value.votes > 0" color="danger" item-right class="right-icons">
             &nbsp;{{answer.value.votes}}
           </ion-icon>
-          <ion-icon *ngIf="answer.value.votes == 0" item-right class="right-icons">{{answer.value.votes}}</ion-icon>
+          <ion-icon *ngIf="answer.value.votes === 0" item-right class="right-icons">{{answer.value.votes}}</ion-icon>
           <ion-icon name="ios-thumbs-down" *ngIf="answer.value.votes < 0" color="danger" item-right class="right-icons">
             &nbsp;{{answer.value.votes}}
           </ion-icon>
         </button>
       </ion-list>
-      <div *ngIf="userAnswers && isEmpty(userAnswers) && !answerLoading" class="contentCentered">
+      <div *ngIf="isEmpty(userAnswers) && !answerLoading" class="contentCentered">
         <div>
           No answers posted yet.<br>
           Press the
