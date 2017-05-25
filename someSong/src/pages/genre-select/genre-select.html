@@ -1,8 +1,5 @@
 <ion-header>
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
+  <ion-navbar hideBackButton>
     <ion-title>
       Select Genres
     </ion-title>
@@ -11,6 +8,7 @@
 
 <ion-content padding>
   <ion-list *ngIf="genres">
+    <button ion-item color="primary" (click)="selectAll()">Select All</button>
     <ion-item *ngFor="let genre of genres">
       <ion-label>{{genre.val()}}</ion-label>
       <ion-checkbox color="primary" (ionChange)="insertGenreToArray($event, genre)" [checked]="(selected[genre.key] != null)"></ion-checkbox>

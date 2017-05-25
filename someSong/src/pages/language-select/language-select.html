@@ -1,8 +1,5 @@
 <ion-header>
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
+  <ion-navbar hideBackButton>
     <ion-title>
       Select Languages
     </ion-title>
@@ -11,6 +8,7 @@
 
 <ion-content padding>
   <ion-list *ngIf="languages">
+    <button ion-item color="primary" (click)="selectAll()">Select All</button>
     <ion-item *ngFor="let language of languages">
       <ion-label>{{language.val()}}</ion-label>
       <ion-checkbox color="primary" (ionChange)="insertLanguageToArray($event, language)" [checked]="(selected[language.key] != null)"></ion-checkbox>

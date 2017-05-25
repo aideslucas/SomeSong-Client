@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import {NavController, NavParams, Platform, ViewController} from 'ionic-angular';
-import {HomePage} from "../home/home";
-import {User} from "../../providers/user";
+import { NavParams, Platform, ViewController} from 'ionic-angular';
 import {Genre} from "../../providers/genre";
+import DictionaryHelpFunctions from "../../assets/dictionaryHelpFunctions";
 
 @Component({
   selector: 'page-genre-select',
@@ -11,15 +10,30 @@ import {Genre} from "../../providers/genre";
 export class GenreSelectPage {
   genres = [];
   selected: {[id: string] : string};
+  canLeave = false;
 
   constructor(params: NavParams,
               private viewController: ViewController,
               private _genre: Genre) {
     this.selected = params.get('selectedGenres');
 
+    var selectAll = false;
+    if (DictionaryHelpFunctions.isEmpty(this.selected)) {
+      selectAll = true;
+    }
+
     this._genre.getGenres().orderByValue().on('child_added', (data) => {
       this.genres.push(data);
+      if (selectAll) {
+        this.selected[data.key] = data.val();
+      }
     });
+  }
+
+  selectAll(){
+    for (let x of this.genres) {
+      this.selected[x.key] = x.val();
+    }
   }
 
   insertGenreToArray(item, genre){
@@ -35,6 +49,11 @@ export class GenreSelectPage {
 
   save()
   {
+    this.canLeave = true;
     this.viewController.dismiss(this.selected);
+  }
+
+  ionViewCanLeave(): boolean{
+    return this.canLeave;
   }
 }
