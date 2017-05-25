@@ -58,7 +58,7 @@
                     *ngIf="answer.value.question.correctAnswer && answer.value.question.correctAnswer != answer.key"
                     color="danger" item-left></ion-icon>
           <ion-icon name="help" color="dark" *ngIf="!answer.value.question.correctAnswer" item-left></ion-icon>
-          <ion-icon name="ios-thumbs-up" *ngIf="answer.value.votes > 0" color="danger" item-right class="right-icons">
+          <ion-icon name="ios-thumbs-up" *ngIf="answer.value.votes > 0" color="secondary" item-right class="right-icons">
             &nbsp;{{answer.value.votes}}
           </ion-icon>
           <ion-icon *ngIf="answer.value.votes === 0" item-right class="right-icons">{{answer.value.votes}}</ion-icon>

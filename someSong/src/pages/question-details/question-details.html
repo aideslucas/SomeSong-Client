@@ -67,8 +67,8 @@
                 <ion-col col-2 class="endCol">
                   <div class="votes" *ngIf="answer.key != question.correctAnswer">
                     {{answer.value.votes}} &nbsp;
-                    <ion-icon name="thumbs-up" color="secondary" *ngIf="answer.value.votes > 0"></ion-icon>
-                    <ion-icon name="thumbs-down" color="danger" *ngIf="answer.value.votes < 0"></ion-icon>
+                    <ion-icon name="ios-thumbs-up" color="secondary" *ngIf="answer.value.votes > 0"></ion-icon>
+                    <ion-icon name="ios-thumbs-down" color="danger" *ngIf="answer.value.votes < 0"></ion-icon>
                   </div>
                   <div class="votes" *ngIf="answer.key == question.correctAnswer">
                     <ion-icon name="checkmark" color="secondary"></ion-icon>

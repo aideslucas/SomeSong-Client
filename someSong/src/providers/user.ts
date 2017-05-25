@@ -25,7 +25,13 @@ export class User {
   }
 
   logOut() {
-    this.currentUser = null;
+    this.currentUser.first().subscribe(data => {
+      var user = data;
+      user.token = "";
+      this.updateUser(user);
+
+      this.currentUser = null;
+    });
   }
 
   getUser(userID: string)

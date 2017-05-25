@@ -1,7 +1,7 @@
 {
-    "name": "ionic-hello-world",
-    "author": "Ionic Framework",
-    "homepage": "http://ionicframework.com/",
+    "name": "SomeSong",
+    "author": "SomeSong",
+    "homepage": "http://somesong.com/",
     "private": true,
     "scripts": {
         "clean": "ionic-app-scripts clean",
@@ -19,6 +19,7 @@
         "@angular/platform-browser": "4.0.0",
         "@angular/platform-browser-dynamic": "4.0.0",
         "@ionic-native/core": "^3.6.1",
+        "@ionic-native/deeplinks": "^3.10.3",
         "@ionic-native/facebook": "^3.4.4",
         "@ionic-native/file": "^3.5.0",
         "@ionic-native/file-chooser": "^3.5.0",
@@ -30,8 +31,6 @@
         "@ionic-native/status-bar": "3.4.2",
         "@ionic-native/youtube-video-player": "^3.6.1",
         "@ionic/storage": "2.0.1",
-        "angularfire2": "^2.0.0-beta.8",
-        "com.bunkerpalace.cordova.YoutubeVideoPlayer": "https://github.com/Glitchbone/CordovaYoutubeVideoPlayer.git",
         "cordova-android": "^6.2.3",
         "cordova-plugin-console": "^1.0.5",
         "cordova-plugin-device": "^1.1.4",
@@ -42,6 +41,7 @@
         "firebase": "^3.7.5",
         "ionic-angular": "3.0.0",
         "ionic-material": "^0.4.1",
+        "ionic-plugin-deeplinks": "^1.0.15",
         "ionic-plugin-deploy": "^0.6.7",
         "ionic-plugin-keyboard": "^2.2.1",
         "ionicons": "3.0.0",
@@ -65,11 +65,10 @@
         "cordova-plugin-splashscreen"
     ],
     "cordovaPlatforms": [],
-    "description": "someSong: An Ionic project",
+    "description": "SomeSong: The Sound of the People",
     "cordova": {
         "plugins": {
             "Media": {},
-            "com.bunkerpalace.cordova.YoutubeVideoPlayer": {},
             "cordova-plugin-console": {},
             "cordova-plugin-device": {},
             "cordova-plugin-facebook4": {
@@ -83,6 +82,24 @@
             "ionic-plugin-keyboard": {},
             "phonegap-plugin-push": {
                 "SENDER_ID": "655905548469"
+            },
+            "ionic-plugin-deeplinks": {
+                "URL_SCHEME": "somesong",
+                "DEEPLINK_SCHEME": "https",
+                "DEEPLINK_HOST": "somesong.com",
+                "ANDROID_PATH_PREFIX": "/",
+                "ANDROID_2_PATH_PREFIX": "/",
+                "ANDROID_3_PATH_PREFIX": "/",
+                "ANDROID_4_PATH_PREFIX": "/",
+                "ANDROID_5_PATH_PREFIX": "/",
+                "DEEPLINK_2_SCHEME": " ",
+                "DEEPLINK_2_HOST": " ",
+                "DEEPLINK_3_SCHEME": " ",
+                "DEEPLINK_3_HOST": " ",
+                "DEEPLINK_4_SCHEME": " ",
+                "DEEPLINK_4_HOST": " ",
+                "DEEPLINK_5_SCHEME": " ",
+                "DEEPLINK_5_HOST": " "
             }
         },
         "platforms": [

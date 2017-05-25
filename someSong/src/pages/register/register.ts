@@ -37,13 +37,12 @@ export class RegisterPage {
     this.authStateChanged = this._auth.authState.onAuthStateChanged(authUser => {
       if (authUser != null) {
         this.loading.dismiss();
-        this.authStateChanged();
         this._user.logIn(authUser.uid);
 
         var user;
         this._user.currentUser.first().subscribe(data => {
           user = data;
-        })
+        });
 
         var languageModal = this.modalCtrl.create(LanguageSelectPage,  { selectedLanguages: {} });
         languageModal.onDidDismiss(data => {
@@ -53,7 +52,8 @@ export class RegisterPage {
           genreModal.onDidDismiss(data => {
             user.genres = data;
             this._user.updateUser(user);
-            this.navCtrl.setRoot(HomePage);
+            //this.navCtrl.setRoot(HomePage);
+            this.navCtrl.pop();
           });
 
           genreModal.present();

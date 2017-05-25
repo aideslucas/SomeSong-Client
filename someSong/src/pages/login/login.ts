@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ModalController, NavController, Platform} from 'ionic-angular';
+import {LoadingController, ModalController, NavController, NavParams, Platform} from 'ionic-angular';
 
 import {Auth} from '../../providers/auth';
 import {User} from "../../providers/user";
@@ -17,8 +17,11 @@ export class LoginPage {
   form: any;
   error: any;
   authStateChanged: any;
+  loader: any;
 
   constructor(public platform: Platform,
+              public params: NavParams,
+              public loadingCtrl: LoadingController,
               public navCtrl: NavController,
               public modalCtrl: ModalController,
               private _auth: Auth,
@@ -28,8 +31,13 @@ export class LoginPage {
       password: ''
     };
 
+    this.loader = this.loadingCtrl.create({
+      content: 'Please Wait...'
+    });
+
     this.authStateChanged = this._auth.authState.onAuthStateChanged(authUser => {
       if (authUser != null) {
+        this.loader.present();
         this._user.logIn(authUser.uid);
         this._user.getUser(authUser.uid)
           .then(user => {
@@ -47,7 +55,7 @@ export class LoginPage {
                 var user;
                 this._user.currentUser.first().subscribe(data => {
                   user = data;
-                })
+                });
 
                 var languageModal = this.modalCtrl.create(LanguageSelectPage, { selectedLanguages: {} });
                 languageModal.onDidDismiss(data => {
@@ -61,12 +69,13 @@ export class LoginPage {
 
                   genreModal.present();
                 });
-
+                this.loader.dismiss();
                 languageModal.present();
               });
             }
             else
             {
+              this.loader.dismiss();
               this.navCtrl.setRoot(HomePage);
             }
           });
@@ -79,7 +88,6 @@ export class LoginPage {
   }
 
   register() {
-    this.authStateChanged();
     this.navCtrl.push(RegisterPage);
   }
 
