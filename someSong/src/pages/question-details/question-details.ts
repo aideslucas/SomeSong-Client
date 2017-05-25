@@ -33,7 +33,7 @@ export class QuestionDetailsPage {
               private _user: User,
               private _answer: Answer)
   {
-    this._user.currentUser.first().subscribe(data => {
+    this._user.currentUser.subscribe(data => {
       this.currentUser = data;
     });
 
@@ -79,14 +79,45 @@ export class QuestionDetailsPage {
   upVote(item, answer) {
     item.close();
     answer.votes++;
+    if (this.currentUser.votes == null)
+    {
+      this.currentUser.votes = {};
+    }
 
+    if (this.currentUser.votes[answer.answerID] == null)
+      this.currentUser.votes[answer.answerID] = 1;
+    else
+      this.currentUser.votes[answer.answerID]++;
+
+    this._user.updateUser(this.currentUser);
     this._answer.updateAnswer(answer);
+  }
+
+  canVote(answer) {
+    if (this.currentUser.votes != null) {
+      if (this.currentUser.votes[answer.answerID] != null) {
+        return this.currentUser.votes[answer.answerID];
+      }
+    }
+
+    return 0;
   }
 
   downVote(item, answer) {
     item.close();
     answer.votes--;
 
+    if (this.currentUser.votes == null)
+    {
+      this.currentUser.votes = {};
+    }
+
+    if (this.currentUser.votes[answer.answerID] == null)
+      this.currentUser.votes[answer.answerID] = -1;
+    else
+      this.currentUser.votes[answer.answerID]--;
+
+    this._user.updateUser(this.currentUser);
     this._answer.updateAnswer(answer);
   }
 

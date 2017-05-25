@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "655905548469",
+    "firebase_url": "https://somesong-700c4.firebaseio.com",
+    "project_id": "somesong-700c4",
+    "storage_bucket": "somesong-700c4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:655905548469:android:f247ed7874effcec",
+        "android_client_info": {
+          "package_name": "com.ionicframework.somesong653067"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "655905548469-22uljh7neke1f5g5pjrr60uets6faojp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoh9wmcY2CsOdOzgFWMGSAqsKz44SGNtU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
