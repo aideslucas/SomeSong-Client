@@ -48,6 +48,10 @@ export class LanguageSelectPage {
     }
   }
 
+  noneSelected() {
+    return DictionaryHelpFunctions.isEmpty(this.selected);
+  }
+
   save()
   {
     this.canLeave = true;

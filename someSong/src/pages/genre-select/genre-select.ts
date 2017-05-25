@@ -30,6 +30,11 @@ export class GenreSelectPage {
     });
   }
 
+  noneSelected() {
+    return DictionaryHelpFunctions.isEmpty(this.selected);
+  }
+
+
   selectAll(){
     for (let x of this.genres) {
       this.selected[x.key] = x.val();

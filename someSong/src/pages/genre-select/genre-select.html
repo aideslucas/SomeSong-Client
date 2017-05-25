@@ -18,7 +18,7 @@
 
 <ion-footer>
   <ion-buttons>
-    <button ion-button block (click)="save()">
+    <button ion-button block (click)="save()" [disabled]="noneSelected()">
       Save &nbsp;<ion-icon name="save"></ion-icon>
     </button>
   </ion-buttons>
