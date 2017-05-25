@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
-import { NavController } from 'ionic-angular';
+import {AlertController, NavController} from 'ionic-angular';
 
 import { ProfilePage } from "../profile/profile";
 import { QuestionDetailsPage } from "../question-details/question-details";
@@ -10,6 +10,8 @@ import { User } from "../../providers/user";
 import {Answer} from "../../providers/answer";
 import {Question} from "../../providers/question";
 import DictionaryHelpFunctions from "../../assets/dictionaryHelpFunctions";
+
+import {Push, PushObject, PushOptions} from '@ionic-native/push'
 
 @Component({
   selector: 'page-home',
@@ -26,12 +28,16 @@ export class HomePage {
 
   constructor(public navCtrl: NavController,
               private ref: ChangeDetectorRef,
+              private alertCtrl: AlertController,
               private _user: User,
               private _answer: Answer,
-              private _question: Question) {
+              private _question: Question,
+              private _push: Push) {
     this.userSubscription = this._user.currentUser.subscribe((data) =>
     {
       this.user = data;
+
+      this.initPushNotifications();
 
       if (!this.user.questions) {
         this.questionLoading = false;
@@ -61,6 +67,53 @@ export class HomePage {
         });
       });
     });
+  }
+
+  initPushNotifications() {
+    const options: PushOptions = {
+      android: {
+        senderID: '655905548469'
+      },
+      ios: {
+        alert: 'true',
+        badge: true,
+        sound: 'false'
+      },
+      windows: {}
+    };
+
+    const pushObject: PushObject = this._push.init(options);
+
+    pushObject.on('notification').subscribe((notification: any) => {
+      if (notification.additionalData.foreground) {
+        // if application open, show popup
+        let notificationAlert = this.alertCtrl.create({
+          title: notification.title,
+          message: notification.message,
+          buttons: [{
+            text: 'Ignore',
+            role: 'cancel'
+          }, {
+            text: 'View',
+            handler: () => {
+              this.navCtrl.push(QuestionDetailsPage, notification.additionalData.questionID);
+            }
+          }]
+        });
+
+        notificationAlert.present();
+      } else {
+        //if user NOT using app and push notification comes
+        this.navCtrl.push(QuestionDetailsPage, notification.additionalData.questionID);
+      }
+    });
+
+    pushObject.on('registration').subscribe((registration: any) => {
+      this.user.token = registration.registrationId;
+      this._user.updateUser(this.user);
+    });
+
+    pushObject.on('error').subscribe(error => alert('Error with Push plugin'+ JSON.stringify(error)));
   }
 
   isEmpty(dictionary) {

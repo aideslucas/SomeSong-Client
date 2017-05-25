@@ -108,5 +108,7 @@ export class Answer {
 
       this._user.updateUser(user);
     });
+
+    return ansKey;
   }
 }

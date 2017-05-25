@@ -7,6 +7,7 @@ import {User} from "../../providers/user";
 import {Answer} from "../../providers/answer";
 import {Record} from "../../providers/record";
 import DictionaryHelpFunctions from "../../assets/dictionaryHelpFunctions";
+import {Notification} from "../../providers/notification";
 
 declare var Media: any;
 
@@ -31,7 +32,8 @@ export class QuestionDetailsPage {
               private _question: Question,
               private _record: Record,
               private _user: User,
-              private _answer: Answer)
+              private _answer: Answer,
+              private _notification: Notification)
   {
     this._user.currentUser.first().subscribe(data => {
       this.currentUser = data;
@@ -81,6 +83,10 @@ export class QuestionDetailsPage {
     answer.votes++;
 
     this._answer.updateAnswer(answer);
+
+    if (answer.votes%10 == 0) {
+      this._notification.writeNewNotification(answer.user, 2, this.question, answer);
+    }
   }
 
   downVote(item, answer) {
@@ -92,10 +98,10 @@ export class QuestionDetailsPage {
 
   resolve(item, answer) {
     item.close();
-
     this.question.correctAnswer = answer.answerID;
-
     this._question.updateQuestion(this.question);
+
+    this._notification.writeNewNotification(answer.user, 1, this.question, answer);
   }
 
   playRecording() {
@@ -111,8 +117,12 @@ export class QuestionDetailsPage {
   }
 
   sendAnswer() {
-    this._answer.writeNewAnswer(this.answer, this.currentUser.userID, this.question.questionID);
+    var ansKey = this._answer.writeNewAnswer(this.answer, this.currentUser.userID, this.question.questionID);
     this.answer = '';
+
+    this._answer.getAnswerDetails(ansKey).first().subscribe((answer) => {
+      this._notification.writeNewNotification(this.question.user, 0, this.question, answer);
+    })
   }
 
   ionViewWillUnload() {

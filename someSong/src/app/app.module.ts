@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
 
 import { MyApp } from './app.component';
 
@@ -36,6 +36,9 @@ import {Record} from "../providers/record";
 import firebase from 'firebase'
 
 import { keyValueFilterPipe} from '../assets/keyValueFilter';
+import {Push} from "@ionic-native/push";
+import {Notification} from "../providers/notification";
+import {Deeplinks} from "@ionic-native/deeplinks";
 
 export const firebaseConfig = {
   apiKey: "AIzaSyA_MquO5E-MQKjnEdaEUC-fnEXENMjz6Ro",
@@ -92,6 +95,9 @@ export const firebaseConfig = {
     Facebook,
     File,
     MediaPlugin,
+    Push,
+    Notification,
+    Deeplinks,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
