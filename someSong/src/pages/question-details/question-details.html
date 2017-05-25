@@ -86,11 +86,11 @@
             </ion-grid>
           </ion-item>
           <ion-item-options side="right" *ngIf="currentUser?.userID !== question.user && currentUser?.userID !== answer.value.user.userID">
-            <button ion-button small circle color="secondary" (click)="upVote(item, answer.value)">
+            <button ion-button small circle color="secondary" [disabled]="canVote(answer.value) === 1" (click)="upVote(item, answer.value)">
               <ion-icon name="arrow-up"></ion-icon>
               UpVote
             </button>
-            <button ion-button small circle color="danger" (click)="downVote(item, answer.value)">
+            <button ion-button small circle color="danger" [disabled]="canVote(answer.value) === -1" (click)="downVote(item, answer.value)">
               <ion-icon name="arrow-down"></ion-icon>
               DownVote
             </button>
