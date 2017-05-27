@@ -38,8 +38,8 @@
     <ion-row>
       <ion-list *ngIf="languagesArray">
         <ion-item >
-          <ion-label >By Language</ion-label>
-          <ion-select placeholder="Choose languages" class="labelFixWidth"
+          <ion-label class="labelFilter" >By Language</ion-label>
+          <ion-select placeholder="Choose languages" class="select"
                       multiple="true" [(ngModel)]="filteredLanguages"
                       (ionChange)="getAllEnabledQuestions()">
             <ion-option value={{language}} *ngFor="let language of languagesArray">

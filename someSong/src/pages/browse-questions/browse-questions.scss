@@ -43,9 +43,10 @@ page-browse-questions {
   .dropdown-check-list.visible .items {
     display: block;
   }
-  .labelFixWidth {
-    width: 100%;
-    //$select-popover-list-margin-top: 10px;
-    margin: 0;
+  .labelFilter {
+    width: 50%;
+  }
+  .select{
+    width: 50%;
   }
 }

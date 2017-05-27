@@ -39,38 +39,45 @@ export class BrowseQuestionsPage {
         question["enabled"] = true;
         this.questions.push(question);
       }
-      console.log(this.questions);
+      console.log("Questions are - " + this.questions);
+      this.questions.sort(function(a,b){
+        return BrowseQuestionsPage.createDateFromQuestion(a) < BrowseQuestionsPage.createDateFromQuestion(b);
+      });
+      console.log("Ordered Questions are - " + this.questions);
     }));
 
 
-    promises.push(this._genres.getGenres().once('value').then(data => {
+    promises.push(this._genres.getGenres().orderByValue().once('value').then(data => {
       this.genresDict = data.val();
       for (var key in this.genresDict) {
         this.genresArray.push(this.genresDict[key]);
       }
-      console.log(this.genresArray);
+      this.genresArray.sort();
+
       // TODO: change filters to only users preffered genres.
       this.filteredGenres = this.genresArray;
     }));
 
-    promises.push(this._languages.getLanguages().once('value').then(data => {
+    promises.push(this._languages.getLanguages().orderByValue().once('value').then(data => {
       this.languagesDict = data.val();
-      console.log("language dict is - " + this.languagesDict);
       for (var key in this.languagesDict) {
         this.languagesArray.push(this.languagesDict[key]);
       }
+      this.languagesArray.sort();
       this.filteredLanguages = this.languagesArray;
     }));
 
     Promise.all(promises).then( values=> {
         this.getAllEnabledQuestions();
-        console.log(this.questions);
       }).catch(reason => {
         console.log(reason);
     });
   }
 
-
+  static createDateFromQuestion(question){
+    var time = question['timeUTC'];
+    return new Date(time['year'],time['month'],time['date'],time['hours'],time['minutes'],time['seconds'])
+  }
   // Functions
   // TODO: this function should be in utils file.
 
@@ -87,7 +94,6 @@ export class BrowseQuestionsPage {
     // var enabledQuestions = [];
     this.enabledQuestions = [];
     for (var i =0; i<this.questions.length; i++){
-      console.log("genres of question - " + this.questions[i]['genres']);
       if (BrowseQuestionsPage.similarDictAndArrays(this.questions[i]['genres'],this.filteredGenres) &&
           BrowseQuestionsPage.similarDictAndArrays(this.questions[i]['languages'],this.filteredLanguages)){
         this.enabledQuestions.push(this.questions[i]);
@@ -97,8 +103,6 @@ export class BrowseQuestionsPage {
     if (!this.searchQuery) {
       return this.enabledQuestions;
     }
-
-    console.log("Query is ----------- " + this.searchQuery);
 
     this.enabledQuestions = this.enabledQuestions.filter((v) => {
       if(v.title && this.searchQuery) {
