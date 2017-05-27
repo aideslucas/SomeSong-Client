@@ -15,7 +15,7 @@ page-register {
       background: transparent;
 
       ion-label {
-        color: #ffffff;
+        color: #000000;
       }
     }
   }
@@ -31,11 +31,11 @@ page-register {
     }
   }
 
-  .sign-up-btn {
-    width: 50%;
+  .footer-buttons {
+    width: 48%;
     margin-bottom: 10px;
-    margin-left: 20%;
-    margin-right: 20%;
+    margin-right: 0 !important;
+    margin-left: 1% !important;
     font-size: 1.2em;
     color: white;
   }

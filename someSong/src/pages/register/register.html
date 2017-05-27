@@ -1,8 +1,5 @@
 <ion-header>
   <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
     <ion-title>
       Register
     </ion-title>
@@ -39,7 +36,10 @@
 </ion-content>
 
 <ion-footer>
-  <button ion-button block [disabled]="!registerForm.form.valid" (click)="register()"
-          class="sign-up-btn">Register &nbsp;<ion-icon name="create"></ion-icon>
+  <button ion-button (click)="closeModal()"
+          class="footer-buttons">Cancel&nbsp;<ion-icon name="back"></ion-icon>
+  </button>
+  <button ion-button [disabled]="!registerForm.form.valid" (click)="register()"
+          class="footer-buttons">Register &nbsp;<ion-icon name="create"></ion-icon>
   </button>
 </ion-footer>
