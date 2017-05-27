@@ -39,6 +39,7 @@ import { keyValueFilterPipe} from '../assets/keyValueFilter';
 import {Push} from "@ionic-native/push";
 import {Notification} from "../providers/notification";
 import {Deeplinks} from "@ionic-native/deeplinks";
+import {ProgressBarComponent} from "../pages/progress-bar/progress-bar";
 
 export const firebaseConfig = {
   apiKey: "AIzaSyA_MquO5E-MQKjnEdaEUC-fnEXENMjz6Ro",
@@ -62,7 +63,8 @@ export const firebaseConfig = {
     GenreSelectPage,
     RegisterPage,
     UploadQuestionPage,
-    keyValueFilterPipe
+    keyValueFilterPipe,
+    ProgressBarComponent
   ],
   imports: [
     BrowserModule,
@@ -80,7 +82,8 @@ export const firebaseConfig = {
     LanguageSelectPage,
     GenreSelectPage,
     RegisterPage,
-    UploadQuestionPage
+    UploadQuestionPage,
+    ProgressBarComponent
   ],
   providers: [
     Auth,
