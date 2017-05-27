@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
+import {ChangeDetectorRef, Component } from '@angular/core';
 import {AlertController, NavController} from 'ionic-angular';
 
 import { ProfilePage } from "../profile/profile";
