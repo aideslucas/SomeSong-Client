@@ -23,10 +23,18 @@
       <ion-label>{{genre.value}}</ion-label>
     </ion-item>
   </ion-list>
-  <form (ngSubmit)="uploadRecording()" #loginForm="ngForm">
+  <!--<form (ngSubmit)="uploadRecording()" #loginForm="ngForm">
     <ion-item>
       <ion-label floating primary> <ion-icon name="alert"></ion-icon> Question Title</ion-label>
-      <ion-input required="" [(ngModel)]="title" name="title"></ion-input>
+      <ion-input required [(ngModel)]="title" name="title"></ion-input>
+    </ion-item>
+  <button ion-button type="submit">Upload &nbsp;<ion-icon name="cloud-upload"></ion-icon></button>
+  </form>-->
+
+  <form [formGroup]="uploadForm" (ngSubmit)="uploadRecording()" #loginForm="ngForm">
+    <ion-item>
+      <ion-label floating primary> <ion-icon name="alert"></ion-icon> Question Title</ion-label>
+      <ion-input formControlName="recordingTitle" type="text" [class.invalid]="!uploadForm.controls.recordingTitle.valid && (uploadForm.controls.recordingTitle.dirty || submitAttempt)"></ion-input>
     </ion-item>
   <button ion-button type="submit">Upload &nbsp;<ion-icon name="cloud-upload"></ion-icon></button>
   </form>

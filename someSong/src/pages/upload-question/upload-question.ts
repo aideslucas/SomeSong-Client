@@ -7,8 +7,7 @@ import {Question} from '../../providers/question'
 import {User} from "../../providers/user";
 import {File} from "@ionic-native/file";
 import * as firebase from 'firebase';
-import {Genre} from "../../providers/genre";
-import {Language} from "../../providers/language";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms'
 
 @Component({
   selector: 'page-upload-question',
@@ -21,24 +20,38 @@ export class UploadQuestionPage {
   private recordPath: string;
   private userID: string;
   private title: string;
+  private uploadForm: FormGroup;
+  public submitAttempt: boolean = false;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private question: Question,
               private user: User,
               private file: File,
-              private viewController: ViewController) {
+              private viewController: ViewController,
+              private formBuilder: FormBuilder) {
 
     this.title = '';
     this.selectedGenres = navParams.get('selectedGenres');
     this.selectedLanguages = navParams.get('selectedLanguages');
+
+    this.uploadForm = formBuilder.group({
+      recordingTitle: ['', Validators.required]
+    })
   }
 
   public uploadRecording(): void {
-    let questionID = this.question.getNewQuestionID();
+    this.submitAttempt = true;
+    if (this.uploadForm.valid) {
+      alert("valid!");
+    }
+    else {
+      alert("Not valid!");
+    }
+/*    let questionID = this.question.getNewQuestionID();
     this.saveRecordingToDB(questionID);
     this.saveRecordingToStorage(questionID);
-    this.viewController.dismiss();
+    this.viewController.dismiss();*/
   }
 
   private saveRecordingToDB(questionID: string): void {
