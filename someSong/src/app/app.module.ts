@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
+import {DeepLinkConfig, IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
 
 import { MyApp } from './app.component';
 
@@ -39,6 +39,7 @@ import { keyValueFilterPipe} from '../assets/keyValueFilter';
 import {Push} from "@ionic-native/push";
 import {Notification} from "../providers/notification";
 import {Deeplinks} from "@ionic-native/deeplinks";
+import {FacebookShare} from "../providers/facebook-share";
 
 export const firebaseConfig = {
   apiKey: "AIzaSyA_MquO5E-MQKjnEdaEUC-fnEXENMjz6Ro",
@@ -47,6 +48,14 @@ export const firebaseConfig = {
   projectId: "somesong-700c4",
   storageBucket: "somesong-700c4.appspot.com",
   messagingSenderId: "655905548469"
+};
+
+export const deepLinkConfig: DeepLinkConfig = {
+  links: [
+    { component: AskQuestionPage, name: 'AskQuestion', segment: 'askQuestion'},
+    { component: QuestionDetailsPage, name: 'QuestionDetails', segment: 'question/:questionID' },
+    { component: HomePage, name: 'HomePage', segment: 'home' }
+  ]
 };
 
 @NgModule({
@@ -66,7 +75,7 @@ export const firebaseConfig = {
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp, {}, deepLinkConfig)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -98,6 +107,7 @@ export const firebaseConfig = {
     Push,
     Notification,
     Deeplinks,
+    FacebookShare,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

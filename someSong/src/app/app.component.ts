@@ -8,6 +8,8 @@ import {Deeplinks} from "@ionic-native/deeplinks";
 import {Auth} from "../providers/auth";
 import {HomePage} from "../pages/home/home";
 import {User} from "../providers/user";
+import {QuestionDetailsPage} from "../pages/question-details/question-details";
+import {AskQuestionPage} from "../pages/ask-question/ask-question";
 
 @Component({
   templateUrl: 'app.html'
@@ -35,10 +37,36 @@ export class MyApp {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
+      let routes = {
+        'home': HomePage,
+        'question/:questionID': QuestionDetailsPage,
+        'askQuestion': AskQuestionPage,
+
+        '/home': HomePage,
+        '/question/:questionID': QuestionDetailsPage,
+        '/askQuestion': AskQuestionPage
+      }
+
+
+
+
       var authStateChanged = this.auth.authState.onAuthStateChanged(authUser => {
         if (authUser != null) {
           this._user.logIn(authUser.uid);
           this.rootPage = HomePage;
+
+          this.deeplinks.route(routes).subscribe(
+            match => {
+              console.log("deeplink MATCH: " + JSON.stringify(match));
+              this.navChild.push(match.$route, match.$args, { animate: false, animation: "none" });
+            }, (nomatch) => {
+
+              console.log('Got a deeplink that didn\'t match', JSON.stringify(nomatch));
+            }, () => {
+
+              console.log('Got a deeplink completed');
+            });
+
         } else {
           this.rootPage = LoginPage;
         }
