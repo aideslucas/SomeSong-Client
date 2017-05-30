@@ -18,10 +18,14 @@
     </ion-list-header>
     <ion-scroll scrollY="true">
       <ion-list no-lines no-padding *ngIf="!isEmpty(userQuestions) && !questionLoading">
-        <button ion-item *ngFor="let question of userQuestions | keyValueFilter" (click)="goToQuestion(question.key)">
+        <button ion-item *ngFor="let question of userQuestions | keyValueFilter | sortQuestions" (click)="goToQuestion(question.key)">
           {{question.value.title}}
           <ion-icon name="checkmark" item-left color="secondary" *ngIf="question.value.correctAnswer"></ion-icon>
           <ion-icon name="help" item-left color="dark" *ngIf="!question.value.correctAnswer"></ion-icon>
+
+          <ion-icon name="ios-chatbubbles-outline" *ngIf="question.value.answers" item-right class="right-icons">
+            &nbsp;{{(question.value.answers | keyValueFilter)?.length}}
+          </ion-icon>
         </button>
       </ion-list>
       <div *ngIf="isEmpty(userQuestions) && !questionLoading" class="contentCentered">
@@ -49,7 +53,7 @@
     </ion-list-header>
     <ion-scroll scrollY="true">
       <ion-list no-lines no-padding *ngIf="!isEmpty(userAnswers) && !answerLoading">
-        <button ion-item *ngFor="let answer of userAnswers | keyValueFilter"
+        <button ion-item *ngFor="let answer of userAnswers | keyValueFilter | sortAnswers "
                 (click)="goToQuestion(answer.value.question.questionID)">
           {{answer.value.question.title}}
           <ion-icon name="checkmark" *ngIf="answer.value.question.correctAnswer === answer.key" color="secondary"
