@@ -7,22 +7,36 @@
       Questions
     </ion-title>
   </ion-navbar>
+
+  <ion-toolbar>
+    <button ion-button class="toolbar-buttons" (click)="order()">
+      <ion-icon name="reorder">&nbsp;Order by</ion-icon>
+    </button>
+    <button ion-button class="toolbar-buttons" (click)="filter()">
+      <ion-icon name="funnel">&nbsp;Filter by</ion-icon>
+    </button>
+    <ion-searchbar
+      class="labelFixWidth"
+      [(ngModel)]="selectedFilters.selectedTitle"
+      [showCancelButton]="shouldShowCancel"
+      (ionInput)="updateFilter()"
+      (ionCancel)="onCancel($event)">
+    </ion-searchbar>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding="5px" class="no-scroll">
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown"
+                           pullingText="Pull to refresh"
+                           refreshingSpinner="circles"
+                           refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher><!--
   <ion-grid>
     <ion-row>
-      <ion-searchbar
-        class="labelFixWidth"
-        [(ngModel)]="searchQuery"
-        [showCancelButton]="shouldShowCancel"
-        (ionInput)="getAllEnabledQuestions()"
-        (ionCancel)="onCancel($event)">
-      </ion-searchbar>
-    </ion-row>
-    <ion-row >
       <h1 class="filterLabel">Filters:</h1>
-      <ion-item >
+      <ion-item>
         <ion-label col-4 class="filterLabel">resolved</ion-label>
         <ion-checkbox col-1
                       class="checkBoxText"
@@ -35,11 +49,11 @@
       <ion-item>
         <ion-label col-3 class="filterLabel">Genres</ion-label>
         <ion-select
-                    class="select"
-                    placeholder="Choose genres"
-                    multiple="true"
-                    [(ngModel)]="filteredGenres"
-                    (ionChange)="getAllEnabledQuestions()">
+          class="select"
+          placeholder="Choose genres"
+          multiple="true"
+          [(ngModel)]="filteredGenres"
+          (ionChange)="getAllEnabledQuestions()">
           <ion-option value={{genre}} *ngFor="let genre of genresArray">
             {{genre}}
           </ion-option>
@@ -59,10 +73,48 @@
         </ion-select>
       </ion-item>
     </ion-row>
+    <hr/>
     <ion-list *ngIf="unresolvedQuestions" (ionLoad)="getAllEnabledQuestions()">
       <button ion-item (click)="goToQuestion(question.questionID)" *ngFor="let question of enabledQuestions">
         {{question.title}}
       </button>
     </ion-list>
-  </ion-grid>
+  </ion-grid>!-->
+
+  <ion-list no-lines no-padding *ngIf="!questionLoading && !isEmpty(questions)">
+    <button ion-item *ngFor="let question of questions | keyValueFilter | filterQuestions:selectedFilters | sortQuestions:orderBy" (click)="goToQuestion(question.key)">
+      {{question.value.title}}
+      <ion-icon name="checkmark" item-left color="secondary" *ngIf="question.value.correctAnswer"></ion-icon>
+      <ion-icon name="help" item-left color="dark" *ngIf="!question.value.correctAnswer"></ion-icon>
+
+      <ion-icon name="ios-chatbubbles-outline" *ngIf="question.value.answers" item-right class="right-icons">
+        &nbsp;{{(question.value.answers | keyValueFilter)?.length}}
+      </ion-icon>
+    </button>
+  </ion-list>
+  <div *ngIf="isEmpty(questions) && !questionLoading" class="contentCentered">
+    <div>
+      No questions asked yet. <br>
+      Press the
+      <ion-icon name="help-circle"></ion-icon>
+      button to ask a question.
+    </div>
+  </div>
+  <div *ngIf="(questions | keyValueFilter | filterQuestions:selectedFilters).length == 0 && !questionLoading" class="contentCentered">
+    <div>
+      No questions found for the selected filters. <br>
+      Press the
+      <ion-icon name="funnel"></ion-icon>
+      button to change the filter, <br>
+      Or change the
+      <ion-icon name="search"></ion-icon>
+      title filter.
+    </div>
+  </div>
+  <div *ngIf="questionLoading" class="contentCentered">
+    <div class="loader"></div>
+  </div>
+
+
+
 </ion-content>
