@@ -132,7 +132,6 @@ export class BrowseQuestionsPage {
       return this.enabledQuestions;
     }
 
-    // TODO: BAG - when clicking on filter more enbaled questions added ..??
     this.enabledQuestions = this.enabledQuestions.filter((v) => {
       if(v.title && this.searchQuery) {
         return v.title.toLowerCase().indexOf(this.searchQuery.toLowerCase()) > -1;
