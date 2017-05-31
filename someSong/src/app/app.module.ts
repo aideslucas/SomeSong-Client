@@ -45,6 +45,8 @@ import {Push} from "@ionic-native/push";
 import {Notification} from "../providers/notification";
 import {Deeplinks} from "@ionic-native/deeplinks";
 import {FacebookShare} from "../providers/facebook-share";
+import {FilterModalPage} from "../pages/filter-modal/filter-modal";
+import {FilterQuestions} from "../assets/filterQuestions";
 
 export const firebaseConfig = {
   apiKey: "AIzaSyA_MquO5E-MQKjnEdaEUC-fnEXENMjz6Ro",
@@ -79,7 +81,8 @@ export const deepLinkConfig: DeepLinkConfig = {
     keyValueFilterPipe,
     SortQuestions,
     SortAnswers,
-    keyValueFilterPipe,
+    FilterModalPage,
+    FilterQuestions,
     ProgressBarComponent
   ],
   imports: [
@@ -99,6 +102,7 @@ export const deepLinkConfig: DeepLinkConfig = {
     GenreSelectPage,
     RegisterPage,
     UploadQuestionPage,
+    FilterModalPage,
     ProgressBarComponent
   ],
   providers: [

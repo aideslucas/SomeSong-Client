@@ -1,4 +1,4 @@
-page-language-select {
+page-filter-modal {
   @media (min-width: 300px) and (min-height: 500px) {
     ion-backdrop {
       visibility: visible;
@@ -22,4 +22,31 @@ page-language-select {
   -moz-box-shadow: 0 0 100px 100px  rgba(0, 0, 0, .4);;
   box-shadow: 0 0 100px 100px  rgba(0, 0, 0, .4);;
   background-color: #fafafa;
+
+  ion-list {
+    ion-item {
+      padding: 0px !important;
+      margin: 0px !important;
+
+      ion-label {
+        margin: 0px !important;
+      }
+
+      button {
+        padding: 5px !important;
+      }
+      ion-option {
+        padding: 15px !important;
+      }
+    }
+  }
+
+  ion-footer {
+    button {
+      width: 48%;
+      margin-left: 1%;
+      margin-right: 1%;
+    }
+  }
+
 }

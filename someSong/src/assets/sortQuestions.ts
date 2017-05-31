@@ -20,25 +20,82 @@ export class SortQuestions {
     return localTime;
   }
 
-  transform(arr) {
-    if(arr === undefined){return null;}
+  transform(arr, args) {
+    if (arr === undefined) {
+      return null;
+    }
+
+    if (args == null) {
+      return arr.sort((a, b) => {
+        if (a.value.correctAnswer != null &&
+          b.value.correctAnswer == null) {
+          return 1;
+        }
+        if (a.value.correctAnswer == null &&
+          b.value.correctAnswer != null) {
+          return -1;
+        }
+        if (this.getLocalTime(a.value.timeUTC) < this.getLocalTime(b.value.timeUTC)) {
+          return 1;
+        }
+
+        if (this.getLocalTime(a.value.timeUTC) > this.getLocalTime(b.value.timeUTC)) {
+          return -1;
+        }
+        return 0;
+      });
+    }
 
     return arr.sort((a, b) => {
-      if (a.value.correctAnswer !== null &&
-          b.value.correctAnswer === null) {
-        return 1;
-      }
-      if (a.value.correctAnswer === null &&
-        b.value.correctAnswer !== null) {
-        return -1;
-      }
-      if (this.getLocalTime(a.value.timeUTC) < this.getLocalTime(b.value.timeUTC)) {
-        return 1;
+      if (args == "Friends") {
+        // TODO: Friends
       }
 
-      if (this.getLocalTime(a.value.timeUTC) > this.getLocalTime(b.value.timeUTC)) {
-        return -1;
+      if (args == "Resolved") {
+        if (a.value.correctAnswer != null &&
+          b.value.correctAnswer == null) {
+          return -1;
+        }
+        if (a.value.correctAnswer == null &&
+          b.value.correctAnswer != null) {
+          return 1;
+        }
       }
+
+      if (args == "Answers") {
+        if (a.value.answers != null &&
+          b.value.answers == null) {
+          return -1;
+        }
+        if (a.value.answers == null &&
+          b.value.answers != null) {
+          return 1;
+        }
+        if (a.value.answers != null &&
+          b.value.answers != null) {
+          if (Object.keys(a.value.answers).length > Object.keys(b.value.answers).length) {
+            return -1;
+          }
+          else {
+            return 1;
+          }
+        }
+      }
+
+      if (args == "Recent") {
+        if (this.getLocalTime(a.value.timeUTC) < this.getLocalTime(b.value.timeUTC)) {
+          return 1;
+        }
+
+        if (this.getLocalTime(a.value.timeUTC) > this.getLocalTime(b.value.timeUTC)) {
+          return -1;
+        }
+      }
+
+      if (args == "Location") {
+        //TODO: Location
+      }
+
       return 0;
     });
   }

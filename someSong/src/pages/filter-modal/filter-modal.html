@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons end>
+      <button ion-button (click)="cancel()"><ion-icon name="close"></ion-icon></button>
+    </ion-buttons>
+    <ion-title>
+      Filter By
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item no-lines>
+      <button ion-item (click)="selectAnswers()">Answers</button>
+      <ion-option>{{selectedFilters?.selectedAnswers}}</ion-option>
+    </ion-item>
+    <hr>
+    <ion-item no-lines>
+      <button ion-item (click)="selectGenres()">Genres</button>
+      <ion-option *ngFor="let genre of selectedFilters.selectedGenres | keyValueFilter">{{genre.value}};</ion-option>
+    </ion-item>
+    <hr>
+    <ion-item no-lines>
+      <button ion-item (click)="selectLanguages()">Languages</button>
+      <ion-option *ngFor="let language of selectedFilters.selectedLanguages | keyValueFilter">{{language.value}};</ion-option>
+    </ion-item>
+    <hr>
+    <ion-item no-lines>
+      <button ion-item (click)="selectFriends()">Friends</button>
+      <ion-option>{{selectedFilters?.selectedFriends}}</ion-option>
+    </ion-item>
+    <hr>
+    <ion-item no-lines>
+      <button ion-item>Location</button>
+      <ion-option></ion-option>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <ion-buttons>
+    <button ion-button (click)="clear()">
+      <ion-icon name="trash">&nbsp; Clear</ion-icon>
+    </button>
+    <button ion-button (click)="apply()">
+      <ion-icon name="checkmark">&nbsp; Apply</ion-icon>
+    </button>
+  </ion-buttons>
+</ion-footer>
