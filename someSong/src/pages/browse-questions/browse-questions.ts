@@ -7,6 +7,7 @@ import {Language} from "../../providers/language";
 import {FilterModalPage} from "../filter-modal/filter-modal";
 import {User} from "../../providers/user";
 import DictionaryHelpFunctions from "../../assets/dictionaryHelpFunctions";
+import {AskQuestionPage} from "../ask-question/ask-question";
 
 @Component({
   selector: 'page-browse-questions',
@@ -253,5 +254,9 @@ export class BrowseQuestionsPage {
     });
 
     orderAlert.present();
+  }
+
+  askAQuestion() {
+    this.navCtrl.push(AskQuestionPage);
   }
 }
