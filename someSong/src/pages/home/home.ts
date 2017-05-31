@@ -1,12 +1,12 @@
-import {ChangeDetectorRef, Component } from '@angular/core';
+import {ChangeDetectorRef, Component} from '@angular/core';
 import {AlertController, NavController} from 'ionic-angular';
 
-import { ProfilePage } from "../profile/profile";
-import { QuestionDetailsPage } from "../question-details/question-details";
-import { AskQuestionPage } from "../ask-question/ask-question";
-import { BrowseQuestionsPage } from "../browse-questions/browse-questions";
+import {ProfilePage} from "../profile/profile";
+import {QuestionDetailsPage} from "../question-details/question-details";
+import {AskQuestionPage} from "../ask-question/ask-question";
+import {BrowseQuestionsPage} from "../browse-questions/browse-questions";
 
-import { User } from "../../providers/user";
+import {User} from "../../providers/user";
 import {Answer} from "../../providers/answer";
 import {Question} from "../../providers/question";
 import DictionaryHelpFunctions from "../../assets/dictionaryHelpFunctions";
@@ -22,7 +22,7 @@ export class HomePage {
   answerLoading = true;
 
   user: any;
-  userQuestions : { [id: string] : any} = {};
+  userQuestions: { [id: string]: any } = {};
   userAnswers = {};
   userSubscription: any;
 
@@ -33,8 +33,7 @@ export class HomePage {
               private _answer: Answer,
               private _question: Question,
               private _push: Push) {
-    this.userSubscription = this._user.currentUser.subscribe((data) =>
-    {
+    this.userSubscription = this._user.currentUser.subscribe((data) => {
       this.user = data;
 
       this.initPushNotifications();
@@ -42,30 +41,42 @@ export class HomePage {
       if (!this.user.questions) {
         this.questionLoading = false;
       }
+      else {
+        let numQuestions = Object.keys(this.user.questions).length;
+        let loadedQuestions = 0;
 
-      this._user.getUserQuestions(this.user.userID).on('child_added', userQuestion => {
-        this._question.getQuestionDetails(userQuestion.key).subscribe((questionDetail) => {
-          this.userQuestions = DictionaryHelpFunctions.addToDictionary(this.userQuestions, userQuestion.key, questionDetail);
+        this._user.getUserQuestions(this.user.userID).on('child_added', userQuestion => {
+          this._question.getQuestionDetails(userQuestion.key).subscribe((questionDetail) => {
+            this.userQuestions = DictionaryHelpFunctions.addToDictionary(this.userQuestions, userQuestion.key, questionDetail);
+            loadedQuestions++;
 
-          this.questionLoading = false;
-
+            if (loadedQuestions == numQuestions)
+              this.questionLoading = false;
+          });
         });
-      });
+      }
+
 
       if (!this.user.answers) {
         this.answerLoading = false;
       }
+      else {
+        let numAnswers = Object.keys(this.user.answers).length;
+        let loadedAnswers = 0;
 
-      this._user.getUserAnswers(this.user.userID).on('child_added', userAnswer => {
-        this._answer.getAnswerDetails(userAnswer.key).subscribe((answerDetail) => {
-          this.userAnswers = DictionaryHelpFunctions.addToDictionary(this.userAnswers, userAnswer.key, answerDetail);
-          this._question.getQuestionDetails(answerDetail.question).subscribe((questionDetail) => {
-            this.userAnswers[userAnswer.key].question = questionDetail;
+        this._user.getUserAnswers(this.user.userID).on('child_added', userAnswer => {
+          this._answer.getAnswerDetails(userAnswer.key).subscribe((answerDetail) => {
+            this.userAnswers = DictionaryHelpFunctions.addToDictionary(this.userAnswers, userAnswer.key, answerDetail);
+            this._question.getQuestionDetails(answerDetail.question).subscribe((questionDetail) => {
+              this.userAnswers[userAnswer.key].question = questionDetail;
+              loadedAnswers++;
 
-            this.answerLoading = false;
+              if (loadedAnswers == numAnswers)
+                this.answerLoading = false;
+            });
           });
         });
-      });
+      }
     });
   }
 
@@ -113,14 +124,14 @@ export class HomePage {
       this._user.updateUser(this.user);
     });
 
-    pushObject.on('error').subscribe(error => alert('Error with Push plugin'+ JSON.stringify(error)));
+    pushObject.on('error').subscribe(error => alert('Error with Push plugin' + JSON.stringify(error)));
   }
 
   isEmpty(dictionary) {
     return DictionaryHelpFunctions.isEmpty(dictionary);
   }
 
-  goToProfile(){
+  goToProfile() {
     this.navCtrl.push(ProfilePage);
   }
 

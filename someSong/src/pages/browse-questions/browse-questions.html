@@ -10,44 +10,59 @@
 </ion-header>
 
 <ion-content padding>
-
-  <!--<ion-searchbar [(ngModel)]="searchQuery" (input)="getItems($event)" placeholder="Filter by text"></ion-searchbar>-->
-  <!--<ion-list>-->
-    <!--<ion-item *ngFor="let item of genres">-->
-      <!--<ion-label> {{item.genresID}}</ion-label>-->
-      <!--<ion-checkbox [checked]="item.genresID === selected.genresID" (click)="select(item)"></ion-checkbox>-->
-    <!--</ion-item>-->
-  <!--</ion-list>-->
-  <!--<ion-list *ngIf="genres">-->
-    <!--<ion-item>-->
-      <!--<ion-label>by genre</ion-label>-->
-      <!--<ion-select [(ngModel)]="gaming">-->
-        <!--<ion-option value="nes">NES</ion-option>-->
-      <!--</ion-select>-->
-    <!--</ion-item>-->
-  <!--</ion-list>-->
-
-
-
   <ion-grid>
-    <ion-row>Filters: </ion-row>
     <ion-row>
-      <ion-list *ngIf="genresArray">
-        <ion-item>
-          <ion-label>By Genre</ion-label>
-          <ion-select multiple="true" [(ngModel)]="filteredGenres" >
-            <ion-option value={{genre}} *ngFor="let genre of genresArray">
-              {{genre}}
-            </ion-option>
-          </ion-select>
-        </ion-item>
-      </ion-list>
+      <ion-searchbar
+        class="labelFixWidth"
+        [(ngModel)]="searchQuery"
+        [showCancelButton]="shouldShowCancel"
+        (ionInput)="getAllEnabledQuestions()"
+        (ionCancel)="onCancel($event)">
+      </ion-searchbar>
+    </ion-row>
+    <ion-row >
+      <h1 class="filterLabel">Filters:</h1>
+      <ion-item >
+        <ion-label col-4 class="filterLabel">resolved</ion-label>
+        <ion-checkbox col-1
+                      class="checkBoxText"
+                      [(ngModel)]="resolved"
+                      (ionChange)="getAllEnabledQuestions()"
+        ></ion-checkbox>
+      </ion-item>
+    </ion-row>
+    <ion-row>
+      <ion-item>
+        <ion-label col-3 class="filterLabel">Genres</ion-label>
+        <ion-select
+                    class="select"
+                    placeholder="Choose genres"
+                    multiple="true"
+                    [(ngModel)]="filteredGenres"
+                    (ionChange)="getAllEnabledQuestions()">
+          <ion-option value={{genre}} *ngFor="let genre of genresArray">
+            {{genre}}
+          </ion-option>
+        </ion-select>
+      </ion-item>
     </ion-row>
 
-    <ion-list *ngIf="questions">
-        <button ion-item (click)="goToQuestion(question.questionID)" *ngFor="let question of getAllEnabledQuestions()">
-            {{question.title}}
-        </button>
+    <ion-row>
+      <ion-item>
+        <ion-label class="filterLabel" col-4>Languages</ion-label>
+        <ion-select placeholder="Choose languages" class="select"
+                    multiple="true" [(ngModel)]="filteredLanguages"
+                    (ionChange)="getAllEnabledQuestions()">
+          <ion-option value={{language}} *ngFor="let language of languagesArray">
+            {{language}}
+          </ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-row>
+    <ion-list *ngIf="unresolvedQuestions" (ionLoad)="getAllEnabledQuestions()">
+      <button ion-item (click)="goToQuestion(question.questionID)" *ngFor="let question of enabledQuestions">
+        {{question.title}}
+      </button>
     </ion-list>
   </ion-grid>
 </ion-content>

@@ -7,6 +7,9 @@ import {Question} from '../../providers/question'
 import {User} from "../../providers/user";
 import {File} from "@ionic-native/file";
 import * as firebase from 'firebase';
+import {Genre} from "../../providers/genre";
+import {Language} from "../../providers/language";
+import {FacebookShare} from "../../providers/facebook-share";
 import {FormBuilder, FormGroup, Validators} from '@angular/forms'
 
 @Component({
@@ -29,6 +32,7 @@ export class UploadQuestionPage {
               private user: User,
               private file: File,
               private viewController: ViewController,
+              private facebookShare: FacebookShare,
               private formBuilder: FormBuilder) {
 
     this.title = '';
@@ -42,12 +46,15 @@ export class UploadQuestionPage {
 
   public uploadRecording(): void {
     this.submitAttempt = true;
-    if (this.uploadForm.valid) {
-      /*let questionID = this.question.getNewQuestionID();
-       this.saveRecordingToDB(questionID);
-       this.saveRecordingToStorage(questionID);
-       this.viewController.dismiss();*/
-    }
+    let questionID = this.question.getNewQuestionID();
+    this.saveRecordingToDB(questionID);
+    this.saveRecordingToStorage(questionID);
+
+    this.facebookShare.shareQuestion(questionID, this.title).then(() => {
+
+    });
+
+    this.viewController.dismiss();
   }
 
   private saveRecordingToDB(questionID: string): void {
