@@ -45,9 +45,17 @@ page-browse-questions {
   }
   .filterLabel {
     font-family: Serif, sans-serif;
+    font-size: 100%;
 
   }
   .select{
     max-width: 100%;
+  }
+  .checkBoxText
+  {
+    /* Checkbox text */
+    $checkbox-ios-icon-size: 10px;
+    $checkbox-md-icon-size: 1px;
+    $checkbox-wp-icon-size: 10px;
   }
 }

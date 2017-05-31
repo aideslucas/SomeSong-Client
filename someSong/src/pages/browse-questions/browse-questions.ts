@@ -10,7 +10,7 @@ import {Language} from "../../providers/language";
   templateUrl: 'browse-questions.html'
 })
 export class BrowseQuestionsPage {
-  questions: any;
+  unresolvedQuestions: any;
   user: any;
   genresDict: any;
   genresArray: any = [];
@@ -19,7 +19,9 @@ export class BrowseQuestionsPage {
   languagesArray: any = [];
   languagesDict: any = [];
   enabledQuestions: any = [];
+  resolved: any = false;
   searchQuery: any = "";
+  resolvedQuestions: any = [];
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -28,24 +30,22 @@ export class BrowseQuestionsPage {
               private _languages: Language) {
 
     var promises = [];
+
     // If we navigated to this page, we will have an item available as a nav param
     promises.push(this._question.getAllUnresolvedQuestions().then(data => {
       var questionsDict = data.val();
 
-      this.questions = [];
+      this.unresolvedQuestions = [];
 
       for (var key in questionsDict) {
         var question = questionsDict[key];
         question["enabled"] = true;
-        this.questions.push(question);
+        this.unresolvedQuestions.push(question);
       }
-      console.log("Questions are - " + this.questions);
-      this.questions.sort(function(a,b){
+      this.unresolvedQuestions.sort(function(a, b){
         return BrowseQuestionsPage.createDateFromQuestion(a) < BrowseQuestionsPage.createDateFromQuestion(b);
       });
-      console.log("Ordered Questions are - " + this.questions);
     }));
-
 
     promises.push(this._genres.getGenres().orderByValue().once('value').then(data => {
       this.genresDict = data.val();
@@ -66,6 +66,9 @@ export class BrowseQuestionsPage {
       this.languagesArray.sort();
       this.filteredLanguages = this.languagesArray;
     }));
+
+    promises.push(this._question.getResolvedQuestions().then(data => {
+      this.updateResolvedQuestionsFromData(data)}));
 
     Promise.all(promises).then( values=> {
         this.getAllEnabledQuestions();
@@ -90,13 +93,38 @@ export class BrowseQuestionsPage {
     return false
   }
 
+  fromResolvedToUnresolvedQuestionsBothWays(resolved){
+    if (!resolved){
+      this.unresolvedQuestions = this._question.getAllUnresolvedQuestions()
+    } else{
+      this.unresolvedQuestions = this._question.getResolvedQuestions()
+    }
+  }
+
+  updateResolvedQuestionsFromData(data){
+    var questionsDict = data.val();
+
+    this.resolvedQuestions = [];
+
+    for (var key in questionsDict) {
+      var question = questionsDict[key];
+      question["enabled"] = true;
+      this.resolvedQuestions.push(question);
+    }
+
+    this.resolvedQuestions.sort(function(a,b){
+      return BrowseQuestionsPage.createDateFromQuestion(a) < BrowseQuestionsPage.createDateFromQuestion(b);
+    });
+  }
+
   getAllEnabledQuestions(){
-    // var enabledQuestions = [];
     this.enabledQuestions = [];
-    for (var i =0; i<this.questions.length; i++){
-      if (BrowseQuestionsPage.similarDictAndArrays(this.questions[i]['genres'],this.filteredGenres) &&
-          BrowseQuestionsPage.similarDictAndArrays(this.questions[i]['languages'],this.filteredLanguages)){
-        this.enabledQuestions.push(this.questions[i]);
+    var questions = this.resolved ? this.resolvedQuestions : this.unresolvedQuestions;
+
+    for (var i =0; i<questions.length; i++){
+      if (BrowseQuestionsPage.similarDictAndArrays(questions[i]['genres'],this.filteredGenres) &&
+          BrowseQuestionsPage.similarDictAndArrays(questions[i]['languages'],this.filteredLanguages)){
+        this.enabledQuestions.push(questions[i]);
       }
     }
 
@@ -104,6 +132,7 @@ export class BrowseQuestionsPage {
       return this.enabledQuestions;
     }
 
+    // TODO: BAG - when clicking on filter more enbaled questions added ..??
     this.enabledQuestions = this.enabledQuestions.filter((v) => {
       if(v.title && this.searchQuery) {
         return v.title.toLowerCase().indexOf(this.searchQuery.toLowerCase()) > -1;

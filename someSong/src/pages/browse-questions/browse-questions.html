@@ -20,7 +20,17 @@
         (ionCancel)="onCancel($event)">
       </ion-searchbar>
     </ion-row>
-    <ion-row>Filter by:</ion-row>
+    <ion-row >
+      <h1 class="filterLabel">Filters:</h1>
+      <ion-item >
+        <ion-label col-4 class="filterLabel">resolved</ion-label>
+        <ion-checkbox col-1
+                      class="checkBoxText"
+                      [(ngModel)]="resolved"
+                      (ionChange)="getAllEnabledQuestions()"
+        ></ion-checkbox>
+      </ion-item>
+    </ion-row>
     <ion-row>
       <ion-item>
         <ion-label col-3 class="filterLabel">Genres</ion-label>
@@ -49,7 +59,7 @@
         </ion-select>
       </ion-item>
     </ion-row>
-    <ion-list *ngIf="questions" (ionLoad)="getAllEnabledQuestions()">
+    <ion-list *ngIf="unresolvedQuestions" (ionLoad)="getAllEnabledQuestions()">
       <button ion-item (click)="goToQuestion(question.questionID)" *ngFor="let question of enabledQuestions">
         {{question.title}}
       </button>
