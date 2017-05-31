@@ -1,10 +1,11 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams, AlertController, ModalController} from 'ionic-angular';
+import {NavController, ModalController, Platform} from 'ionic-angular';
 import {File} from "@ionic-native/file";
 import {UploadQuestionPage} from "../upload-question/upload-question";
 import {LanguageSelectPage} from "../language-select/language-select";
 import {GenreSelectPage} from "../genre-select/genre-select";
 import {User} from "../../providers/user";
+import {Alert} from '../../providers/alert';
 
 declare var Media: any;
 declare var navigator: any;
@@ -19,37 +20,59 @@ export class AskQuestionPage {
   public recording: boolean = false;
   private selectedLanguages: any = {};
   private selectedGenres: any = {};
+  private miliSecond: number;
+  private second: number;
+  private zeroPlaceholder: boolean;
+  private progress: number = 0;
+  private progressBarInterval: number;
+  private timeCounterInterval: number;
 
   constructor(public navCtrl: NavController,
-              public alertCtrl: AlertController,
               public file: File,
               private modalCtrl: ModalController,
-              private user: User) {
+              private user: User,
+              private alert: Alert,
+              public platform: Platform) {
   }
 
-  public startRecording(): void {
+  public RecordingToggle(): void {
     if (!this.recording) {
       this.recording = true;
-   /*   this.recordingFile = new Media("myRecording.amr", ()=> {
-      }, (e) => {
-        this.showAlert("failed to create the recording file: " + JSON.stringify(e));
-      });
-      this.recordingFile.startRecord();*/
+      this.startTimeCounter();
+      this.startProgressBar();
+      this.startRecording()
+
     }
     else {
       this.recording = false;
+      this.clearTimeCounter();
+      this.clearProgressBar();
       this.stopRecording();
-      this.startUploadProcess();
+    }
+  }
+
+  public startRecording() {
+    if (this.platform.is('mobileweb') || this.platform.is('core')) {
+      console.log("Running in browser, not really recording.");
+    }
+    else {
+      this.recordingFile = new Media("myRecording.amr", ()=> {
+      }, (e) => {
+        this.alert.showAlert('OOPS...', `failed to create the recording file: " ${JSON.stringify(e)}`, 'OK');
+      });
+      this.recordingFile.startRecord();
     }
   }
 
   public stopRecording(): void {
- /*   this.recordingFile.stopRecord();
-    this.recordingFile.release();*/
-  }
-
-  public playRecording(): void {
-    this.recordingFile.play();
+    if (this.platform.is('mobileweb') || this.platform.is('core')) {
+      this.startUploadProcess();
+    }
+    else {
+      this.recordingFile.stopRecord();
+      this.recordingFile.release();
+      this.startUploadProcess();
+    }
   }
 
   public startUploadProcess(): void {
@@ -83,27 +106,47 @@ export class AskQuestionPage {
     });
   }
 
+  private startTimeCounter(): void {
+    this.second = 0;
+    this.zeroPlaceholder = true;
+    this.miliSecond = 0;
 
-  /*  public chooseFile() {
-   new FileChooser().open()
-   .then((uri) => {
-   this.showAlert(`File native path: ${uri}`);
-   new FilePath().resolveNativePath(uri)
-   .then((resolvedURI) => {
-   this.showAlert(`File resolved path: ${resolvedURI}`);
-   });
-   })
-   .catch((error) => {
-   this.showAlert(`could not choose file: ${JSON.stringify(error)}`);
-   })
-   }*/
+    this.timeCounterInterval = setInterval(() => {
+      this.miliSecond++;
+      if (this.miliSecond === 99) {
+        this.miliSecond = 0;
+        this.second++;
+      }
+      if (this.second === 59) {
+        this.second = 0;
+      }
+      if (this.second === 10) {
+        this.zeroPlaceholder = false;
+      }
+      else if (this.second === 15) {
+        this.clearTimeCounter();
+        this.stopRecording();
+      }
+    }, 10);
+  }
 
-  private showAlert(message) {
-    let alert = this.alertCtrl.create({
-      title: 'INFO',
-      subTitle: message,
-      buttons: ['OK']
-    });
-    alert.present();
+  private startProgressBar(): void {
+    this.progressBarInterval = setInterval(() => {
+      if ((this.progress / 100) !== 1) {
+        this.progress++;
+      }
+    }, 150);
+  }
+
+  private clearTimeCounter() {
+    if (this.timeCounterInterval) {
+      clearInterval(this.timeCounterInterval)
+    }
+  }
+
+  private clearProgressBar() {
+    if (this.progressBarInterval) {
+      clearInterval(this.progressBarInterval)
+    }
   }
 }
