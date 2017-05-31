@@ -9,6 +9,7 @@ import {File} from "@ionic-native/file";
 import * as firebase from 'firebase';
 import {Genre} from "../../providers/genre";
 import {Language} from "../../providers/language";
+import {FacebookShare} from "../../providers/facebook-share";
 
 @Component({
   selector: 'page-upload-question',
@@ -27,7 +28,8 @@ export class UploadQuestionPage {
               private question: Question,
               private user: User,
               private file: File,
-              private viewController: ViewController) {
+              private viewController: ViewController,
+              private facebookShare: FacebookShare) {
 
     this.title = '';
     this.selectedGenres = navParams.get('selectedGenres');
@@ -35,9 +37,15 @@ export class UploadQuestionPage {
   }
 
   public uploadRecording(): void {
+
     let questionID = this.question.getNewQuestionID();
     this.saveRecordingToDB(questionID);
     this.saveRecordingToStorage(questionID);
+
+    this.facebookShare.shareQuestion(questionID, this.title).then(() => {
+
+    });
+
     this.viewController.dismiss();
   }
 
