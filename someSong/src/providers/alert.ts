@@ -9,11 +9,11 @@ export class Alert {
   constructor (private alertCtrl: AlertController) {
   }
 
-  public showAlert(message) {
+  public showAlert(title: string, message: string, buttonText: string) {
     let alert = this.alertCtrl.create({
-      title: 'INFO',
+      title: title,
       subTitle: message,
-      buttons: ['OK']
+      buttons: [buttonText]
     });
     alert.present();
   }

@@ -1,10 +1,11 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams, AlertController, ModalController} from 'ionic-angular';
+import {NavController, ModalController, Platform} from 'ionic-angular';
 import {File} from "@ionic-native/file";
 import {UploadQuestionPage} from "../upload-question/upload-question";
 import {LanguageSelectPage} from "../language-select/language-select";
 import {GenreSelectPage} from "../genre-select/genre-select";
 import {User} from "../../providers/user";
+import {Alert} from '../../providers/alert';
 
 declare var Media: any;
 declare var navigator: any;
@@ -29,7 +30,9 @@ export class AskQuestionPage {
   constructor(public navCtrl: NavController,
               public file: File,
               private modalCtrl: ModalController,
-              private user: User) {
+              private user: User,
+              private alert: Alert,
+              public platform: Platform) {
   }
 
   public RecordingToggle(): void {
@@ -49,22 +52,27 @@ export class AskQuestionPage {
   }
 
   public startRecording() {
-    /*   this.recordingFile = new Media("myRecording.amr", ()=> {
-     }, (e) => {
-     this.showAlert("failed to create the recording file: " + JSON.stringify(e));
-     });
-     this.recordingFile.startRecord();*/
+    if (this.platform.is('mobileweb') || this.platform.is('core')) {
+      console.log("Running in browser, not really recording.");
+    }
+    else {
+      this.recordingFile = new Media("myRecording.amr", ()=> {
+      }, (e) => {
+        this.alert.showAlert('OOPS...', `failed to create the recording file: " ${JSON.stringify(e)}`, 'OK');
+      });
+      this.recordingFile.startRecord();
+    }
   }
 
   public stopRecording(): void {
-    /*   this.recordingFile.stopRecord();
-     this.recordingFile.release();*/
-    this.startUploadProcess();
-
-  }
-
-  public playRecording(): void {
-    this.recordingFile.play();
+    if (this.platform.is('mobileweb') || this.platform.is('core')) {
+      this.startUploadProcess();
+    }
+    else {
+      this.recordingFile.stopRecord();
+      this.recordingFile.release();
+      this.startUploadProcess();
+    }
   }
 
   public startUploadProcess(): void {

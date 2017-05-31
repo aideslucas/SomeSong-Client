@@ -23,11 +23,18 @@
       <ion-label>{{genre.value}}</ion-label>
     </ion-item>
   </ion-list>
+  <ion-list no-lines no-padding>
+    <button ion-button icon-only round (click)="playRecording()" id="play-stop">
+      <ion-icon name="play" *ngIf="!playing"></ion-icon>
+      <ion-icon name="pause" *ngIf="playing"></ion-icon>
+    </button>
+    <ion-label primary id="play-stop-label"><b> Play your recording </b></ion-label>
+  </ion-list>
   <form [formGroup]="uploadForm" (ngSubmit)="uploadRecording()" #loginForm="ngForm">
     <ion-item>
       <ion-label floating primary> <ion-icon name="alert"></ion-icon> Question Title</ion-label>
-      <ion-input formControlName="recordingTitle" type="text" [class.invalid]="!uploadForm.controls.recordingTitle.valid && (uploadForm.controls.recordingTitle.dirty || submitAttempt)"></ion-input>
+      <ion-input formControlName="recordingTitle" type="text" [(ngModel)]="title" [class.invalid]="!uploadForm.controls.recordingTitle.valid && (uploadForm.controls.recordingTitle.dirty || submitAttempt)"></ion-input>
     </ion-item>
-  <button ion-button type="submit" [attr.disabled]="!uploadForm.controls.recordingTitle.valid ? '' : null ">Upload &nbsp;<ion-icon name="cloud-upload"></ion-icon></button>
+    <button ion-button type="submit" [attr.disabled]="!uploadForm.controls.recordingTitle.valid ? '' : null ">Upload &nbsp;<ion-icon name="cloud-upload"></ion-icon></button>
   </form>
 </ion-content>
