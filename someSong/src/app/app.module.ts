@@ -15,6 +15,7 @@ import { LoginPage } from '../pages/login/login';
 import { LanguageSelectPage } from '../pages/language-select/language-select';
 import { GenreSelectPage } from '../pages/genre-select/genre-select';
 import { UploadQuestionPage } from '../pages/upload-question/upload-question'
+import {ProgressBarComponent} from "../pages/progress-bar/progress-bar";
 
 // Ionic Native
 import { StatusBar } from '@ionic-native/status-bar';
@@ -31,6 +32,7 @@ import {Answer} from "../providers/answer";
 import {Genre} from "../providers/genre";
 import {Language} from "../providers/language";
 import {Record} from "../providers/record";
+import {Alert} from "../providers/alert";
 
 // Firebase
 import firebase from 'firebase'
@@ -80,7 +82,8 @@ export const deepLinkConfig: DeepLinkConfig = {
     SortQuestions,
     SortAnswers,
     FilterModalPage,
-    FilterQuestions
+    FilterQuestions,
+    ProgressBarComponent
   ],
   imports: [
     BrowserModule,
@@ -99,7 +102,8 @@ export const deepLinkConfig: DeepLinkConfig = {
     GenreSelectPage,
     RegisterPage,
     UploadQuestionPage,
-    FilterModalPage
+    FilterModalPage,
+    ProgressBarComponent
   ],
   providers: [
     Auth,
@@ -118,6 +122,7 @@ export const deepLinkConfig: DeepLinkConfig = {
     Notification,
     Deeplinks,
     FacebookShare,
+    Alert,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

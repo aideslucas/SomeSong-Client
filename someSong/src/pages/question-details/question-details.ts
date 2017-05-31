@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 
 import {MediaPlugin} from "@ionic-native/media";
@@ -33,15 +33,14 @@ export class QuestionDetailsPage {
               private _record: Record,
               private _user: User,
               private _answer: Answer,
-              private _notification: Notification)
-  {
+              private _notification: Notification) {
     this._user.currentUser.subscribe(data => {
       this.currentUser = data;
     });
 
     console.log("got here from deeplink");
 
-    var paramsData = navParams.get('questionID')? navParams.get('questionID') : navParams.data;
+    var paramsData = navParams.get('questionID') ? navParams.get('questionID') : navParams.data;
 
     console.log("deeplink : " + paramsData);
 
@@ -49,12 +48,16 @@ export class QuestionDetailsPage {
       this.question = question;
       this.questionTime = this._answer.getLocalTime(this.question.timeUTC);
 
-    /*  this._record.getRecordURL(this.question.record).then(url => {
+      this._record.getRecordURL(this.question.record).then(url => {
         this.question.file = new Media(url, ()=> {
         }, (e) => {
           alert("failed to create the recording file: " + JSON.stringify(e));
+        }, (mediaStatus) => {
+          if (mediaStatus === Media.MEDIA_STOPPED) {
+            this.playing = false;
+          }
         });
-      });*/
+      });
 
       this._user.getUser(this.question.user).then(user => {
         this.questionUser = user.val();
@@ -87,8 +90,7 @@ export class QuestionDetailsPage {
   upVote(item, answer) {
     item.close();
     answer.votes++;
-    if (this.currentUser.votes == null)
-    {
+    if (this.currentUser.votes == null) {
       this.currentUser.votes = {};
     }
 
@@ -100,7 +102,7 @@ export class QuestionDetailsPage {
     this._user.updateUser(this.currentUser);
     this._answer.updateAnswer(answer);
 
-    if (answer.votes%10 == 0) {
+    if (answer.votes % 10 == 0) {
       this._notification.writeNewNotification(answer.user, 2, this.question, answer);
     }
   }
@@ -119,8 +121,7 @@ export class QuestionDetailsPage {
     item.close();
     answer.votes--;
 
-    if (this.currentUser.votes == null)
-    {
+    if (this.currentUser.votes == null) {
       this.currentUser.votes = {};
     }
 
@@ -142,14 +143,13 @@ export class QuestionDetailsPage {
   }
 
   playRecording() {
-    if (this.playing)
-    {
-      this.question.file.pause();
+    if (this.playing) {
       this.playing = false;
+      this.question.file.pause();
     }
     else {
-      this.question.file.play();
       this.playing = true;
+      this.question.file.play();
     }
   }
 
