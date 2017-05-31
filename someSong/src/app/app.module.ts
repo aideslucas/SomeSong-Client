@@ -36,6 +36,9 @@ import {Record} from "../providers/record";
 import firebase from 'firebase'
 
 import { keyValueFilterPipe} from '../assets/keyValueFilter';
+import { SortAnswers} from '../assets/sortAnswers';
+import { SortQuestions} from '../assets/sortQuestions';
+
 import {Push} from "@ionic-native/push";
 import {Notification} from "../providers/notification";
 import {Deeplinks} from "@ionic-native/deeplinks";
@@ -71,7 +74,9 @@ export const deepLinkConfig: DeepLinkConfig = {
     GenreSelectPage,
     RegisterPage,
     UploadQuestionPage,
-    keyValueFilterPipe
+    keyValueFilterPipe,
+    SortQuestions,
+    SortAnswers
   ],
   imports: [
     BrowserModule,

@@ -54,7 +54,7 @@
     </ion-list-header>
     <ion-scroll scrollY="true">
       <ion-list *ngIf="!isEmpty(questionAnswers) && !answerLoading">
-        <ion-item-sliding *ngFor="let answer of questionAnswers | keyValueFilter" #item>
+        <ion-item-sliding *ngFor="let answer of questionAnswers | keyValueFilter | sortAnswers:(question.correctAnswer)" #item>
           <ion-item>
             <ion-grid>
               <ion-row>
