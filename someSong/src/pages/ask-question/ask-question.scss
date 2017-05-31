@@ -6,7 +6,7 @@ page-browse-questions {
   background-size: cover;
 }
 /*----------------------*/
-    PROGRESS BAR
+/*    PROGRESS BAR      */
 /*----------------------*/
 .progress-bar {
   background-color: #1a1a1a;
@@ -84,8 +84,6 @@ page-browse-questions {
   display:  flex;
   flex-direction: column;
   align-items: stretch;
-  background-color: #00C853;
-  border: 1px solid black;
 }
 
 #flex-container div {
@@ -103,48 +101,15 @@ page-browse-questions {
   position: absolute;
   left: 20%;
   top: 80%;
-
 }
 
-// Sound waves design
-#bars {
-  height: 30px;
+#stopWatch {
+  position: absolute;
+  top: 77%;
   left: 50%;
-  margin: 15px 0 0 -20px;
-  position: absolute;
-  top: 50%;
-  width: 40px;
+  font-size: 6ch;
+  color: white;
 }
-
-.bar {
-  background: #e21224;
-  bottom: 1px;
-  height: 3px;
-  position: absolute;
-  width: 3px;
-  animation: sound 0ms -800ms linear infinite alternate;
-}
-
-@keyframes sound {
-  0% {
-    opacity: .35;
-    height: 3px;
-  }
-  100% {
-    opacity: 1;
-    height: 28px;
-  }
-}
-
-.bar:nth-child(1)  { left: 1px; animation-duration: 474ms; }
-.bar:nth-child(2)  { left: 5px; animation-duration: 433ms; }
-.bar:nth-child(3)  { left: 9px; animation-duration: 407ms; }
-.bar:nth-child(4)  { left: 13px; animation-duration: 458ms; }
-.bar:nth-child(5)  { left: 17px; animation-duration: 400ms; }
-.bar:nth-child(6)  { left: 21px; animation-duration: 427ms; }
-.bar:nth-child(7)  { left: 25px; animation-duration: 441ms; }
-.bar:nth-child(8)  { left: 29px; animation-duration: 419ms; }
-.bar:nth-child(9)  { left: 33px; animation-duration: 487ms; }
 
 // Recording button design
 @import url(https://fonts.googleapis.com/css?family=Fjalla+One);
@@ -269,68 +234,6 @@ body {
           @include animation-use(stop, 0.5*$sec, $bezier);
           @include once();
         }
-
-        & ~ .time {
-          @include animation-use(time, 0.3*$sec, linear);
-          @include once();
-          animation-delay: 0.3*$sec;
-        }
-
-        & ~ .time .h_m:after {
-          @include animation-use(to_24, 86400*$sec, linear);
-          @include delay(1800*$sec);
-        }
-
-        & ~ .time .h_m:before {
-          @include animation-use(to_60, 3600*$sec, linear);
-          @include delay(30*$sec);
-        }
-
-        & ~ .time .s_ms:before {
-          @include animation-use(to_60, 60*$sec, linear);
-          @include delay(.5*$sec);
-        }
-
-        & ~ .time .s_ms:after {
-          @include animation-use(to_100, $sec, linear);
-        }
-      }
-    }
-
-    .time {
-      position: absolute;
-      width: 100%;
-      top: 110%;
-      opacity: 0;
-      padding-top: 15%;
-
-      & > * {
-        display: inline-block;
-        width: 50%;
-        margin: -2px;
-        color: $grey;
-        font-family: 'Fjalla One', sans-serif;
-        font-size: 1.5em;
-      }
-
-      .h_m:after {
-        float: right;
-        @include pseudo('00');
-      }
-
-      .h_m:before {
-        float: right;
-        @include pseudo(':00');
-      }
-
-      .s_ms:before {
-        float: left;
-        @include pseudo(':00');
-      }
-
-      .s_ms:after {
-        float: left;
-        @include pseudo(':00');
       }
     }
   }

@@ -12,11 +12,5 @@ export class ProgressBarComponent {
   @Input('progress') progress;
 
   constructor() {
-    this.progress = 0;
-    for (let i = 0; i < 100; i++) {
-      this.progress++;
-    }
-
   }
-
 }

@@ -15,6 +15,7 @@ import { LoginPage } from '../pages/login/login';
 import { LanguageSelectPage } from '../pages/language-select/language-select';
 import { GenreSelectPage } from '../pages/genre-select/genre-select';
 import { UploadQuestionPage } from '../pages/upload-question/upload-question'
+import {ProgressBarComponent} from "../pages/progress-bar/progress-bar";
 
 // Ionic Native
 import { StatusBar } from '@ionic-native/status-bar';
@@ -31,6 +32,7 @@ import {Answer} from "../providers/answer";
 import {Genre} from "../providers/genre";
 import {Language} from "../providers/language";
 import {Record} from "../providers/record";
+import {Alert} from "../providers/alert";
 
 // Firebase
 import firebase from 'firebase'
@@ -39,7 +41,6 @@ import { keyValueFilterPipe} from '../assets/keyValueFilter';
 import {Push} from "@ionic-native/push";
 import {Notification} from "../providers/notification";
 import {Deeplinks} from "@ionic-native/deeplinks";
-import {ProgressBarComponent} from "../pages/progress-bar/progress-bar";
 
 export const firebaseConfig = {
   apiKey: "AIzaSyA_MquO5E-MQKjnEdaEUC-fnEXENMjz6Ro",
@@ -101,6 +102,7 @@ export const firebaseConfig = {
     Push,
     Notification,
     Deeplinks,
+    Alert,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

@@ -1,21 +1,23 @@
 progress-bar {
 
   .progress-outer {
-    width: 100%;
-    margin: 10px 2%;
-    padding: 3px;
+    width: 60%;
+    margin: 130% 0%;
+    position: absolute;
+    left: 38%;
+    top: -3%;
     text-align: center;
-    background-color: #eff423;
-    border: 1px solid #dc4615;
-    color: #0cff06;
+    background-color: #707070;
+    border: 1px solid #000000;
+    color: #f2f2f2;
     border-radius: 20px;
   }
 
   .progress-inner {
-    min-width: 15%;
+    min-width: 0%;
     white-space: nowrap;
     overflow: hidden;
-    padding: 5px;
+    padding: 0px;
     border-radius: 20px;
     background-color: map-get($colors, primary);
   }

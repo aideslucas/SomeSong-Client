@@ -1,7 +1,7 @@
 /**
  * Created by Eylam Milner on 5/5/2017.
  */
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {NavController, NavParams, ViewController} from 'ionic-angular';
 import {Question} from '../../providers/question'
 import {User} from "../../providers/user";
@@ -43,15 +43,11 @@ export class UploadQuestionPage {
   public uploadRecording(): void {
     this.submitAttempt = true;
     if (this.uploadForm.valid) {
-      alert("valid!");
+      /*let questionID = this.question.getNewQuestionID();
+       this.saveRecordingToDB(questionID);
+       this.saveRecordingToStorage(questionID);
+       this.viewController.dismiss();*/
     }
-    else {
-      alert("Not valid!");
-    }
-/*    let questionID = this.question.getNewQuestionID();
-    this.saveRecordingToDB(questionID);
-    this.saveRecordingToStorage(questionID);
-    this.viewController.dismiss();*/
   }
 
   private saveRecordingToDB(questionID: string): void {

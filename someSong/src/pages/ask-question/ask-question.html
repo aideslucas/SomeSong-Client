@@ -19,16 +19,15 @@
       <form #loginForm="ngForm">
         <ion-row>
           <div class="container">
-            <h3 name="play" *ngIf="!recording">Start Recording!</h3>
-            <input type="checkbox" id="btn" (click)="startRecording()"/>
+            <input type="checkbox" id="btn" (click)="RecordingToggle()"/>
             <label for="btn"></label>
-            <div class="time">
-              <div class="h_m"></div>
-              <div class="s_ms"></div>
-            </div>
           </div>
         </ion-row>
       </form>
     </div>
+    <div>
+      <progress-bar *ngIf="recording" [progress]="progress"></progress-bar>
+    </div>
+    <div id="stopWatch" *ngIf="recording">{{zeroPlaceholder ? 0 : ''}}{{second}}:{{miliSecond}}</div>
   </div>
 </ion-content>
