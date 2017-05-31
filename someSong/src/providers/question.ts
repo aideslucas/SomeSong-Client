@@ -35,7 +35,7 @@ export class Question {
   }
 
   getNewQuestionID() {
-    return firebase.database().ref().child('questions').push().key;
+    return firebase.database().ref().child('unresolvedQuestions').push().key;
   }
 
   writeNewQuestion(questionID:string, genres: {}, languages: {}, location: any, record: string, userID: string, title: string)
@@ -89,5 +89,13 @@ export class Question {
     this.date.getHours() + ":" +
     this.date.getMinutes() + ":" +
     this.date.getSeconds());
+  }
+
+  getResolvedQuestions() {
+    var ref = firebase.database().ref('/questions/');
+
+    // Get all questions that has value in the correctAnswer property.
+    return ref.orderByChild('correctAnswer').startAt(1).once('value');
+
   }
 }
