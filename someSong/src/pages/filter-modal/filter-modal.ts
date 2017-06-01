@@ -18,6 +18,53 @@ export class FilterModalPage {
     this.selectedFilters = this.navParams.data;
   }
 
+  selectLocation() {
+    let locationAlert = this.alertCtrl.create({
+      title: 'Select Location Range',
+      inputs: [{
+        type: "radio",
+        label: "Within 10KM",
+        value: "10",
+        checked: this.selectedFilters.selectedLocation.max == "10"
+      }, {
+        type: "radio",
+        label: "Within 50KM",
+        value: "50",
+        checked: this.selectedFilters.selectedLocation.max == "50"
+      }, {
+        type: "radio",
+        label: "Within 100KM",
+        value: "100",
+        checked: this.selectedFilters.selectedLocation.max == "100"
+      }, {
+        type: "radio",
+        label: "Within 1000KM",
+        value: "1000",
+        checked: this.selectedFilters.selectedLocation.max == "1000"
+      }, {
+        type: "radio",
+        label: "All Ranges",
+        value: "All",
+        checked: this.selectedFilters.selectedLocation.max == "All"
+      }
+      ],
+      buttons: [{
+        text: 'Cancel',
+        role: 'cancel',
+        handler: data => {
+        }
+      },
+        {
+          text: 'Apply',
+          handler: data => {
+            this.selectedFilters.selectedLocation.max = data;
+          }
+        }]
+    });
+
+    locationAlert.present();
+  }
+
   selectAnswers() {
     let answersAlert = this.alertCtrl.create({
       title: 'Select Answers',

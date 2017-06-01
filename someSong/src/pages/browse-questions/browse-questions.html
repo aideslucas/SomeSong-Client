@@ -88,8 +88,8 @@
                 *ngFor="let question of questions | keyValueFilter | filterQuestions:selectedFilters | sortQuestions:orderBy"
                 (click)="goToQuestion(question.key)">
           {{question.value.title}}
-          <ion-icon name="checkmark" item-left color="secondary" *ngIf="question.value.correctAnswer"></ion-icon>
-          <ion-icon name="help" item-left color="dark" *ngIf="!question.value.correctAnswer"></ion-icon>
+          <ion-icon name="checkmark-circle" item-left color="secondary" *ngIf="question.value.correctAnswer"></ion-icon>
+          <ion-icon name="help-circle" item-left color="dark" *ngIf="!question.value.correctAnswer"></ion-icon>
 
           <ion-icon name="ios-chatbubbles-outline" *ngIf="question.value.answers" item-right class="right-icons">
             &nbsp;{{(question.value.answers | keyValueFilter)?.length}}

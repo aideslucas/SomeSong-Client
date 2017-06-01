@@ -11,30 +11,49 @@
 
 
 <ion-content padding>
-  <h3>Your song's languages</h3>
-  <ion-list *ngIf="selectedLanguages">
-    <ion-item *ngFor="let language of selectedLanguages | keyValueFilter">
-      <ion-label>{{language.value}}</ion-label>
-    </ion-item>
-  </ion-list>
-  <h3>Your song's genres</h3>
-  <ion-list *ngIf="selectedGenres">
-    <ion-item *ngFor="let genre of selectedGenres | keyValueFilter">
-      <ion-label>{{genre.value}}</ion-label>
-    </ion-item>
-  </ion-list>
-  <ion-list no-lines no-padding>
-    <button ion-button icon-only round (click)="playRecording()" id="play-stop">
-      <ion-icon name="play" *ngIf="!playing"></ion-icon>
-      <ion-icon name="pause" *ngIf="playing"></ion-icon>
-    </button>
-    <ion-label primary id="play-stop-label"><b> Play your recording </b></ion-label>
-  </ion-list>
   <form [formGroup]="uploadForm" (ngSubmit)="uploadRecording()" #loginForm="ngForm">
     <ion-item>
-      <ion-label floating primary> <ion-icon name="alert"></ion-icon> Question Title</ion-label>
-      <ion-input formControlName="recordingTitle" type="text" [(ngModel)]="title" [class.invalid]="!uploadForm.controls.recordingTitle.valid && (uploadForm.controls.recordingTitle.dirty || submitAttempt)"></ion-input>
+      <ion-label floating primary>
+        <ion-icon name="alert"></ion-icon>
+        Question Title
+      </ion-label>
+      <ion-input formControlName="recordingTitle" type="text" [(ngModel)]="title"
+                 [class.invalid]="!uploadForm.controls.recordingTitle.valid && (uploadForm.controls.recordingTitle.dirty || submitAttempt)"></ion-input>
     </ion-item>
-    <button ion-button type="submit" [attr.disabled]="!uploadForm.controls.recordingTitle.valid ? '' : null ">Upload &nbsp;<ion-icon name="cloud-upload"></ion-icon></button>
+
+    <ion-list *ngIf="songGenres" no-lines no-padding>
+      <ion-list-header>
+        Your Songs Genres
+        <button ion-button item-right (click)="goToGenreSelect()">
+          <ion-icon name="build"></ion-icon>
+        </button>
+      </ion-list-header>
+      <ion-item>
+        <ion-option *ngFor="let genre of songGenres | keyValueFilter">{{genre.value}}; &nbsp;</ion-option>
+      </ion-item>
+    </ion-list>
+
+    <ion-list *ngIf="songLanguages" no-lines no-padding>
+      <ion-list-header>
+        Your Songs Languages
+        <button ion-button item-right (click)="goToLanguageSelect()">
+          <ion-icon name="build"></ion-icon>
+        </button>
+      </ion-list-header>
+      <ion-item>
+        <ion-option *ngFor="let language of songLanguages | keyValueFilter">{{language.value}}; &nbsp;</ion-option>
+      </ion-item>
+    </ion-list>
+
+    <ion-footer>
+      <button ion-button icon-only (click)="playRecording()" id="play-stop" class="footer-buttons">
+        <ion-icon name="play" *ngIf="!playing">&nbsp;Play</ion-icon>
+        <ion-icon name="pause" *ngIf="playing">&nbsp;Pause</ion-icon>
+      </button>
+
+      <button class="footer-buttons" ion-button type="submit" [attr.disabled]="!uploadForm.controls.recordingTitle.valid ? '' : null ">Upload
+        &nbsp;<ion-icon name="cloud-upload"></ion-icon>
+      </button>
+    </ion-footer>
   </form>
 </ion-content>
