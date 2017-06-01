@@ -13,7 +13,14 @@ export class FacebookShare {
       href: 'https://y8vp4.app.goo.gl/?link=https://somesong.com/question/'+questionID+'&apn=com.ionicframework.somesong653067',
       caption: 'Help me figure this song out',
       description: questionTitle,
-      picture: 'https://drive.google.com/file/d/0B_ds4GOh1_8mZnQxejZpUVhPRDA/view?usp=sharing'
+      picture: 'https://drive.google.com/file/d/0ByHBZhrlcde2SXRBUklfa1BfRmc/view?usp=sharing'
+    });
+  }
+
+  inviteFriends(): Promise<any> {
+    return this.facebook.appInvite({
+      picture: 'https://drive.google.com/file/d/0ByHBZhrlcde2SXRBUklfa1BfRmc/view?usp=sharing',
+      url: 'https://fb.me/332496700501204'
     });
   }
 }
