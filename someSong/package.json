@@ -1,113 +1,113 @@
 {
-  "name": "SomeSong",
-  "author": "SomeSong",
-  "homepage": "http://somesong.com/",
-  "private": true,
-  "scripts": {
-    "clean": "ionic-app-scripts clean",
-    "build": "ionic-app-scripts build",
-    "ionic:build": "ionic-app-scripts build",
-    "ionic:serve": "ionic-app-scripts serve"
-  },
-  "dependencies": {
-    "@angular/common": "4.0.0",
-    "@angular/compiler": "4.0.0",
-    "@angular/compiler-cli": "4.0.0",
-    "@angular/core": "4.0.0",
-    "@angular/forms": "4.0.0",
-    "@angular/http": "4.0.0",
-    "@angular/platform-browser": "4.0.0",
-    "@angular/platform-browser-dynamic": "4.0.0",
-    "@ionic-native/core": "^3.6.1",
-    "@ionic-native/deeplinks": "^3.10.3",
-    "@ionic-native/facebook": "^3.4.4",
-    "@ionic-native/file": "^3.5.0",
-    "@ionic-native/file-chooser": "^3.5.0",
-    "@ionic-native/file-path": "^3.5.0",
-    "@ionic-native/geolocation": "^3.10.3",
-    "@ionic-native/media": "^3.5.0",
-    "@ionic-native/media-capture": "^3.5.0",
-    "@ionic-native/push": "^3.10.2",
-    "@ionic-native/splash-screen": "3.4.2",
-    "@ionic-native/status-bar": "3.4.2",
-    "@ionic-native/youtube-video-player": "^3.6.1",
-    "@ionic/storage": "2.0.1",
-    "cordova-android": "^6.2.3",
-    "cordova-plugin-compat": "^1.0.0",
-    "cordova-plugin-console": "^1.0.5",
-    "cordova-plugin-device": "^1.1.4",
-    "cordova-plugin-facebook4": "^1.7.4",
-    "cordova-plugin-geolocation": "^2.4.3",
-    "cordova-plugin-splashscreen": "^4.0.3",
-    "cordova-plugin-statusbar": "^2.2.1",
-    "cordova-plugin-whitelist": "^1.3.1",
-    "firebase": "^3.7.5",
-    "ionic-angular": "3.0.0",
-    "ionic-material": "^0.4.1",
-    "ionic-plugin-deeplinks": "^1.0.15",
-    "ionic-plugin-deploy": "^0.6.7",
-    "ionic-plugin-keyboard": "^2.2.1",
-    "ionicons": "3.0.0",
-    "phonegap-plugin-push": "^1.10.4",
-    "rxjs": "5.1.1",
-    "sw-toolbox": "3.4.0",
-    "zone.js": "^0.8.4"
-  },
-  "devDependencies": {
-    "@ionic/app-scripts": "1.3.0",
-    "@ionic/cli-plugin-cordova": "1.3.0",
-    "@ionic/cli-plugin-ionic-angular": "1.3.0",
-    "typescript": "~2.2.1"
-  },
-  "cordovaPlugins": [
-    "cordova-plugin-whitelist",
-    "cordova-plugin-console",
-    "cordova-plugin-statusbar",
-    "cordova-plugin-device",
-    "ionic-plugin-keyboard",
-    "cordova-plugin-splashscreen"
-  ],
-  "cordovaPlatforms": [],
-  "description": "SomeSong: The Sound of the People",
-  "cordova": {
-    "plugins": {
-      "Media": {},
-      "cordova-plugin-console": {},
-      "cordova-plugin-device": {},
-      "cordova-plugin-facebook4": {
-        "APP_ID": "309501022800772",
-        "APP_NAME": "SomeSong"
-      },
-      "cordova-plugin-splashscreen": {},
-      "cordova-plugin-statusbar": {},
-      "cordova-plugin-whitelist": {},
-      "ionic-plugin-deploy": {},
-      "ionic-plugin-keyboard": {},
-      "phonegap-plugin-push": {
-        "SENDER_ID": "655905548469"
-      },
-      "ionic-plugin-deeplinks": {
-        "URL_SCHEME": "somesong",
-        "DEEPLINK_SCHEME": "https",
-        "DEEPLINK_HOST": "somesong.com",
-        "ANDROID_PATH_PREFIX": "/",
-        "ANDROID_2_PATH_PREFIX": "/",
-        "ANDROID_3_PATH_PREFIX": "/",
-        "ANDROID_4_PATH_PREFIX": "/",
-        "ANDROID_5_PATH_PREFIX": "/",
-        "DEEPLINK_2_SCHEME": " ",
-        "DEEPLINK_2_HOST": " ",
-        "DEEPLINK_3_SCHEME": " ",
-        "DEEPLINK_3_HOST": " ",
-        "DEEPLINK_4_SCHEME": " ",
-        "DEEPLINK_4_HOST": " ",
-        "DEEPLINK_5_SCHEME": " ",
-        "DEEPLINK_5_HOST": " "
-      },
-      "cordova-plugin-geolocation": {}
+    "name": "SomeSong",
+    "author": "SomeSong",
+    "homepage": "http://somesong.com/",
+    "private": true,
+    "scripts": {
+        "clean": "ionic-app-scripts clean",
+        "build": "ionic-app-scripts build",
+        "ionic:build": "ionic-app-scripts build",
+        "ionic:serve": "ionic-app-scripts serve"
     },
-    "platforms": [
-      "android"
-    ]
-  }
+    "dependencies": {
+        "@angular/common": "4.0.0",
+        "@angular/compiler": "4.0.0",
+        "@angular/compiler-cli": "4.0.0",
+        "@angular/core": "4.0.0",
+        "@angular/forms": "4.0.0",
+        "@angular/http": "4.0.0",
+        "@angular/platform-browser": "4.0.0",
+        "@angular/platform-browser-dynamic": "4.0.0",
+        "@ionic-native/core": "^3.6.1",
+        "@ionic-native/deeplinks": "^3.10.3",
+        "@ionic-native/facebook": "^3.4.4",
+        "@ionic-native/file": "^3.5.0",
+        "@ionic-native/file-chooser": "^3.5.0",
+        "@ionic-native/file-path": "^3.5.0",
+        "@ionic-native/geolocation": "^3.10.3",
+        "@ionic-native/media": "^3.5.0",
+        "@ionic-native/media-capture": "^3.5.0",
+        "@ionic-native/push": "^3.10.2",
+        "@ionic-native/splash-screen": "3.4.2",
+        "@ionic-native/status-bar": "3.4.2",
+        "@ionic-native/youtube-video-player": "^3.6.1",
+        "@ionic/storage": "2.0.1",
+        "cordova-android": "^6.2.3",
+        "cordova-plugin-compat": "^1.0.0",
+        "cordova-plugin-console": "^1.0.5",
+        "cordova-plugin-device": "^1.1.4",
+        "cordova-plugin-facebook4": "^1.7.4",
+        "cordova-plugin-geolocation": "^2.4.3",
+        "cordova-plugin-splashscreen": "^4.0.3",
+        "cordova-plugin-statusbar": "^2.2.1",
+        "cordova-plugin-whitelist": "^1.3.1",
+        "firebase": "^3.7.5",
+        "ionic-angular": "3.0.0",
+        "ionic-material": "^0.4.1",
+        "ionic-plugin-deeplinks": "^1.0.15",
+        "ionic-plugin-deploy": "^0.6.7",
+        "ionic-plugin-keyboard": "^2.2.1",
+        "ionicons": "3.0.0",
+        "phonegap-plugin-push": "^1.10.4",
+        "rxjs": "5.1.1",
+        "sw-toolbox": "3.4.0",
+        "zone.js": "^0.8.4"
+    },
+    "devDependencies": {
+        "@ionic/app-scripts": "1.3.0",
+        "@ionic/cli-plugin-cordova": "1.3.0",
+        "@ionic/cli-plugin-ionic-angular": "1.3.0",
+        "typescript": "~2.2.1"
+    },
+    "cordovaPlugins": [
+        "cordova-plugin-whitelist",
+        "cordova-plugin-console",
+        "cordova-plugin-statusbar",
+        "cordova-plugin-device",
+        "ionic-plugin-keyboard",
+        "cordova-plugin-splashscreen"
+    ],
+    "cordovaPlatforms": [],
+    "description": "SomeSong: The Sound of the People",
+    "cordova": {
+        "plugins": {
+            "Media": {},
+            "cordova-plugin-console": {},
+            "cordova-plugin-device": {},
+            "cordova-plugin-facebook4": {
+                "APP_ID": "309501022800772",
+                "APP_NAME": "SomeSong"
+            },
+            "cordova-plugin-splashscreen": {},
+            "cordova-plugin-statusbar": {},
+            "cordova-plugin-whitelist": {},
+            "ionic-plugin-deploy": {},
+            "ionic-plugin-keyboard": {},
+            "phonegap-plugin-push": {
+                "SENDER_ID": "655905548469"
+            },
+            "ionic-plugin-deeplinks": {
+                "URL_SCHEME": "somesong",
+                "DEEPLINK_SCHEME": "https",
+                "DEEPLINK_HOST": "somesong.com",
+                "ANDROID_PATH_PREFIX": "/",
+                "ANDROID_2_PATH_PREFIX": "/",
+                "ANDROID_3_PATH_PREFIX": "/",
+                "ANDROID_4_PATH_PREFIX": "/",
+                "ANDROID_5_PATH_PREFIX": "/",
+                "DEEPLINK_2_SCHEME": " ",
+                "DEEPLINK_2_HOST": " ",
+                "DEEPLINK_3_SCHEME": " ",
+                "DEEPLINK_3_HOST": " ",
+                "DEEPLINK_4_SCHEME": " ",
+                "DEEPLINK_4_HOST": " ",
+                "DEEPLINK_5_SCHEME": " ",
+                "DEEPLINK_5_HOST": " "
+            },
+            "cordova-plugin-geolocation": {}
+        },
+        "platforms": [
+            "android"
+        ]
+    }
 }
