@@ -12,6 +12,7 @@ import {Question} from "../../providers/question";
 import DictionaryHelpFunctions from "../../assets/dictionaryHelpFunctions";
 
 import {Push, PushObject, PushOptions} from '@ionic-native/push'
+import {FacebookShare} from "../../providers/facebook-share";
 
 @Component({
   selector: 'page-home',
@@ -32,7 +33,14 @@ export class HomePage {
               private _user: User,
               private _answer: Answer,
               private _question: Question,
-              private _push: Push) {
+              private _push: Push,
+              private facebookShare: FacebookShare) {
+    this.facebookShare.inviteFriends().then((data) => {
+      console.log(data);
+    }).catch((err) => {
+      console.log(err);
+    });
+
     this.userSubscription = this._user.currentUser.subscribe((data) => {
       this.user = data;
 

@@ -34,163 +34,50 @@ export class BrowseQuestionsPage {
   distances = {};
   currentLocation: any;
 
-  unresolvedQuestions: any;
-  user: any;
-  genresDict: any;
-  genresArray: any = [];
-  filteredGenres: any = [];
-  filteredLanguages: any = [];
-  languagesArray: any = [];
-  languagesDict: any = [];
-  enabledQuestions: any = [];
-  resolved: any = false;
-  searchQuery: any = "";
-  resolvedQuestions: any = [];
-
   constructor(public navCtrl: NavController,
-              public navParams: NavParams,
               private modalCtrl: ModalController,
               public alertCtrl: AlertController,
               private geolocation: Geolocation,
               private _user: User,
-              private _question: Question,
-              private _genres: Genre,
-              private _languages: Language) {
-
+              private _question: Question) {
     this._user.currentUser.first().subscribe(data => {
       this.selectedFilters.selectedLanguages = data.languages;
       this.selectedFilters.selectedGenres = data.genres;
     });
 
-    this._question.getAllQuestions().then(data => {
-      this.questions = data.val();
+    this.getLocationAndQuestions();
+  }
 
-      for (let quest of Object.keys(data.val())) {
-        this.distances[quest] = this.calculateDistance(this.questions[quest].coordinates);
-      }
-
-      this.selectedFilters.selectedLocation.dist = this.distances;
-
-      this.questionLoading = false;
-    });
-
-    this.geolocation.getCurrentPosition().then((data) => {
+  getLocationAndQuestions() {
+    this.geolocation.getCurrentPosition({enableHighAccuracy: true, timeout: 2000}).then((data) => {
       this.currentLocation = data.coords;
-    });
-/*
-    var promises = [];
 
-    // If we navigated to this page, we will have an item available as a nav param
-    promises.push(this._question.getAllUnresolvedQuestions().then(data => {
-      var questionsDict = data.val();
+      this._question.getAllQuestions().then(data => {
+        this.questions = data.val();
 
-      this.unresolvedQuestions = [];
+        for (let quest of Object.keys(data.val())) {
+          this.distances[quest] = this.calculateDistance(this.questions[quest].coordinates);
+        }
 
-      for (var key in questionsDict) {
-        var question = questionsDict[key];
-        question["enabled"] = true;
-        this.unresolvedQuestions.push(question);
-      }
-      this.unresolvedQuestions.sort(function (a, b) {
-        return BrowseQuestionsPage.createDateFromQuestion(a) < BrowseQuestionsPage.createDateFromQuestion(b);
+        this.selectedFilters.selectedLocation.dist = this.distances;
+
+        this.questionLoading = false;
       });
-    }));
+    }).catch((err) => {
+      this._question.getAllQuestions().then(data => {
+        this.questions = data.val();
 
-    promises.push(this._genres.getGenres().orderByValue().once('value').then(data => {
-      this.genresDict = data.val();
-      for (var key in this.genresDict) {
-        this.genresArray.push(this.genresDict[key]);
-      }
-      this.genresArray.sort();
+        for (let quest of Object.keys(data.val())) {
+          this.distances[quest] = this.calculateDistance(this.questions[quest].coordinates);
+        }
 
-      // TODO: change filters to only users preffered genres.
-      this.filteredGenres = this.genresArray;
-    }));
+        this.selectedFilters.selectedLocation.dist = this.distances;
 
-    promises.push(this._languages.getLanguages().orderByValue().once('value').then(data => {
-      this.languagesDict = data.val();
-      for (var key in this.languagesDict) {
-        this.languagesArray.push(this.languagesDict[key]);
-      }
-      this.languagesArray.sort();
-      this.filteredLanguages = this.languagesArray;
-    }));
-
-    promises.push(this._question.getResolvedQuestions().then(data => {
-      this.updateResolvedQuestionsFromData(data)
-    }));
-
-    Promise.all(promises).then(values => {
-      this.getAllEnabledQuestions();
-    }).catch(reason => {
-      console.log(reason);
-    });*/
-  }
-/*
-  static createDateFromQuestion(question) {
-    var time = question['timeUTC'];
-    return new Date(time['year'], time['month'], time['date'], time['hours'], time['minutes'], time['seconds'])
-  }
-
-  // Functions
-  // TODO: this function should be in utils file.
-
-  static similarDictAndArrays(arrayOne, arrayTwo) {
-    for (var key in arrayOne) {
-      if (arrayTwo.indexOf(arrayOne[key]) > -1) {
-        return true;
-      }
-    }
-    return false
-  }
-
-  fromResolvedToUnresolvedQuestionsBothWays(resolved) {
-    if (!resolved) {
-      this.unresolvedQuestions = this._question.getAllUnresolvedQuestions()
-    } else {
-      this.unresolvedQuestions = this._question.getResolvedQuestions()
-    }
-  }
-
-  updateResolvedQuestionsFromData(data) {
-    var questionsDict = data.val();
-
-    this.resolvedQuestions = [];
-
-    for (var key in questionsDict) {
-      var question = questionsDict[key];
-      question["enabled"] = true;
-      this.resolvedQuestions.push(question);
-    }
-
-    this.resolvedQuestions.sort(function (a, b) {
-      return BrowseQuestionsPage.createDateFromQuestion(a) < BrowseQuestionsPage.createDateFromQuestion(b);
+        this.questionLoading = false;
+      });
     });
   }
 
-  getAllEnabledQuestions() {
-    this.enabledQuestions = [];
-    var questions = this.resolved ? this.resolvedQuestions : this.unresolvedQuestions;
-
-    for (var i = 0; i < questions.length; i++) {
-      if (BrowseQuestionsPage.similarDictAndArrays(questions[i]['genres'], this.filteredGenres) &&
-        BrowseQuestionsPage.similarDictAndArrays(questions[i]['languages'], this.filteredLanguages)) {
-        this.enabledQuestions.push(questions[i]);
-      }
-    }
-
-    if (!this.searchQuery) {
-      return this.enabledQuestions;
-    }
-
-    this.enabledQuestions = this.enabledQuestions.filter((v) => {
-      if (v.title && this.searchQuery) {
-        return v.title.toLowerCase().indexOf(this.searchQuery.toLowerCase()) > -1;
-      }
-    });
-    return this.enabledQuestions;
-  }
-*/
   goToQuestion(questionID) {
     this.navCtrl.push(QuestionDetailsPage, questionID);
   }
@@ -212,23 +99,9 @@ export class BrowseQuestionsPage {
   }
 
   doRefresh(refresher) {
-    this.geolocation.getCurrentPosition().then((data) => {
-      this.currentLocation = data;
-    });
-
     this.questionLoading = true;
 
-    this._question.getAllQuestions().then(data => {
-      this.questions = data.val();
-
-      for (let quest of Object.keys(data.val())) {
-        this.distances[quest] = this.calculateDistance(this.questions[quest].coordinates);
-      }
-
-      this.selectedFilters.selectedLocation.dist = this.distances;
-
-      this.questionLoading = false;
-    });
+    this.getLocationAndQuestions();
 
     refresher.complete();
   }
@@ -296,7 +169,7 @@ export class BrowseQuestionsPage {
 
 
   calculateDistance(questionCoords) {
-    if (questionCoords) {
+    if (questionCoords && this.currentLocation) {
       var R = 6371e3; // metres
       var φ1 = this.currentLocation.latitude * (Math.PI / 180);
       var φ2 = questionCoords.latitude * (Math.PI / 180);
