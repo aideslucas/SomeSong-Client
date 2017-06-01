@@ -68,6 +68,34 @@ export class FilterQuestions {
           return false;
       }
 
+      if (args.selectedLocation) {
+        if (args.selectedLocation.max) {
+          if (args.selectedLocation.max == "10") {
+            if (args.selectedLocation.dist[item.key] > 10) {
+              return false
+            }
+          }
+
+          if (args.selectedLocation.max == "50") {
+            if (args.selectedLocation.dist[item.key] > 50) {
+              return false
+            }
+          }
+
+          if (args.selectedLocation.max == "100") {
+            if (args.selectedLocation.dist[item.key] > 100) {
+              return false
+            }
+          }
+
+          if (args.selectedLocation.max == "1000") {
+            if (args.selectedLocation.dist[item.key] > 100) {
+              return false
+            }
+          }
+        }
+      }
+
       return true;
     });
   }

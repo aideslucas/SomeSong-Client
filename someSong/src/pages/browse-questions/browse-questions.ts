@@ -20,7 +20,10 @@ export class BrowseQuestionsPage {
     selectedGenres: {},
     selectedAnswers: "All",
     selectedFriends: "All",
-    selectedLocation: "",
+    selectedLocation: {
+      max: "All",
+      dist: {}
+    },
     selectedTitle: ""
   };
 
@@ -65,6 +68,8 @@ export class BrowseQuestionsPage {
       for (let quest of Object.keys(data.val())) {
         this.distances[quest] = this.calculateDistance(this.questions[quest].coordinates);
       }
+
+      this.selectedFilters.selectedLocation.dist = this.distances;
 
       this.questionLoading = false;
     });
@@ -219,6 +224,8 @@ export class BrowseQuestionsPage {
       for (let quest of Object.keys(data.val())) {
         this.distances[quest] = this.calculateDistance(this.questions[quest].coordinates);
       }
+
+      this.selectedFilters.selectedLocation.dist = this.distances;
 
       this.questionLoading = false;
     });

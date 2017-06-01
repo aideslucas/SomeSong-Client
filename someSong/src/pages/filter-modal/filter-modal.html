@@ -32,8 +32,8 @@
     </ion-item>
     <hr>
     <ion-item no-lines>
-      <button ion-item>Location</button>
-      <ion-option></ion-option>
+      <button ion-item (click)="selectLocation()">Location</button>
+      <ion-option>{{selectedFilters.selectedLocation.max}}</ion-option>
     </ion-item>
   </ion-list>
 </ion-content>
