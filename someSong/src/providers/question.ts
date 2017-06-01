@@ -38,11 +38,24 @@ export class Question {
     return firebase.database().ref().child('unresolvedQuestions').push().key;
   }
 
-  writeNewQuestion(questionID:string, genres: {}, languages: {}, location: any, record: string, userID: string, title: string)
+  writeNewQuestion(questionID:string, genres: {}, languages: {}, location: any, record: string, userID: string, title: string, cordinates: any)
   {
     var time = new Date();
 
-    firebase.database().ref('/questions/' + questionID).set({
+    this._user.getUser(userID).then(data => {
+      var user = data.val();
+
+      if (user.questions == null)
+      {
+        user.questions = {};
+      }
+
+      user.questions[questionID] = true;
+
+      this._user.updateUser(user);
+    });
+
+    return firebase.database().ref('/questions/' + questionID).set({
       languages: languages,
       genres: genres,
       timeUTC: {
@@ -57,20 +70,9 @@ export class Question {
       questionID: questionID,
       record: record,
       user: userID,
-      title: title
-    });
-
-    this._user.getUser(userID).then(data => {
-      var user = data.val();
-
-      if (user.questions == null)
-      {
-        user.questions = {};
-      }
-
-      user.questions[questionID] = true;
-
-      this._user.updateUser(user);
+      title: title,
+      coordinates: {latitude: cordinates.latitude,
+        longitude: cordinates.longitude}
     });
   }
 

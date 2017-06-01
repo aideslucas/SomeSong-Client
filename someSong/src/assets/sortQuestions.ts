@@ -51,7 +51,7 @@ export class SortQuestions {
         // TODO: Friends
       }
 
-      if (args == "Resolved") {
+      else if (args == "Resolved") {
         if (a.value.correctAnswer != null &&
           b.value.correctAnswer == null) {
           return -1;
@@ -62,7 +62,7 @@ export class SortQuestions {
         }
       }
 
-      if (args == "Answers") {
+      else if (args == "Answers") {
         if (a.value.answers != null &&
           b.value.answers == null) {
           return -1;
@@ -82,7 +82,7 @@ export class SortQuestions {
         }
       }
 
-      if (args == "Recent") {
+      else if (args == "Recent") {
         if (this.getLocalTime(a.value.timeUTC) < this.getLocalTime(b.value.timeUTC)) {
           return 1;
         }
@@ -92,8 +92,9 @@ export class SortQuestions {
         }
       }
 
-      if (args == "Location") {
+      else {
         //TODO: Location
+        return args[a.key] - args[b.key];
       }
 
       return 0;

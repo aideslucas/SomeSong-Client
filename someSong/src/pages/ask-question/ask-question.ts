@@ -6,6 +6,8 @@ import {LanguageSelectPage} from "../language-select/language-select";
 import {GenreSelectPage} from "../genre-select/genre-select";
 import {User} from "../../providers/user";
 import {Alert} from '../../providers/alert';
+import {QuestionDetailsPage} from "../question-details/question-details";
+import {HomePage} from "../home/home";
 
 declare var Media: any;
 declare var navigator: any;
@@ -76,34 +78,21 @@ export class AskQuestionPage {
   }
 
   public startUploadProcess(): void {
+    let upload = this.modalCtrl.create(UploadQuestionPage);
 
-    this.user.currentUser.first().subscribe((userData) => {
+    upload.onDidDismiss((data) => {
+      if (data == "home") {
+        this.navCtrl.popToRoot();
+      }
+      else if (data == "ask") {
 
-      let languageModal = this.modalCtrl.create(LanguageSelectPage, {selectedLanguages: userData.languages});
-      languageModal.onDidDismiss((data) => {
+      }
+      else {
+        this.navCtrl.setPages([{"page": HomePage}, {"page": QuestionDetailsPage, "params": data}]);
+      }
+    })
 
-        this.selectedLanguages = data;
-        let genreModal = this.modalCtrl.create(GenreSelectPage, {selectedGenres: userData.genres});
-
-        genreModal.onDidDismiss(data => {
-
-          this.selectedGenres = data;
-          let uploadModal = this.modalCtrl.create(UploadQuestionPage, {
-            selectedGenres: this.selectedGenres,
-            selectedLanguages: this.selectedLanguages
-          });
-
-          uploadModal.onDidDismiss(() => {
-          });
-
-          uploadModal.present();
-        });
-
-        genreModal.present();
-      });
-
-      languageModal.present();
-    });
+    upload.present();
   }
 
   private startTimeCounter(): void {

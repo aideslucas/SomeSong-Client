@@ -8,6 +8,7 @@ import {FilterModalPage} from "../filter-modal/filter-modal";
 import {User} from "../../providers/user";
 import DictionaryHelpFunctions from "../../assets/dictionaryHelpFunctions";
 import {AskQuestionPage} from "../ask-question/ask-question";
+import {Geolocation} from "@ionic-native/geolocation";
 
 @Component({
   selector: 'page-browse-questions',
@@ -25,7 +26,10 @@ export class BrowseQuestionsPage {
 
   questions: { [id: string]: any } = {};
   questionLoading = true;
-  orderBy = "";
+  orderBy: any = "";
+
+  distances = {};
+  currentLocation: any;
 
   unresolvedQuestions: any;
   user: any;
@@ -44,6 +48,7 @@ export class BrowseQuestionsPage {
               public navParams: NavParams,
               private modalCtrl: ModalController,
               public alertCtrl: AlertController,
+              private geolocation: Geolocation,
               private _user: User,
               private _question: Question,
               private _genres: Genre,
@@ -56,7 +61,16 @@ export class BrowseQuestionsPage {
 
     this._question.getAllQuestions().then(data => {
       this.questions = data.val();
+
+      for (let quest of Object.keys(data.val())) {
+        this.distances[quest] = this.calculateDistance(this.questions[quest].coordinates);
+      }
+
       this.questionLoading = false;
+    });
+
+    this.geolocation.getCurrentPosition().then((data) => {
+      this.currentLocation = data.coords;
     });
 /*
     var promises = [];
@@ -193,11 +207,19 @@ export class BrowseQuestionsPage {
   }
 
   doRefresh(refresher) {
-    // TODO: REFRESH Location
+    this.geolocation.getCurrentPosition().then((data) => {
+      this.currentLocation = data;
+    });
+
     this.questionLoading = true;
 
     this._question.getAllQuestions().then(data => {
       this.questions = data.val();
+
+      for (let quest of Object.keys(data.val())) {
+        this.distances[quest] = this.calculateDistance(this.questions[quest].coordinates);
+      }
+
       this.questionLoading = false;
     });
 
@@ -235,7 +257,7 @@ export class BrowseQuestionsPage {
         type: "radio",
         label: "Most Close to Me",
         value: "Location",
-        checked: this.orderBy == "Location"
+        checked: this.orderBy == this.distances
       }
       ],
       buttons: [{
@@ -247,7 +269,11 @@ export class BrowseQuestionsPage {
         {
           text: 'Apply',
           handler: data => {
-            this.orderBy = data;
+            if (data == "Location") {
+              this.orderBy = this.distances;
+            }
+            else
+              this.orderBy = data;
             this.updateFilter();
           }
         }]
@@ -258,5 +284,27 @@ export class BrowseQuestionsPage {
 
   askAQuestion() {
     this.navCtrl.push(AskQuestionPage);
+  }
+
+
+
+  calculateDistance(questionCoords) {
+    if (questionCoords) {
+      var R = 6371e3; // metres
+      var φ1 = this.currentLocation.latitude * (Math.PI / 180);
+      var φ2 = questionCoords.latitude * (Math.PI / 180);
+      var Δφ = (questionCoords.latitude-this.currentLocation.latitude) * (Math.PI / 180);
+      var Δλ = (questionCoords.longitude-this.currentLocation.longitude) * (Math.PI / 180);
+
+      var a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+        Math.cos(φ1) * Math.cos(φ2) *
+        Math.sin(Δλ/2) * Math.sin(Δλ/2);
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+      var d = R * c;
+
+      return d;
+    }
+    return 9999999;
   }
 }
