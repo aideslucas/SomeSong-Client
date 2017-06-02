@@ -95,8 +95,14 @@
               DownVote
             </button>
           </ion-item-options>
+          <ion-item-options side="right" *ngIf="currentUser?.userID === answer.value.user.userID">
+            <button ion-button small circle (click)="deleteAnswer(item, answer.value)">
+              <ion-icon name="trash"></ion-icon>
+              Delete
+            </button>
+          </ion-item-options>
           <ion-item-options side="right" *ngIf="currentUser?.userID === question.user">
-            <button ion-button small circle (click)="resolve(item, answer.value)">
+            <button ion-button small circle [disabled]="question.correctAnswer != null && answer.key === question.correctAnswer"  (click)="resolve(item, answer.value)">
               <ion-icon name="checkmark"></ion-icon>
               Correct Answer
             </button>

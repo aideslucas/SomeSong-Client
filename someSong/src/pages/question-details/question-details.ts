@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams, Platform} from 'ionic-angular';
+import {AlertController, NavController, NavParams, Platform} from 'ionic-angular';
 
 import {MediaPlugin} from "@ionic-native/media";
 import {Question} from "../../providers/question";
@@ -27,6 +27,7 @@ export class QuestionDetailsPage {
   questionTime: any;
 
   constructor(public navCtrl: NavController,
+              private alertCtrl: AlertController,
               public navParams: NavParams,
               private _media: MediaPlugin,
               private _question: Question,
@@ -83,6 +84,12 @@ export class QuestionDetailsPage {
             }
             this.answerLoading = false;
           });
+        }
+      });
+
+      this._question.getQuestionAnswers(this.question.questionID).on('child_removed', questionAnswer => {
+        if (questionAnswer) {
+          delete this.questionAnswers[questionAnswer.key];
         }
       });
     });
@@ -169,6 +176,29 @@ export class QuestionDetailsPage {
         this._notification.writeNewNotification(this.question.user, 0, this.question, answer);
       });
     }
+  }
+
+  deleteAnswer(item, answer) {
+    item.close();
+    let confirmAlert = this.alertCtrl.create({
+      title: "Are you sure?",
+      subTitle: "Are you sure you want to delete this answer: " + answer.content,
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Confirm',
+          handler: () => {
+            this._answer.deleteAnswer(answer);
+          }
+        }
+      ]
+    });
+
+    confirmAlert.present();
   }
 
   ionViewWillUnload() {

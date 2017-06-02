@@ -91,6 +91,12 @@ export class HomePage {
               }
             });
           });
+
+          this._user.getUserAnswers(this.user.userID).on('child_removed', userAnswer => {
+            if (userAnswer) {
+              delete this.userAnswers[userAnswer.key];
+            }
+          });
         }
       });
     }
@@ -162,6 +168,31 @@ export class HomePage {
   browseQuestions() {
     this.navCtrl.push(BrowseQuestionsPage);
   }
+
+  deleteAnswer(item, answer) {
+    item.close();
+
+    let confirmAlert = this.alertCtrl.create({
+      title: "Are you sure?",
+      subTitle: "Are you sure you want to delete this answer: " + answer.content,
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Confirm',
+          handler: () => {
+            this._answer.deleteAnswer(answer);
+          }
+        }
+      ]
+    });
+
+    confirmAlert.present();
+  }
+
 
   ionViewWillUnload() {
     if (this.userSubscription) {
