@@ -166,8 +166,6 @@ export class BrowseQuestionsPage {
     this.navCtrl.push(AskQuestionPage);
   }
 
-
-
   calculateDistance(questionCoords) {
     if (questionCoords && this.currentLocation) {
       var R = 6371e3; // metres
