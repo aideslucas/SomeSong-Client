@@ -30,6 +30,12 @@ export class GenreSelectPage {
     });
   }
 
+  clearAll(){
+    for (let x of Object.keys(this.selected)) {
+      delete this.selected[x];
+    }
+  }
+
   noneSelected() {
     return DictionaryHelpFunctions.isEmpty(this.selected);
   }

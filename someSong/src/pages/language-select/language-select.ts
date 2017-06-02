@@ -37,6 +37,12 @@ export class LanguageSelectPage {
     }
   }
 
+  clearAll(){
+    for (let x of Object.keys(this.selected)) {
+      delete this.selected[x];
+    }
+  }
+
   insertLanguageToArray(item, language){
     if (item.checked)
     {
