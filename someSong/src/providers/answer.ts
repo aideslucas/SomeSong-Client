@@ -4,6 +4,7 @@ import {User} from "./user";
 import {Question} from "./question";
 import 'rxjs/add/operator/first'
 import {Observable} from "rxjs/Observable";
+import {Deletes} from "./deletes";
 
 @Injectable()
 export class Answer {

@@ -1,3 +1,17 @@
 page-upload-question {
+  ion-list-header{
+    color: #000000 !important;
+    font-family: Impact, Charcoal, sans-serif;
+    margin: 0px !important;
+  }
 
+  .invalid {
+    border: 1px solid #ea6153;
+  }
+
+  .footer-buttons {
+    width: 47%;
+    margin-right: 1%;
+    margin-left: 1%;
+  }
 }

@@ -10,32 +10,24 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="login-content" padding>
-  <div class="logo-row">
-    <img id="microphoneImg" src="assets/images/microphone.jpg"/>
-  </div>
-  <form #loginForm="ngForm">
-    <ion-row>
-      <div class="container">
-        <h3 name="play" *ngIf="!recording">Start Recording!</h3>
-        <input type="checkbox" id="btn" (click)="startRecording()"/>
-        <label for="btn"></label>
-        <div class="time">
-          <div class="h_m"></div>
-          <div class="s_ms"></div>
-        </div>
-      </div>
-    </ion-row>
-
-    <div id='bars' *ngIf="recording">
-      <div class='bar'></div>
-      <div class='bar'></div>
-      <div class='bar'></div>
-      <div class='bar'></div>
-      <div class='bar'></div>
-      <div class='bar'></div>
-      <div class='bar'></div>
-      <div class='bar'></div>
+<ion-content class="ask-a-question" padding>
+  <div id="flex-container">
+    <div></div>
+    <div id="header-btn-container" style="background-color:coral;"></div>
+    <div id="main-container"></div>
+    <div id="footer-btn-container" style="background-color:lightgreen;">
+      <form #loginForm="ngForm">
+        <ion-row>
+          <div class="container">
+            <input type="checkbox" [checked]="isChecked" id="btn" (click)="RecordingToggle()"/>
+            <label for="btn"></label>
+          </div>
+        </ion-row>
+      </form>
     </div>
-  </form>
+    <div>
+      <progress-bar [progress]="progress"></progress-bar>
+    </div>
+    <div id="stopWatch">{{zeroPlaceholderSec ? 0 : ''}}{{second}}:{{zeroPlaceholderMil ? 0 : ''}}{{miliSecond}}</div>
+  </div>
 </ion-content>

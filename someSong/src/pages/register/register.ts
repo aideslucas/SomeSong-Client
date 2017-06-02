@@ -1,15 +1,11 @@
 /**
  * Created by Lucas on 01/05/2017.
  */
-import {NavController, LoadingController, ModalController} from 'ionic-angular';
+import {LoadingController, ViewController} from 'ionic-angular';
 import {Component} from '@angular/core';
 
 import {Auth} from "../../providers/auth";
-
-import {LanguageSelectPage} from "../language-select/language-select";
 import {User} from "../../providers/user";
-import {GenreSelectPage} from "../genre-select/genre-select";
-import {HomePage} from "../home/home";
 
 @Component({
   templateUrl: 'register.html',
@@ -20,48 +16,18 @@ export class RegisterPage {
   error: any;
   form: any;
   loading: any;
-  authStateChanged: any;
 
-  constructor(private navCtrl: NavController,
-              private modalCtrl: ModalController,
+  constructor(private viewController: ViewController,
               private _auth: Auth,
               private _user: User,
-              private loadingCtrl: LoadingController,) {
+              private loadingCtrl: LoadingController)
+  {
     this.form = {
       email: '',
       password: '',
       repassword: '',
       displayName: ''
     };
-
-    this.authStateChanged = this._auth.authState.onAuthStateChanged(authUser => {
-      if (authUser != null) {
-        this.loading.dismiss();
-        this._user.logIn(authUser.uid);
-
-        var user;
-        this._user.currentUser.first().subscribe(data => {
-          user = data;
-        });
-
-        var languageModal = this.modalCtrl.create(LanguageSelectPage,  { selectedLanguages: {} });
-        languageModal.onDidDismiss(data => {
-          console.log(data);
-          user.languages = data;
-          var genreModal = this.modalCtrl.create(GenreSelectPage, { selectedGenres: {} });
-          genreModal.onDidDismiss(data => {
-            user.genres = data;
-            this._user.updateUser(user);
-            //this.navCtrl.setRoot(HomePage);
-            this.navCtrl.pop();
-          });
-
-          genreModal.present();
-        });
-
-        languageModal.present();
-      }
-    });
   }
 
   register() {
@@ -76,19 +42,16 @@ export class RegisterPage {
     this.loading.present();
 
     this._auth.createUserWithEmail(this.form.email, this.form.password).then(registerData => {
-      this._user.createUser(registerData.uid, this.form.displayName, this.form.email, "https://freeiconshop.com/wp-content/uploads/edd/person-solid.png").then(() => {
-        this._auth.signInWithEmail(this.form.email, this.form.password).catch(loginError => {
-          this.loading.dismiss();
-          this.error = loginError;
-        });
-      });
+      this._user.createUser(registerData.uid, this.form.displayName, this.form.email, "https://freeiconshop.com/wp-content/uploads/edd/person-solid.png");
+      this.closeModal();
     }, registerError => {
       this.loading.dismiss();
       this.error = registerError;
     });
   }
 
-  ionViewWillUnload() {
-    this.authStateChanged();
+  closeModal() {
+    this.loading.dismiss();
+    this.viewController.dismiss();
   }
 }

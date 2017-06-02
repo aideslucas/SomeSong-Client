@@ -6,6 +6,11 @@
     <ion-title>
       Question Details
     </ion-title>
+    <ion-buttons end *ngIf="currentUser?.userID == question?.user">
+      <button ion-button (click)="deleteQuestion(question)">
+        <ion-icon name="trash"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -36,14 +41,14 @@
   </ion-grid>
   <b>Question Possible Genres:</b><br/>
   <div *ngIf="question?.genres">
-    <button ion-button small *ngFor="let genre of question?.genres | keyValueFilter">
+    <button ion-button small *ngFor="let genre of question?.genres | keyValueFilter" (click)="browseByGenre(genre)">
       {{genre.value}}
     </button>
   </div>
 
   <b>Question Possible Languages:</b><br/>
   <div *ngIf="question?.languages">
-    <button ion-button small *ngFor="let language of question?.languages | keyValueFilter">
+    <button ion-button small *ngFor="let language of question?.languages | keyValueFilter" (click)="browseByLanguage(language)">
       {{language.value}}
     </button>
   </div>
@@ -54,7 +59,7 @@
     </ion-list-header>
     <ion-scroll scrollY="true">
       <ion-list *ngIf="!isEmpty(questionAnswers) && !answerLoading">
-        <ion-item-sliding *ngFor="let answer of questionAnswers | keyValueFilter" #item>
+        <ion-item-sliding *ngFor="let answer of questionAnswers | keyValueFilter | sortAnswers:(question.correctAnswer)" #item>
           <ion-item>
             <ion-grid>
               <ion-row>
@@ -95,8 +100,14 @@
               DownVote
             </button>
           </ion-item-options>
+          <ion-item-options side="right" *ngIf="currentUser?.userID === answer.value.user.userID">
+            <button ion-button small circle (click)="deleteAnswer(item, answer.value)">
+              <ion-icon name="trash"></ion-icon>
+              Delete
+            </button>
+          </ion-item-options>
           <ion-item-options side="right" *ngIf="currentUser?.userID === question.user">
-            <button ion-button small circle (click)="resolve(item, answer.value)">
+            <button ion-button small circle [disabled]="question.correctAnswer != null && answer.key === question.correctAnswer"  (click)="resolve(item, answer.value)">
               <ion-icon name="checkmark"></ion-icon>
               Correct Answer
             </button>
@@ -122,7 +133,7 @@
     <ion-toolbar>
       <ion-textarea placeholder="Suggest answer here..." [(ngModel)]="answer" name="answer"></ion-textarea>
       <ion-buttons end>
-        <button ion-button type="submit">Send &nbsp;<ion-icon name="send"></ion-icon>
+        <button ion-button [disabled]="answer == null || answer == ''" type="submit">Send &nbsp;<ion-icon name="send"></ion-icon>
         </button>
       </ion-buttons>
     </ion-toolbar>

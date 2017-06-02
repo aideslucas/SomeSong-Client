@@ -17,7 +17,8 @@ exports.Pushtrigger = functions.database.ref('/notifications/{notificationID}').
                 "body": "",
                 "questionID": wrotedata.questionID,
                 "answerID": wrotedata.answerID,
-                "notifType": wrotedata.notifType.toString()
+                "notifType": wrotedata.notifType.toString(),
+                "icon": "icon"
             }
         };
 
