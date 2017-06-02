@@ -6,6 +6,11 @@
     <ion-title>
       Question Details
     </ion-title>
+    <ion-buttons end *ngIf="currentUser?.userID == question?.user">
+      <button ion-button (click)="deleteQuestion(question)">
+        <ion-icon name="trash"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 

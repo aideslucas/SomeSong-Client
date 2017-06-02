@@ -33,54 +33,6 @@
                            refreshingText="Refreshing...">
     </ion-refresher-content>
   </ion-refresher>
-  <!--
-  <ion-grid>
-    <ion-row>
-      <h1 class="filterLabel">Filters:</h1>
-      <ion-item>
-        <ion-label col-4 class="filterLabel">resolved</ion-label>
-        <ion-checkbox col-1
-                      class="checkBoxText"
-                      [(ngModel)]="resolved"
-                      (ionChange)="getAllEnabledQuestions()"
-        ></ion-checkbox>
-      </ion-item>
-    </ion-row>
-    <ion-row>
-      <ion-item>
-        <ion-label col-3 class="filterLabel">Genres</ion-label>
-        <ion-select
-          class="select"
-          placeholder="Choose genres"
-          multiple="true"
-          [(ngModel)]="filteredGenres"
-          (ionChange)="getAllEnabledQuestions()">
-          <ion-option value={{genre}} *ngFor="let genre of genresArray">
-            {{genre}}
-          </ion-option>
-        </ion-select>
-      </ion-item>
-    </ion-row>
-
-    <ion-row>
-      <ion-item>
-        <ion-label class="filterLabel" col-4>Languages</ion-label>
-        <ion-select placeholder="Choose languages" class="select"
-                    multiple="true" [(ngModel)]="filteredLanguages"
-                    (ionChange)="getAllEnabledQuestions()">
-          <ion-option value={{language}} *ngFor="let language of languagesArray">
-            {{language}}
-          </ion-option>
-        </ion-select>
-      </ion-item>
-    </ion-row>
-    <hr/>
-    <ion-list *ngIf="unresolvedQuestions" (ionLoad)="getAllEnabledQuestions()">
-      <button ion-item (click)="goToQuestion(question.questionID)" *ngFor="let question of enabledQuestions">
-        {{question.title}}
-      </button>
-    </ion-list>
-  </ion-grid>!-->
 
   <div class="scrollableContent">
     <ion-scroll scrollY="true">

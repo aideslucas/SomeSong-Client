@@ -48,6 +48,7 @@ import {FacebookShare} from "../providers/facebook-share";
 import {FilterModalPage} from "../pages/filter-modal/filter-modal";
 import {FilterQuestions} from "../assets/filterQuestions";
 import {Geolocation} from "@ionic-native/geolocation";
+import {Deletes} from "../providers/deletes";
 
 export const firebaseConfig = {
   apiKey: "AIzaSyA_MquO5E-MQKjnEdaEUC-fnEXENMjz6Ro",
@@ -111,6 +112,7 @@ export const deepLinkConfig: DeepLinkConfig = {
     User,
     Question,
     Answer,
+    Deletes,
     Genre,
     Language,
     Record,

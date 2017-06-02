@@ -18,16 +18,24 @@
     </ion-list-header>
     <ion-scroll scrollY="true">
       <ion-list no-lines no-padding *ngIf="!isEmpty(userQuestions) && !questionLoading">
-        <button ion-item *ngFor="let question of userQuestions | keyValueFilter | sortQuestions"
-                (click)="goToQuestion(question.key)">
-          {{question.value.title}}
-          <ion-icon name="checkmark-circle" item-left color="secondary" *ngIf="question.value.correctAnswer"></ion-icon>
-          <ion-icon name="help-circle" item-left color="dark" *ngIf="!question.value.correctAnswer"></ion-icon>
+        <ion-item-sliding *ngFor="let question of userQuestions | keyValueFilter | sortQuestions" #item>
+          <button ion-item (click)="goToQuestion(question.key)">
+            {{question.value.title}}
+            <ion-icon name="checkmark-circle" item-left color="secondary"
+                      *ngIf="question.value.correctAnswer"></ion-icon>
+            <ion-icon name="help-circle" item-left color="dark" *ngIf="!question.value.correctAnswer"></ion-icon>
 
-          <ion-icon name="ios-chatbubbles-outline" *ngIf="question.value.answers" item-right class="right-icons">
-            &nbsp;{{(question.value.answers | keyValueFilter)?.length}}
-          </ion-icon>
-        </button>
+            <ion-icon name="ios-chatbubbles-outline" *ngIf="question.value.answers" item-right class="right-icons">
+              &nbsp;{{(question.value.answers | keyValueFilter)?.length}}
+            </ion-icon>
+          </button>
+          <ion-item-options side="right">
+            <button ion-button small circle (click)="deleteQuestion(item, question.value)">
+              <ion-icon name="trash"></ion-icon>
+              Delete
+            </button>
+          </ion-item-options>
+        </ion-item-sliding>
       </ion-list>
       <div *ngIf="isEmpty(userQuestions) && !questionLoading" class="contentCentered">
         <div>

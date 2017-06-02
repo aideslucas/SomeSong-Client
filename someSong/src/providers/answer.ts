@@ -4,6 +4,7 @@ import {User} from "./user";
 import {Question} from "./question";
 import 'rxjs/add/operator/first'
 import {Observable} from "rxjs/Observable";
+import {Deletes} from "./deletes";
 
 @Injectable()
 export class Answer {
@@ -110,33 +111,5 @@ export class Answer {
     });
 
     return ansKey;
-  }
-
-  deleteAnswer(answer: any)
-  {
-    let userID = answer.user.userID ? answer.user.userID : answer.user;
-    this._user.getUser(userID).then(data => {
-      var user = data.val();
-
-      delete user.answers[answer.answerID];
-
-      this._user.updateUser(user);
-    });
-
-    let questionID = answer.question.questionID ? answer.question.questionID : answer.question;
-    this._question.getQuestionDetails(questionID).first().subscribe(data => {
-      var question = data;
-
-      delete question.answers[answer.answerID];
-
-      if (question.correctAnswer != null && question.correctAnswer == answer.answerID)
-      {
-        question.correctAnswer = null;
-      }
-
-      this._question.updateQuestion(question);
-    });
-
-    firebase.database().ref('/answers/' + answer.answerID).set(null);
   }
 }

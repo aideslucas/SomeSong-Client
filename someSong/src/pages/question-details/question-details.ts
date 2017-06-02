@@ -8,6 +8,7 @@ import {Answer} from "../../providers/answer";
 import {Record} from "../../providers/record";
 import DictionaryHelpFunctions from "../../assets/dictionaryHelpFunctions";
 import {Notification} from "../../providers/notification";
+import {Deletes} from "../../providers/deletes";
 
 declare var Media: any;
 
@@ -34,6 +35,7 @@ export class QuestionDetailsPage {
               private _record: Record,
               private _user: User,
               private _answer: Answer,
+              private _deletes: Deletes,
               private _notification: Notification,
               private _platform: Platform) {
     this._user.currentUser.subscribe(data => {
@@ -192,7 +194,30 @@ export class QuestionDetailsPage {
         {
           text: 'Confirm',
           handler: () => {
-            this._answer.deleteAnswer(answer);
+            this._deletes.deleteAnswer(answer);
+          }
+        }
+      ]
+    });
+
+    confirmAlert.present();
+  }
+
+  deleteQuestion(question) {
+    let confirmAlert = this.alertCtrl.create({
+      title: "Are you sure?",
+      subTitle: "Are you sure you want to delete this question: " + question.title,
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Confirm',
+          handler: () => {
+            this._deletes.deleteQuestion(question);
+            this.navCtrl.pop();
           }
         }
       ]
