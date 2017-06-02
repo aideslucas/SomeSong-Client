@@ -102,39 +102,6 @@ export class UploadQuestionPage {
     else {
       this.saveRecordingToStorage(questionID);
     }
-    this.alertCtrl.create({
-      title: "Upload Successfully",
-      subTitle: "Your question:" + this.title + " has been uploaded successfully",
-      buttons: [{
-        text: 'Ask Another Question',
-        handler: () => {
-          this.viewController.dismiss("ask");
-        }
-      },
-        {
-          text: 'Go To Question',
-          handler: () => {
-            this.viewController.dismiss(questionID);
-          }
-        },
-        {
-          text: 'Go To Home',
-          handler: () => {
-            this.viewController.dismiss("home");
-          }
-        },
-        {
-          text: 'Share to Facebook',
-          handler: () => {
-            this.facebookShare.shareQuestion(questionID, this.title).then(() => {
-              this.viewController.dismiss("home");
-            }).catch(() => {
-              this.viewController.dismiss("home");
-            });
-          }
-        }]
-
-    }).present();
   }
 
   private saveRecordingToDB(questionID: string): void {
@@ -158,7 +125,39 @@ export class UploadQuestionPage {
         let blob = new Blob([fileData], {type: "audio/amr"});
         return ref.put(blob)
           .then((_) => {
-            this.alert.showAlert('SUCCESS', 'Uploaded song!', 'OK');
+            this.alertCtrl.create({
+              title: "Upload Successfully",
+              subTitle: "Your question:" + this.title + " has been uploaded successfully",
+              buttons: [{
+                text: 'Ask Another Question',
+                handler: () => {
+                  this.viewController.dismiss("ask");
+                }
+              },
+                {
+                  text: 'Go To Question',
+                  handler: () => {
+                    this.viewController.dismiss(questionID);
+                  }
+                },
+                {
+                  text: 'Go To Home',
+                  handler: () => {
+                    this.viewController.dismiss("home");
+                  }
+                },
+                {
+                  text: 'Share to Facebook',
+                  handler: () => {
+                    this.facebookShare.shareQuestion(questionID, this.title).then(() => {
+                      this.viewController.dismiss("home");
+                    }).catch(() => {
+                      this.viewController.dismiss("home");
+                    });
+                  }
+                }]
+
+            }).present();
           })
           .catch((error) => {
             this.alert.showAlert('OOPS...', `could not upload song: ${JSON.stringify(error)}`, 'OK');
