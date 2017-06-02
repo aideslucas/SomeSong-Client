@@ -57,6 +57,8 @@ export class BrowseQuestionsPage {
         this.selectedFilters.selectedGenres = data.genres;
     });
 
+    this.questionLoading = false;
+
     this._question.getAllQuestions().on('child_added', question => {
       this._question.getQuestionDetails(question.key).subscribe((questionDetail) => {
         if (questionDetail) {
@@ -64,8 +66,6 @@ export class BrowseQuestionsPage {
           this.distances[question.key] = this.calculateDistance(questionDetail.coordinates);
         }
       });
-
-      this.questionLoading = false;
     });
 
     this._question.getAllQuestions().on('child_removed', question => {

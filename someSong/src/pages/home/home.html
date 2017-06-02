@@ -4,6 +4,9 @@
       SomeSong
     </ion-title>
     <ion-buttons end>
+      <button (click)="goToLeaderboard()" ion-button>
+        <ion-icon name="ribbon"></ion-icon>
+      </button>
       <button ion-button (click)="goToProfile()">
         <ion-icon name="settings"></ion-icon>
       </button>
@@ -105,14 +108,6 @@
     <ion-buttons end class="footer-button">
       <button (click)="browseQuestions()" round ion-button color="light">
         <ion-icon name="search"></ion-icon>
-      </button>
-    </ion-buttons>
-  </div>
-  <div>
-
-    <ion-buttons end class="footer-button">
-      <button (click)="goToLeaderboard()" round ion-button color="light">
-        <ion-icon name="ribbon"></ion-icon><label>LeaderBoard</label>
       </button>
     </ion-buttons>
   </div>
