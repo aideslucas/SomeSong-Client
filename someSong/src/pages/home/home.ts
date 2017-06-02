@@ -41,51 +41,59 @@ export class HomePage {
       console.log(err);
     });
 
-    this.userSubscription = this._user.currentUser.subscribe((data) => {
-      this.user = data;
+    if (this._user.currentUser) {
+      this.userSubscription = this._user.currentUser.subscribe((data) => {
+        this.user = data;
 
-      this.initPushNotifications();
+        this.initPushNotifications();
 
-      if (!this.user.questions) {
-        this.questionLoading = false;
-      }
-      else {
-        let numQuestions = Object.keys(this.user.questions).length;
-        let loadedQuestions = 0;
+        if (!this.user.questions) {
+          this.questionLoading = false;
+        }
+        else {
+          let numQuestions = Object.keys(this.user.questions).length;
+          let loadedQuestions = 0;
 
-        this._user.getUserQuestions(this.user.userID).on('child_added', userQuestion => {
-          this._question.getQuestionDetails(userQuestion.key).subscribe((questionDetail) => {
-            this.userQuestions = DictionaryHelpFunctions.addToDictionary(this.userQuestions, userQuestion.key, questionDetail);
-            loadedQuestions++;
+          this._user.getUserQuestions(this.user.userID).on('child_added', userQuestion => {
+            this._question.getQuestionDetails(userQuestion.key).subscribe((questionDetail) => {
+              if (questionDetail) {
+                this.userQuestions = DictionaryHelpFunctions.addToDictionary(this.userQuestions, userQuestion.key, questionDetail);
+              }
+              loadedQuestions++;
 
-            if (loadedQuestions == numQuestions)
-              this.questionLoading = false;
-          });
-        });
-      }
-
-
-      if (!this.user.answers) {
-        this.answerLoading = false;
-      }
-      else {
-        let numAnswers = Object.keys(this.user.answers).length;
-        let loadedAnswers = 0;
-
-        this._user.getUserAnswers(this.user.userID).on('child_added', userAnswer => {
-          this._answer.getAnswerDetails(userAnswer.key).subscribe((answerDetail) => {
-            this.userAnswers = DictionaryHelpFunctions.addToDictionary(this.userAnswers, userAnswer.key, answerDetail);
-            this._question.getQuestionDetails(answerDetail.question).subscribe((questionDetail) => {
-              this.userAnswers[userAnswer.key].question = questionDetail;
-              loadedAnswers++;
-
-              if (loadedAnswers == numAnswers)
-                this.answerLoading = false;
+              if (loadedQuestions == numQuestions)
+                this.questionLoading = false;
             });
           });
-        });
-      }
-    });
+        }
+
+
+        if (!this.user.answers) {
+          this.answerLoading = false;
+        }
+        else {
+          let numAnswers = Object.keys(this.user.answers).length;
+          let loadedAnswers = 0;
+
+          this._user.getUserAnswers(this.user.userID).on('child_added', userAnswer => {
+            this._answer.getAnswerDetails(userAnswer.key).subscribe((answerDetail) => {
+              if (answerDetail) {
+                this.userAnswers = DictionaryHelpFunctions.addToDictionary(this.userAnswers, userAnswer.key, answerDetail);
+                this._question.getQuestionDetails(answerDetail.question).subscribe((questionDetail) => {
+                  if (questionDetail) {
+                    this.userAnswers[userAnswer.key].question = questionDetail;
+                  }
+                  loadedAnswers++;
+
+                  if (loadedAnswers == numAnswers)
+                    this.answerLoading = false;
+                });
+              }
+            });
+          });
+        }
+      });
+    }
   }
 
   initPushNotifications() {
@@ -156,6 +164,8 @@ export class HomePage {
   }
 
   ionViewWillUnload() {
-    this.userSubscription.unsubscribe();
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
   }
 }

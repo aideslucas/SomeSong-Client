@@ -38,11 +38,7 @@ export class QuestionDetailsPage {
       this.currentUser = data;
     });
 
-    console.log("got here from deeplink");
-
     var paramsData = navParams.get('questionID') ? navParams.get('questionID') : navParams.data;
-
-    console.log("deeplink : " + paramsData);
 
     this.questionSubs = this._question.getQuestionDetails(paramsData).subscribe(question => {
       this.question = question;
