@@ -90,7 +90,7 @@ export class AskQuestionPage {
       else {
         this.navCtrl.setPages([{"page": HomePage}, {"page": QuestionDetailsPage, "params": data}]);
       }
-    })
+    });
 
     upload.present();
   }
@@ -135,6 +135,7 @@ export class AskQuestionPage {
 
   private clearProgressBar() {
     if (this.progressBarInterval) {
+      this.progress = 0;
       clearInterval(this.progressBarInterval)
     }
   }

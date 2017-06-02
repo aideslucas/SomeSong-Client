@@ -1,6 +1,7 @@
 import {Pipe} from "@angular/core";
 @Pipe({
-  name: 'keyValueFilter'
+  name: 'keyValueFilter',
+  pure: false
 })
 
 export class keyValueFilterPipe {
@@ -9,7 +10,7 @@ export class keyValueFilterPipe {
     return Object.keys(value).map(function(key) {
       let pair = {};
       let k = 'key';
-      let v = 'value'
+      let v = 'value';
 
 
       pair[k] = key;
