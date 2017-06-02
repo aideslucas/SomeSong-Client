@@ -30,8 +30,10 @@
           <ion-icon name="build"></ion-icon>
         </button>
       </ion-list-header>
-      <ion-item *ngFor="let genre of currentUser.genres | keyValueFilter">
-        <ion-label>{{genre.value}}</ion-label>
+      <ion-item>
+        <ion-option *ngFor="let genre of currentUser.genres | keyValueFilter">
+          {{genre.value}}; &nbsp;
+        </ion-option>
       </ion-item>
     </ion-list>
   </div>
@@ -44,8 +46,10 @@
           <ion-icon name="build"></ion-icon>
         </button>
       </ion-list-header>
-      <ion-item *ngFor="let language of currentUser.languages | keyValueFilter">
-        <ion-label>{{language.value}}</ion-label>
+      <ion-item>
+        <ion-option *ngFor="let language of currentUser.languages | keyValueFilter">
+          {{language.value}}; &nbsp;
+        </ion-option>
       </ion-item>
     </ion-list>
   </div>

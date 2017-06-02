@@ -30,7 +30,7 @@
       </ion-list-header>
       <ion-item>
         <ion-option *ngFor="let genre of songGenres | keyValueFilter">
-          {{genre.value}} &nbsp;
+          {{genre.value}}; &nbsp;
         </ion-option>
       </ion-item>
     </ion-list>
@@ -44,7 +44,7 @@
       </ion-list-header>
       <ion-item>
         <ion-option *ngFor="let language of songLanguages | keyValueFilter">
-          {{language.value}} &nbsp;
+          {{language.value}}; &nbsp;
         </ion-option>
       </ion-item>
     </ion-list>
