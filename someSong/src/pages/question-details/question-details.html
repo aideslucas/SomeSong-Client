@@ -41,14 +41,14 @@
   </ion-grid>
   <b>Question Possible Genres:</b><br/>
   <div *ngIf="question?.genres">
-    <button ion-button small *ngFor="let genre of question?.genres | keyValueFilter">
+    <button ion-button small *ngFor="let genre of question?.genres | keyValueFilter" (click)="browseByGenre(genre)">
       {{genre.value}}
     </button>
   </div>
 
   <b>Question Possible Languages:</b><br/>
   <div *ngIf="question?.languages">
-    <button ion-button small *ngFor="let language of question?.languages | keyValueFilter">
+    <button ion-button small *ngFor="let language of question?.languages | keyValueFilter" (click)="browseByLanguage(language)">
       {{language.value}}
     </button>
   </div>

@@ -17,6 +17,12 @@ export class Record {
   }
 
   deleteRecord(path: string) {
-    firebase.storage().ref(path).delete();
+    let ref = firebase.storage().ref(path);
+    if (ref)
+      ref.delete().then(function() {
+        // File deleted successfully
+      }).catch(function(error) {
+        // Uh-oh, an error occurred!
+      });
   }
 }

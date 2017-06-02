@@ -4,9 +4,9 @@ import {Question} from "../../providers/question";
 import {QuestionDetailsPage} from "../question-details/question-details";
 import {FilterModalPage} from "../filter-modal/filter-modal";
 import {User} from "../../providers/user";
-import DictionaryHelpFunctions from "../../assets/dictionaryHelpFunctions";
 import {AskQuestionPage} from "../ask-question/ask-question";
 import {Geolocation} from "@ionic-native/geolocation";
+import DictionaryHelpFunctions from "../../assets/dictionaryHelpFunctions";
 
 @Component({
   selector: 'page-browse-questions',
@@ -40,9 +40,21 @@ export class BrowseQuestionsPage {
               private geolocation: Geolocation,
               private _user: User,
               private _question: Question) {
+    let paramsLang = this.params.get("language");
+    if (paramsLang != null) {
+      this.selectedFilters.selectedLanguages[paramsLang.key] = paramsLang.value;
+    }
+
+    let paramsGenre = this.params.get("genre");
+    if (paramsGenre != null) {
+      this.selectedFilters.selectedGenres[paramsGenre.key] = paramsGenre.value;
+    }
+
     this._user.currentUser.first().subscribe(data => {
-      this.selectedFilters.selectedLanguages = data.languages;
-      this.selectedFilters.selectedGenres = data.genres;
+      if (DictionaryHelpFunctions.isEmpty(this.selectedFilters.selectedLanguages))
+        this.selectedFilters.selectedLanguages = data.languages;
+      if (DictionaryHelpFunctions.isEmpty(this.selectedFilters.selectedGenres))
+        this.selectedFilters.selectedGenres = data.genres;
     });
 
     this._question.getAllQuestions().on('child_added', question => {

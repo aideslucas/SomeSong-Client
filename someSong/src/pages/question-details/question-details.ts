@@ -9,6 +9,7 @@ import {Record} from "../../providers/record";
 import DictionaryHelpFunctions from "../../assets/dictionaryHelpFunctions";
 import {Notification} from "../../providers/notification";
 import {Deletes} from "../../providers/deletes";
+import {BrowseQuestionsPage} from "../browse-questions/browse-questions";
 
 declare var Media: any;
 
@@ -178,6 +179,14 @@ export class QuestionDetailsPage {
         this._notification.writeNewNotification(this.question.user, 0, this.question, answer);
       });
     }
+  }
+
+  browseByGenre(genre) {
+    this.navCtrl.push(BrowseQuestionsPage, {"genre": genre});
+  }
+
+  browseByLanguage(language) {
+    this.navCtrl.push(BrowseQuestionsPage, {"language": language});
   }
 
   deleteAnswer(item, answer) {
