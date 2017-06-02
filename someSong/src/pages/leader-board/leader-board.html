@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      LeaderBoard
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<!--<ion-content padding>
+  <ion-list *ngIf="genres">
+    <ion-item *ngFor="let genre of genres.reverse()">
+      <ion-label>{{genre.val()}}</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>-->
+<ion-content padding>
+  <ion-list-header class="list-header">
+    Top 10 Players
+  </ion-list-header>
+  <div class="image-row">
+    <img src="assets/images/leaderboard-icon.png" height="150px" width="150px"/>
+  </div>
+  <ion-list *ngIf="scores">
+    <ion-item *ngFor="let score of scores.reverse()">
+      <ion-label>{{score.key}}</ion-label>
+      <ion-label>{{score.val()}}</ion-label>
+
+
+   <!-- <ion-item *ngFor="let score of scores1 | keyValueFilter">-->
+    <!--  <ion-label>{{score1.value.score}}</ion-label>
+      <ion-label>{{score1.value.user.displayName}}</ion-label>-->
+    <!--  <ion-label>{{score1.value.user.displayName}}</ion-label>-->
+    <!--  <ion-item *ngFor="let user of userScore()">
+      <ion-label>{{user.value}}</ion-label>-->
+         <!-- <ion-grid>
+            <ion-row>
+              <ion-label>{{score.val()}}</ion-label>
+             &lt;!&ndash; <ion-col col-1 class="startCol">
+                <img class="user-photo" src="{{score.key.user?.image}}">
+              </ion-col>
+              <ion-col class="startCol" col-6>
+                <strong>{{score.key.user?.displayName}}</strong>
+              </ion-col>
+               &ndash;&gt;
+            </ion-row>
+          </ion-grid>-->
+
+        </ion-item>
+    </ion-list>
+</ion-content>
+
+
+

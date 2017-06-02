@@ -19,9 +19,10 @@
     <ion-label>
       {{currentUser?.email}}
     </ion-label>
-  </div>
+   <ion-label>Score:{{userPoints}}</ion-label>
+    </div>
 
-  <div class="profile-block">
+    <div class="profile-block">
     <ion-list *ngIf="currentUser?.genres" no-lines no-padding>
       <ion-list-header>
         My Genres

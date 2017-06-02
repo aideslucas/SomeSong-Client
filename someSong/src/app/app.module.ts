@@ -14,7 +14,8 @@ import { RegisterPage } from "../pages/register/register";
 import { LoginPage } from '../pages/login/login';
 import { LanguageSelectPage } from '../pages/language-select/language-select';
 import { GenreSelectPage } from '../pages/genre-select/genre-select';
-import { UploadQuestionPage } from '../pages/upload-question/upload-question'
+import { UploadQuestionPage } from '../pages/upload-question/upload-question';
+import { LeaderboardPage } from '../pages/leader-board/leader-board';
 import {ProgressBarComponent} from "../pages/progress-bar/progress-bar";
 
 // Ionic Native
@@ -32,6 +33,7 @@ import {Answer} from "../providers/answer";
 import {Genre} from "../providers/genre";
 import {Language} from "../providers/language";
 import {Record} from "../providers/record";
+import {Score} from "../providers/score";
 import {Alert} from "../providers/alert";
 
 // Firebase
@@ -81,6 +83,7 @@ export const deepLinkConfig: DeepLinkConfig = {
     RegisterPage,
     UploadQuestionPage,
     keyValueFilterPipe,
+    LeaderboardPage,
     SortQuestions,
     SortAnswers,
     FilterModalPage,
@@ -104,6 +107,7 @@ export const deepLinkConfig: DeepLinkConfig = {
     GenreSelectPage,
     RegisterPage,
     UploadQuestionPage,
+    LeaderboardPage,
     FilterModalPage,
     ProgressBarComponent
   ],
@@ -121,6 +125,7 @@ export const deepLinkConfig: DeepLinkConfig = {
     Facebook,
     File,
     MediaPlugin,
+    Score,
     Push,
     Notification,
     Deeplinks,

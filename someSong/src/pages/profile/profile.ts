@@ -7,6 +7,7 @@ import {LoginPage} from "../login/login";
 import {User} from "../../providers/user";
 import {GenreSelectPage} from "../genre-select/genre-select";
 import {LanguageSelectPage} from "../language-select/language-select";
+import {Score} from "../../providers/score";
 
 @Component({
   selector: 'page-profile',
@@ -15,17 +16,22 @@ import {LanguageSelectPage} from "../language-select/language-select";
 export class ProfilePage {
   currentUser: any;
   userSubscription: any;
+  userPoints: any;
 
   constructor(public navCtrl: NavController,
               public modalCtrl: ModalController,
               public alertCtrl: AlertController,
               private _auth: Auth,
+              private _score: Score,
               private _user: User)
 
   {
     this.userSubscription = this._user.currentUser.subscribe((data) => {
       this.currentUser = data;
+      this._score.getScoreDetails(this.currentUser.userID).subscribe((scoreDetail) => {
+        this.userPoints = scoreDetail;
     });
+       });
   }
 
   ionViewWillUnload() {

@@ -8,6 +8,7 @@ import {HomePage} from "../home/home";
 import {LanguageSelectPage} from "../language-select/language-select";
 import {RegisterPage} from "../register/register";
 import {GenreSelectPage} from "../genre-select/genre-select";
+import {Score} from "../../providers/score";
 
 @Component({
   selector: 'page-login',
@@ -26,6 +27,7 @@ export class LoginPage {
               public navCtrl: NavController,
               public modalCtrl: ModalController,
               private _auth: Auth,
+              private _score: Score,
               private _user: User) {
     this.form = {
       email: '',
@@ -43,6 +45,7 @@ export class LoginPage {
     this.authStateChanged = this._auth.authState.onAuthStateChanged(authUser => {
       if (authUser != null) {
         this.loader.present();
+        this._score.writeNewScore(authUser.uid);
         this._user.logIn(authUser.uid);
         this._user.getUser(authUser.uid)
           .then(user => {
@@ -60,6 +63,7 @@ export class LoginPage {
                 var user;
                 this._user.currentUser.first().subscribe(data => {
                   user = data;
+                  //this._score.writeNewScore(data.userID);
                 });
 
                 this.loader.dismiss();
@@ -78,6 +82,7 @@ export class LoginPage {
                 });
                 languageModal.present();
               });
+
             }
             else if (user.val().languages == null)
             {
@@ -104,6 +109,7 @@ export class LoginPage {
             else {
               this.loader.dismiss();
               this.navCtrl.setRoot(HomePage);
+
             }
           });
       }

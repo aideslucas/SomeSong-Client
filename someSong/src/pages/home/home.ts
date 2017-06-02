@@ -12,6 +12,7 @@ import {Question} from "../../providers/question";
 import DictionaryHelpFunctions from "../../assets/dictionaryHelpFunctions";
 
 import {Push, PushObject, PushOptions} from '@ionic-native/push'
+import {LeaderboardPage} from "../leader-board/leader-board";
 import {FacebookShare} from "../../providers/facebook-share";
 import {Deletes} from "../../providers/deletes";
 
@@ -230,5 +231,9 @@ export class HomePage {
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
     }
+  }
+  goToLeaderboard(){
+    this.navCtrl.push(LeaderboardPage);
+
   }
 }

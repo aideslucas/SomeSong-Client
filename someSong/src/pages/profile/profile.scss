@@ -25,8 +25,15 @@ page-profile {
   }
 
   ion-list-header{
+     color: #000000 !important;
+     font-family: Impact, Charcoal, sans-serif;
+     margin: 0px !important;
+   }
+
+  ion-lable{
     color: #000000 !important;
     font-family: Impact, Charcoal, sans-serif;
     margin: 0px !important;
+    size: 12px
   }
 }
