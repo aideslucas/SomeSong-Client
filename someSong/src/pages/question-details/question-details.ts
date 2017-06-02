@@ -8,6 +8,7 @@ import {Answer} from "../../providers/answer";
 import {Record} from "../../providers/record";
 import DictionaryHelpFunctions from "../../assets/dictionaryHelpFunctions";
 import {Notification} from "../../providers/notification";
+import {Score} from "../../providers/score";
 
 declare var Media: any;
 
@@ -32,6 +33,7 @@ export class QuestionDetailsPage {
               private _question: Question,
               private _record: Record,
               private _user: User,
+              private _score: Score,
               private _answer: Answer,
               private _notification: Notification)
   {
@@ -91,6 +93,8 @@ export class QuestionDetailsPage {
     else
       this.currentUser.votes[answer.answerID]++;
 
+    this._score.updateScore(3, answer.user.userID);
+
     this._user.updateUser(this.currentUser);
     this._answer.updateAnswer(answer);
 
@@ -131,6 +135,7 @@ export class QuestionDetailsPage {
     item.close();
     this.question.correctAnswer = answer.answerID;
     this._question.updateQuestion(this.question);
+    this._score.updateScore(2, answer.user.userID);
 
     this._notification.writeNewNotification(answer.user, 1, this.question, answer);
   }
@@ -150,7 +155,7 @@ export class QuestionDetailsPage {
   sendAnswer() {
     var ansKey = this._answer.writeNewAnswer(this.answer, this.currentUser.userID, this.question.questionID);
     this.answer = '';
-
+    this._score.updateScore(1, this.currentUser.userID);
     this._answer.getAnswerDetails(ansKey).first().subscribe((answer) => {
       this._notification.writeNewNotification(this.question.user, 0, this.question, answer);
     })

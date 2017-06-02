@@ -15,6 +15,7 @@ import { LoginPage } from '../pages/login/login';
 import { LanguageSelectPage } from '../pages/language-select/language-select';
 import { GenreSelectPage } from '../pages/genre-select/genre-select';
 import { UploadQuestionPage } from '../pages/upload-question/upload-question'
+import { LeaderboardPage } from '../pages/leader-board/leader-board';
 
 // Ionic Native
 import { StatusBar } from '@ionic-native/status-bar';
@@ -31,6 +32,7 @@ import {Answer} from "../providers/answer";
 import {Genre} from "../providers/genre";
 import {Language} from "../providers/language";
 import {Record} from "../providers/record";
+import {Score} from "../providers/score";
 
 // Firebase
 import firebase from 'firebase'
@@ -62,7 +64,8 @@ export const firebaseConfig = {
     GenreSelectPage,
     RegisterPage,
     UploadQuestionPage,
-    keyValueFilterPipe
+    keyValueFilterPipe,
+    LeaderboardPage
   ],
   imports: [
     BrowserModule,
@@ -80,7 +83,8 @@ export const firebaseConfig = {
     LanguageSelectPage,
     GenreSelectPage,
     RegisterPage,
-    UploadQuestionPage
+    UploadQuestionPage,
+    LeaderboardPage
   ],
   providers: [
     Auth,
@@ -95,6 +99,7 @@ export const firebaseConfig = {
     Facebook,
     File,
     MediaPlugin,
+    Score,
     Push,
     Notification,
     Deeplinks,

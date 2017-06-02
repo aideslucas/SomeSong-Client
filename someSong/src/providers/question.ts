@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import {User} from "./user";
 import firebase from 'firebase';
 import {Observable} from "rxjs/Observable";
+import {Score} from "./score";
 
 @Injectable()
 export class Question {
   private date: any = new Date();
 
-  constructor(private _user: User) {
+  constructor(private _user: User,
+              private _score: Score) {
   }
 
   getAllQuestions() {
@@ -69,6 +71,7 @@ export class Question {
       }
 
       user.questions[questionID] = true;
+      this._score.updateScore(4, userID);
 
       this._user.updateUser(user);
     });

@@ -12,6 +12,7 @@ import {Question} from "../../providers/question";
 import DictionaryHelpFunctions from "../../assets/dictionaryHelpFunctions";
 
 import {Push, PushObject, PushOptions} from '@ionic-native/push'
+import {LeaderboardPage} from "../leader-board/leader-board";
 
 @Component({
   selector: 'page-home',
@@ -138,5 +139,9 @@ export class HomePage {
 
   ionViewWillUnload() {
     this.userSubscription.unsubscribe();
+  }
+  goToLeaderboard(){
+    this.navCtrl.push(LeaderboardPage);
+
   }
 }
