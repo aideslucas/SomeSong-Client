@@ -59,7 +59,7 @@ export class HomePage {
           this._user.getUserQuestions(this.user.userID).on('child_added', userQuestion => {
             this._question.getQuestionDetails(userQuestion.key).subscribe((questionDetail) => {
               if (questionDetail) {
-                this.userQuestions = DictionaryHelpFunctions.addToDictionary(this.userQuestions, userQuestion.key, questionDetail);
+                this.userQuestions[userQuestion.key] = questionDetail;
               }
               loadedQuestions++;
 
@@ -85,7 +85,7 @@ export class HomePage {
           this._user.getUserAnswers(this.user.userID).on('child_added', userAnswer => {
             this._answer.getAnswerDetails(userAnswer.key).subscribe((answerDetail) => {
               if (answerDetail) {
-                this.userAnswers = DictionaryHelpFunctions.addToDictionary(this.userAnswers, userAnswer.key, answerDetail);
+                this.userAnswers[userAnswer.key] = answerDetail;
                 this._question.getQuestionDetails(answerDetail.question).subscribe((questionDetail) => {
                   if (questionDetail) {
                     this.userAnswers[userAnswer.key].question = questionDetail;

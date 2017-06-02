@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, Platform, ViewController} from 'ionic-angular';
+import { NavParams, ViewController} from 'ionic-angular';
 import {Genre} from "../../providers/genre";
 import DictionaryHelpFunctions from "../../assets/dictionaryHelpFunctions";
 

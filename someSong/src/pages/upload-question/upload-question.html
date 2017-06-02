@@ -50,7 +50,7 @@
     </ion-list>
 
     <ion-footer>
-      <button ion-button icon-only (click)="playRecording()" id="play-stop" class="footer-buttons">
+      <button role="button" ion-button icon-only (click)="playRecording()" id="play-stop" class="footer-buttons">
         <ion-icon name="play" *ngIf="!playing">&nbsp;Play</ion-icon>
         <ion-icon name="pause" *ngIf="playing">&nbsp;Pause</ion-icon>
       </button>

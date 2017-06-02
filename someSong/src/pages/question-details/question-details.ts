@@ -78,7 +78,7 @@ export class QuestionDetailsPage {
         if (questionAnswer) {
           this._answer.getAnswerDetails(questionAnswer.key).subscribe((answerDetail) => {
             if (answerDetail) {
-              this.questionAnswers = DictionaryHelpFunctions.addToDictionary(this.questionAnswers, questionAnswer.key, answerDetail);
+              this.questionAnswers[questionAnswer.key] = answerDetail;
               this._user.getUser(answerDetail.user).then((userDetail) => {
                 this.questionAnswers[questionAnswer.key].user = userDetail.val();
               });

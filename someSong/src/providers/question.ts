@@ -12,13 +12,7 @@ export class Question {
   }
 
   getAllQuestions() {
-    return firebase.database().ref('/questions/').once('value');
-  }
-
-  getAllUnresolvedQuestions() {
-    var ref = firebase.database().ref('/questions/');
-
-    return ref.orderByChild('correctAnswer').equalTo(null).once('value');
+    return firebase.database().ref('/questions/');
   }
 
   getQuestionDetails(questionID: string): Observable<any> {
@@ -83,22 +77,5 @@ export class Question {
 
   getQuestionAnswers(questionID) {
     return firebase.database().ref('/questions/' + questionID + '/answers/');
-  }
-
-  private getTimeStamp() {
-    return (this.date.getDate() + "_" +
-    (this.date.getMonth() + 1) + "_" +
-    this.date.getFullYear() + "@" +
-    this.date.getHours() + ":" +
-    this.date.getMinutes() + ":" +
-    this.date.getSeconds());
-  }
-
-  getResolvedQuestions() {
-    var ref = firebase.database().ref('/questions/');
-
-    // Get all questions that has value in the correctAnswer property.
-    return ref.orderByChild('correctAnswer').startAt(1).once('value');
-
   }
 }

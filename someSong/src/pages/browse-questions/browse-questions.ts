@@ -2,8 +2,6 @@ import {Component} from '@angular/core';
 import {AlertController, ModalController, NavController, NavParams} from 'ionic-angular';
 import {Question} from "../../providers/question";
 import {QuestionDetailsPage} from "../question-details/question-details";
-import {Genre} from "../../providers/genre";
-import {Language} from "../../providers/language";
 import {FilterModalPage} from "../filter-modal/filter-modal";
 import {User} from "../../providers/user";
 import DictionaryHelpFunctions from "../../assets/dictionaryHelpFunctions";
@@ -15,6 +13,8 @@ import {Geolocation} from "@ionic-native/geolocation";
   templateUrl: 'browse-questions.html'
 })
 export class BrowseQuestionsPage {
+  distances = {};
+
   selectedFilters = {
     selectedLanguages: {},
     selectedGenres: {},
@@ -22,19 +22,19 @@ export class BrowseQuestionsPage {
     selectedFriends: "All",
     selectedLocation: {
       max: "All",
-      dist: {}
+      dist: this.distances
     },
     selectedTitle: ""
   };
 
-  questions: { [id: string]: any } = {};
+  questions: {[id: string]: any} = {};
   questionLoading = true;
-  orderBy: any = "";
 
-  distances = {};
+  orderBy: any = "";
   currentLocation: any;
 
   constructor(public navCtrl: NavController,
+              private params: NavParams,
               private modalCtrl: ModalController,
               public alertCtrl: AlertController,
               private geolocation: Geolocation,
@@ -45,36 +45,31 @@ export class BrowseQuestionsPage {
       this.selectedFilters.selectedGenres = data.genres;
     });
 
-    this.getLocationAndQuestions();
+    this._question.getAllQuestions().on('child_added', question => {
+      this._question.getQuestionDetails(question.key).subscribe((questionDetail) => {
+        if (questionDetail) {
+          this.questions[question.key] = questionDetail;
+          this.distances[question.key] = this.calculateDistance(questionDetail.coordinates);
+        }
+      });
+
+      this.questionLoading = false;
+    });
+
+    this._question.getAllQuestions().on('child_removed', question => {
+      delete this.questions[question.key];
+      delete  this.distances[question.key];
+    });
+
+    this.getLocation();
   }
 
-  getLocationAndQuestions() {
+  getLocation() {
     this.geolocation.getCurrentPosition({enableHighAccuracy: true, timeout: 2000}).then((data) => {
       this.currentLocation = data.coords;
-
-      this._question.getAllQuestions().then(data => {
-        this.questions = data.val();
-
-        for (let quest of Object.keys(data.val())) {
-          this.distances[quest] = this.calculateDistance(this.questions[quest].coordinates);
-        }
-
-        this.selectedFilters.selectedLocation.dist = this.distances;
-
-        this.questionLoading = false;
-      });
-    }).catch((err) => {
-      this._question.getAllQuestions().then(data => {
-        this.questions = data.val();
-
-        for (let quest of Object.keys(data.val())) {
-          this.distances[quest] = this.calculateDistance(this.questions[quest].coordinates);
-        }
-
-        this.selectedFilters.selectedLocation.dist = this.distances;
-
-        this.questionLoading = false;
-      });
+      for (let quest of Object.keys(this.questions)) {
+        this.distances[quest] = this.calculateDistance(this.questions[quest].coordinates);
+      }
     });
   }
 
@@ -82,27 +77,18 @@ export class BrowseQuestionsPage {
     this.navCtrl.push(QuestionDetailsPage, questionID);
   }
 
-
-  updateFilter() {
-    this.questions = DictionaryHelpFunctions.updateDictionary(this.questions);
-  }
-
   filter() {
     let filterModal = this.modalCtrl.create(FilterModalPage, this.selectedFilters);
 
     filterModal.onDidDismiss((data) => {
       this.selectedFilters = data;
-      this.updateFilter();
     });
 
     filterModal.present();
   }
 
   doRefresh(refresher) {
-    this.questionLoading = true;
-
-    this.getLocationAndQuestions();
-
+    this.getLocation();
     refresher.complete();
   }
 
@@ -154,7 +140,6 @@ export class BrowseQuestionsPage {
             }
             else
               this.orderBy = data;
-            this.updateFilter();
           }
         }]
     });
@@ -171,13 +156,13 @@ export class BrowseQuestionsPage {
       var R = 6371e3; // metres
       var φ1 = this.currentLocation.latitude * (Math.PI / 180);
       var φ2 = questionCoords.latitude * (Math.PI / 180);
-      var Δφ = (questionCoords.latitude-this.currentLocation.latitude) * (Math.PI / 180);
-      var Δλ = (questionCoords.longitude-this.currentLocation.longitude) * (Math.PI / 180);
+      var Δφ = (questionCoords.latitude - this.currentLocation.latitude) * (Math.PI / 180);
+      var Δλ = (questionCoords.longitude - this.currentLocation.longitude) * (Math.PI / 180);
 
-      var a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+      var a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
         Math.cos(φ1) * Math.cos(φ2) *
-        Math.sin(Δλ/2) * Math.sin(Δλ/2);
-      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
       var d = R * c;
 
