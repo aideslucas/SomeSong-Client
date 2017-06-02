@@ -8,7 +8,8 @@
 
 <ion-content padding>
   <ion-list *ngIf="genres">
-    <button ion-item color="primary" (click)="selectAll()">Select All</button>
+    <button ion-button color="primary" class="two-buttons" (click)="clearAll()">Clear All</button>
+    <button ion-button color="primary" class="two-buttons" (click)="selectAll()">Select All</button>
     <ion-item *ngFor="let genre of genres">
       <ion-label>{{genre.val()}}</ion-label>
       <ion-checkbox color="primary" (ionChange)="insertGenreToArray($event, genre)" [checked]="(selected[genre.key] != null)"></ion-checkbox>

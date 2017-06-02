@@ -6,6 +6,8 @@ import {Pipe} from "@angular/core";
 
 export class keyValueFilterPipe {
   transform(value: any, args: any[] = null): any {
+    if (value == null)
+      return null;
 
     return Object.keys(value).map(function(key) {
       let pair = {};

@@ -150,7 +150,6 @@ export class FilterModalPage {
 
     genresModal.onDidDismiss((data) => {
       this.selectedFilters.selectedGenres = data;
-      this.selectedFilters.selectedGenres = DictionaryHelpFunctions.updateDictionary(this.selectedFilters.selectedGenres);
     });
 
     genresModal.present();
@@ -161,7 +160,6 @@ export class FilterModalPage {
 
     languagesModal.onDidDismiss((data) => {
       this.selectedFilters.selectedLanguages = data;
-      this.selectedFilters.selectedLanguages = DictionaryHelpFunctions.updateDictionary(this.selectedFilters.selectedLanguages);
     });
 
     languagesModal.present();

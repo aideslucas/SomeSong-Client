@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams, Platform} from 'ionic-angular';
+import {AlertController, NavController, NavParams, Platform} from 'ionic-angular';
 
 import {MediaPlugin} from "@ionic-native/media";
 import {Question} from "../../providers/question";
@@ -8,6 +8,8 @@ import {Answer} from "../../providers/answer";
 import {Record} from "../../providers/record";
 import DictionaryHelpFunctions from "../../assets/dictionaryHelpFunctions";
 import {Notification} from "../../providers/notification";
+import {Deletes} from "../../providers/deletes";
+import {BrowseQuestionsPage} from "../browse-questions/browse-questions";
 
 declare var Media: any;
 
@@ -27,12 +29,14 @@ export class QuestionDetailsPage {
   questionTime: any;
 
   constructor(public navCtrl: NavController,
+              private alertCtrl: AlertController,
               public navParams: NavParams,
               private _media: MediaPlugin,
               private _question: Question,
               private _record: Record,
               private _user: User,
               private _answer: Answer,
+              private _deletes: Deletes,
               private _notification: Notification,
               private _platform: Platform) {
     this._user.currentUser.subscribe(data => {
@@ -52,7 +56,7 @@ export class QuestionDetailsPage {
       }
       else {
         this._record.getRecordURL(this.question.record).then(url => {
-          this.question.file = new Media(url, ()=> {
+          this.question.file = new Media(url, () => {
           }, (e) => {
             alert("failed to create the recording file: " + JSON.stringify(e));
           }, (mediaStatus) => {
@@ -75,7 +79,7 @@ export class QuestionDetailsPage {
         if (questionAnswer) {
           this._answer.getAnswerDetails(questionAnswer.key).subscribe((answerDetail) => {
             if (answerDetail) {
-              this.questionAnswers = DictionaryHelpFunctions.addToDictionary(this.questionAnswers, questionAnswer.key, answerDetail);
+              this.questionAnswers[questionAnswer.key] = answerDetail;
               this._user.getUser(answerDetail.user).then((userDetail) => {
                 this.questionAnswers[questionAnswer.key].user = userDetail.val();
               });
@@ -83,6 +87,12 @@ export class QuestionDetailsPage {
             }
             this.answerLoading = false;
           });
+        }
+      });
+
+      this._question.getQuestionAnswers(this.question.questionID).on('child_removed', questionAnswer => {
+        if (questionAnswer) {
+          delete this.questionAnswers[questionAnswer.key];
         }
       });
     });
@@ -164,9 +174,65 @@ export class QuestionDetailsPage {
     var ansKey = this._answer.writeNewAnswer(this.answer, this.currentUser.userID, this.question.questionID);
     this.answer = '';
 
-    this._answer.getAnswerDetails(ansKey).first().subscribe((answer) => {
-      this._notification.writeNewNotification(this.question.user, 0, this.question, answer);
-    })
+    if (this.currentUser.userID != this.question.user) {
+      this._answer.getAnswerDetails(ansKey).first().subscribe((answer) => {
+        this._notification.writeNewNotification(this.question.user, 0, this.question, answer);
+      });
+    }
+  }
+
+  browseByGenre(genre) {
+    this.navCtrl.push(BrowseQuestionsPage, {"genre": genre});
+  }
+
+  browseByLanguage(language) {
+    this.navCtrl.push(BrowseQuestionsPage, {"language": language});
+  }
+
+  deleteAnswer(item, answer) {
+    item.close();
+    let confirmAlert = this.alertCtrl.create({
+      title: "Are you sure?",
+      subTitle: "Are you sure you want to delete this answer: " + answer.content,
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Confirm',
+          handler: () => {
+            this._deletes.deleteAnswer(answer);
+          }
+        }
+      ]
+    });
+
+    confirmAlert.present();
+  }
+
+  deleteQuestion(question) {
+    let confirmAlert = this.alertCtrl.create({
+      title: "Are you sure?",
+      subTitle: "Are you sure you want to delete this question: " + question.title,
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Confirm',
+          handler: () => {
+            this._deletes.deleteQuestion(question);
+            this.navCtrl.pop();
+          }
+        }
+      ]
+    });
+
+    confirmAlert.present();
   }
 
   ionViewWillUnload() {

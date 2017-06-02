@@ -8,7 +8,8 @@
 
 <ion-content padding>
   <ion-list *ngIf="languages">
-    <button ion-item color="primary" (click)="selectAll()">Select All</button>
+    <button ion-button color="primary" class="two-buttons" (click)="clearAll()">Clear All</button>
+    <button ion-button color="primary" class="two-buttons" (click)="selectAll()">Select All</button>
     <ion-item *ngFor="let language of languages">
       <ion-label>{{language.val()}}</ion-label>
       <ion-checkbox color="primary" (ionChange)="insertLanguageToArray($event, language)" [checked]="(selected[language.key] != null)"></ion-checkbox>

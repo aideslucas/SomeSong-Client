@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, Platform, ViewController} from 'ionic-angular';
+import { NavParams, ViewController} from 'ionic-angular';
 import {Genre} from "../../providers/genre";
 import DictionaryHelpFunctions from "../../assets/dictionaryHelpFunctions";
 
@@ -15,7 +15,7 @@ export class GenreSelectPage {
   constructor(params: NavParams,
               private viewController: ViewController,
               private _genre: Genre) {
-    this.selected = params.get('selectedGenres');
+    this.selected = JSON.parse(JSON.stringify(params.get('selectedGenres')));
 
     var selectAll = false;
     if (DictionaryHelpFunctions.isEmpty(this.selected)) {
@@ -28,6 +28,12 @@ export class GenreSelectPage {
         this.selected[data.key] = data.val();
       }
     });
+  }
+
+  clearAll(){
+    for (let x of Object.keys(this.selected)) {
+      delete this.selected[x];
+    }
   }
 
   noneSelected() {

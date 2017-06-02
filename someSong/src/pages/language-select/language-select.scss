@@ -18,8 +18,15 @@ page-language-select {
   right: 0;
   margin: auto;
   border: 0;
-  -webkit-box-shadow: 0 0 100px 100px  rgba(0, 0, 0, .4);;
-  -moz-box-shadow: 0 0 100px 100px  rgba(0, 0, 0, .4);;
-  box-shadow: 0 0 100px 100px  rgba(0, 0, 0, .4);;
+  -webkit-box-shadow: 0 0 100px 100px rgba(0, 0, 0, .4);;
+  -moz-box-shadow: 0 0 100px 100px rgba(0, 0, 0, .4);;
+  box-shadow: 0 0 100px 100px rgba(0, 0, 0, .4);;
   background-color: #fafafa;
+
+  .two-buttons {
+    width: 47%;
+    margin-right: 1% !important;
+    margin-left: 1% !important;
+
+  }
 }

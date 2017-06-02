@@ -13,6 +13,7 @@ import DictionaryHelpFunctions from "../../assets/dictionaryHelpFunctions";
 
 import {Push, PushObject, PushOptions} from '@ionic-native/push'
 import {FacebookShare} from "../../providers/facebook-share";
+import {Deletes} from "../../providers/deletes";
 
 @Component({
   selector: 'page-home',
@@ -33,6 +34,7 @@ export class HomePage {
               private _user: User,
               private _answer: Answer,
               private _question: Question,
+              private _deletes: Deletes,
               private _push: Push,
               private facebookShare: FacebookShare) {
     this.facebookShare.inviteFriends().then((data) => {
@@ -57,7 +59,7 @@ export class HomePage {
           this._user.getUserQuestions(this.user.userID).on('child_added', userQuestion => {
             this._question.getQuestionDetails(userQuestion.key).subscribe((questionDetail) => {
               if (questionDetail) {
-                this.userQuestions = DictionaryHelpFunctions.addToDictionary(this.userQuestions, userQuestion.key, questionDetail);
+                this.userQuestions[userQuestion.key] = questionDetail;
               }
               loadedQuestions++;
 
@@ -65,12 +67,17 @@ export class HomePage {
                 this.questionLoading = false;
             });
           });
+
+          this._user.getUserQuestions(this.user.userID).on('child_removed', userQuestion => {
+            delete this.userQuestions[userQuestion.key];
+          });
         }
 
 
         if (!this.user.answers) {
           this.answerLoading = false;
         }
+
         else {
           let numAnswers = Object.keys(this.user.answers).length;
           let loadedAnswers = 0;
@@ -78,18 +85,26 @@ export class HomePage {
           this._user.getUserAnswers(this.user.userID).on('child_added', userAnswer => {
             this._answer.getAnswerDetails(userAnswer.key).subscribe((answerDetail) => {
               if (answerDetail) {
-                this.userAnswers = DictionaryHelpFunctions.addToDictionary(this.userAnswers, userAnswer.key, answerDetail);
+                this.userAnswers[userAnswer.key] = answerDetail;
                 this._question.getQuestionDetails(answerDetail.question).subscribe((questionDetail) => {
                   if (questionDetail) {
                     this.userAnswers[userAnswer.key].question = questionDetail;
                   }
-                  loadedAnswers++;
 
-                  if (loadedAnswers == numAnswers)
-                    this.answerLoading = false;
                 });
               }
+
+              loadedAnswers++;
+
+              if (loadedAnswers == numAnswers)
+                this.answerLoading = false;
             });
+          });
+
+          this._user.getUserAnswers(this.user.userID).on('child_removed', userAnswer => {
+            if (userAnswer) {
+              delete this.userAnswers[userAnswer.key];
+            }
           });
         }
       });
@@ -161,6 +176,54 @@ export class HomePage {
 
   browseQuestions() {
     this.navCtrl.push(BrowseQuestionsPage);
+  }
+
+  deleteAnswer(item, answer) {
+    item.close();
+
+    let confirmAlert = this.alertCtrl.create({
+      title: "Are you sure?",
+      subTitle: "Are you sure you want to delete this answer: " + answer.content,
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Confirm',
+          handler: () => {
+            this._deletes.deleteAnswer(answer);
+          }
+        }
+      ]
+    });
+
+    confirmAlert.present();
+  }
+
+  deleteQuestion(item, question) {
+    item.close();
+
+    let confirmAlert = this.alertCtrl.create({
+      title: "Are you sure?",
+      subTitle: "Are you sure you want to delete this question: " + question.title,
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Confirm',
+          handler: () => {
+            this._deletes.deleteQuestion(question);
+          }
+        }
+      ]
+    });
+
+    confirmAlert.present();
   }
 
   ionViewWillUnload() {

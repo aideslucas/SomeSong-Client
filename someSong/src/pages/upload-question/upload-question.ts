@@ -169,10 +169,22 @@ export class UploadQuestionPage {
   }
 
   public editRecordingGenres() {
-    this.modalCtrl.create(GenreSelectPage, {selectedGenres: this.songGenres}).present();
+    let genres = this.modalCtrl.create(GenreSelectPage, {selectedGenres: this.songGenres});
+
+    genres.onDidDismiss(data => {
+      this.songGenres = data;
+    });
+
+    genres.present();
   }
 
   public editRecordingLanguages() {
-    this.modalCtrl.create(LanguageSelectPage, {selectedLanguages: this.songLanguages}).present();
+    let lang = this.modalCtrl.create(LanguageSelectPage, {selectedLanguages: this.songLanguages});
+
+    lang.onDidDismiss(data => {
+      this.songLanguages = data;
+    });
+
+    lang.present();
   }
 }
