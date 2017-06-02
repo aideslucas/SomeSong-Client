@@ -52,7 +52,7 @@ export class QuestionDetailsPage {
       }
       else {
         this._record.getRecordURL(this.question.record).then(url => {
-          this.question.file = new Media(url, ()=> {
+          this.question.file = new Media(url, () => {
           }, (e) => {
             alert("failed to create the recording file: " + JSON.stringify(e));
           }, (mediaStatus) => {
@@ -164,9 +164,11 @@ export class QuestionDetailsPage {
     var ansKey = this._answer.writeNewAnswer(this.answer, this.currentUser.userID, this.question.questionID);
     this.answer = '';
 
-    this._answer.getAnswerDetails(ansKey).first().subscribe((answer) => {
-      this._notification.writeNewNotification(this.question.user, 0, this.question, answer);
-    })
+    if (this.currentUser.userID != this.question.user) {
+      this._answer.getAnswerDetails(ansKey).first().subscribe((answer) => {
+        this._notification.writeNewNotification(this.question.user, 0, this.question, answer);
+      });
+    }
   }
 
   ionViewWillUnload() {
