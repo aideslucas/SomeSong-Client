@@ -4,13 +4,15 @@ import {User} from "./user";
 import {Question} from "./question";
 import 'rxjs/add/operator/first'
 import {Answer} from "./answer";
+import {Record} from "./record";
 
 @Injectable()
 export class Deletes {
 
   constructor(private _user: User,
               private _question: Question,
-              private _answer: Answer) {
+              private _answer: Answer,
+              private _record: Record) {
   }
 
   deleteAnswer(answer: any)
@@ -46,6 +48,8 @@ export class Deletes {
         }
       }
     });
+
+    this._record.deleteRecord(question.record);
 
     return firebase.database().ref('/questions/' + question.questionID).set(null);
   }

@@ -15,4 +15,8 @@ export class Record {
   uploadRecordFile(file) {
     return;
   }
+
+  deleteRecord(path: string) {
+    firebase.storage().ref(path).delete();
+  }
 }
