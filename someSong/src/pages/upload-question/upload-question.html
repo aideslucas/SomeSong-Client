@@ -24,24 +24,28 @@
     <ion-list *ngIf="songGenres" no-lines no-padding>
       <ion-list-header>
         Your Songs Genres
-        <button ion-button item-right (click)="goToGenreSelect()">
+        <button type="button" ion-button item-right (click)="editRecordingGenres()">
           <ion-icon name="build"></ion-icon>
         </button>
       </ion-list-header>
       <ion-item>
-        <ion-option *ngFor="let genre of songGenres | keyValueFilter">{{genre.value}}; &nbsp;</ion-option>
+        <ion-option *ngFor="let genre of songGenres | keyValueFilter">
+          {{genre.value}} &nbsp;
+        </ion-option>
       </ion-item>
     </ion-list>
 
     <ion-list *ngIf="songLanguages" no-lines no-padding>
       <ion-list-header>
         Your Songs Languages
-        <button ion-button item-right (click)="goToLanguageSelect()">
+        <button type="button" ion-button item-right (click)="editRecordingLanguages()">
           <ion-icon name="build"></ion-icon>
         </button>
       </ion-list-header>
       <ion-item>
-        <ion-option *ngFor="let language of songLanguages | keyValueFilter">{{language.value}}; &nbsp;</ion-option>
+        <ion-option *ngFor="let language of songLanguages | keyValueFilter">
+          {{language.value}} &nbsp;
+        </ion-option>
       </ion-item>
     </ion-list>
 

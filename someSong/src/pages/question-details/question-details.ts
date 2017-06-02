@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
+import {NavController, NavParams, Platform} from 'ionic-angular';
 
 import {MediaPlugin} from "@ionic-native/media";
 import {Question} from "../../providers/question";
@@ -33,31 +33,35 @@ export class QuestionDetailsPage {
               private _record: Record,
               private _user: User,
               private _answer: Answer,
-              private _notification: Notification) {
+              private _notification: Notification,
+              private _platform: Platform) {
     this._user.currentUser.subscribe(data => {
       this.currentUser = data;
     });
 
-    console.log("got here from deeplink");
-
     var paramsData = navParams.get('questionID') ? navParams.get('questionID') : navParams.data;
 
-    console.log("deeplink : " + paramsData);
-
     this.questionSubs = this._question.getQuestionDetails(paramsData).subscribe(question => {
-      this.question = question;
-      this.questionTime = this._answer.getLocalTime(this.question.timeUTC);
+      if (question) {
+        this.question = question;
+        this.questionTime = this._answer.getLocalTime(this.question.timeUTC);
+      }
 
-      this._record.getRecordURL(this.question.record).then(url => {
-        this.question.file = new Media(url, ()=> {
-        }, (e) => {
-          alert("failed to create the recording file: " + JSON.stringify(e));
-        }, (mediaStatus) => {
-          if (mediaStatus === Media.MEDIA_STOPPED) {
-            this.playing = false;
-          }
+      if (this._platform.is('mobileweb') || this._platform.is('core')) {
+        console.log("Running in browser.. nothing to play");
+      }
+      else {
+        this._record.getRecordURL(this.question.record).then(url => {
+          this.question.file = new Media(url, ()=> {
+          }, (e) => {
+            alert("failed to create the recording file: " + JSON.stringify(e));
+          }, (mediaStatus) => {
+            if (mediaStatus === Media.MEDIA_STOPPED) {
+              this.playing = false;
+            }
+          });
         });
-      });
+      }
 
       this._user.getUser(this.question.user).then(user => {
         this.questionUser = user.val();
@@ -68,15 +72,18 @@ export class QuestionDetailsPage {
       }
 
       this._question.getQuestionAnswers(this.question.questionID).on('child_added', questionAnswer => {
-        this._answer.getAnswerDetails(questionAnswer.key).subscribe((answerDetail) => {
-          this.questionAnswers = DictionaryHelpFunctions.addToDictionary(this.questionAnswers, questionAnswer.key, answerDetail);
-          this._user.getUser(answerDetail.user).then((userDetail) => {
-            this.questionAnswers[questionAnswer.key].user = userDetail.val();
+        if (questionAnswer) {
+          this._answer.getAnswerDetails(questionAnswer.key).subscribe((answerDetail) => {
+            if (answerDetail) {
+              this.questionAnswers = DictionaryHelpFunctions.addToDictionary(this.questionAnswers, questionAnswer.key, answerDetail);
+              this._user.getUser(answerDetail.user).then((userDetail) => {
+                this.questionAnswers[questionAnswer.key].user = userDetail.val();
+              });
+              this.questionAnswers[questionAnswer.key].time = this._answer.getLocalTime(this.questionAnswers[questionAnswer.key].timeUTC);
+            }
+            this.answerLoading = false;
           });
-          this.questionAnswers[questionAnswer.key].time = this._answer.getLocalTime(this.questionAnswers[questionAnswer.key].timeUTC);
-
-          this.answerLoading = false;
-        });
+        }
       });
     });
   }

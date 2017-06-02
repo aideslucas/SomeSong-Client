@@ -18,13 +18,13 @@ declare var navigator: any;
 })
 export class AskQuestionPage {
 
+  public  isChecked: boolean = false;
+  public  recording: boolean = false;
   private recordingFile: any;
-  public recording: boolean = false;
-  private selectedLanguages: any = {};
-  private selectedGenres: any = {};
-  private miliSecond: number;
-  private second: number;
-  private zeroPlaceholder: boolean;
+  private miliSecond: number = 0;
+  private second: number = 0;
+  private zeroPlaceholderSec: boolean = true;
+  private zeroPlaceholderMil: boolean = true;
   private progress: number = 0;
   private progressBarInterval: number;
   private timeCounterInterval: number;
@@ -40,6 +40,7 @@ export class AskQuestionPage {
   public RecordingToggle(): void {
     if (!this.recording) {
       this.recording = true;
+      this.isChecked = true;
       this.startTimeCounter();
       this.startProgressBar();
       this.startRecording()
@@ -47,6 +48,7 @@ export class AskQuestionPage {
     }
     else {
       this.recording = false;
+      this.isChecked = false;
       this.clearTimeCounter();
       this.clearProgressBar();
       this.stopRecording();
@@ -90,16 +92,13 @@ export class AskQuestionPage {
       else {
         this.navCtrl.setPages([{"page": HomePage}, {"page": QuestionDetailsPage, "params": data}]);
       }
-    })
+    });
 
     upload.present();
   }
 
   private startTimeCounter(): void {
-    this.second = 0;
-    this.zeroPlaceholder = true;
-    this.miliSecond = 0;
-
+    this.zeroPlaceholderMil = false;
     this.timeCounterInterval = setInterval(() => {
       this.miliSecond++;
       if (this.miliSecond === 99) {
@@ -110,11 +109,10 @@ export class AskQuestionPage {
         this.second = 0;
       }
       if (this.second === 10) {
-        this.zeroPlaceholder = false;
+        this.zeroPlaceholderSec = false;
       }
       else if (this.second === 15) {
-        this.clearTimeCounter();
-        this.stopRecording();
+        this.RecordingToggle();
       }
     }, 10);
   }
@@ -129,12 +127,17 @@ export class AskQuestionPage {
 
   private clearTimeCounter() {
     if (this.timeCounterInterval) {
+      this.zeroPlaceholderSec = true;
+      this.zeroPlaceholderMil = true;
+      this.second = 0;
+      this.miliSecond = 0;
       clearInterval(this.timeCounterInterval)
     }
   }
 
   private clearProgressBar() {
     if (this.progressBarInterval) {
+      this.progress = 0;
       clearInterval(this.progressBarInterval)
     }
   }

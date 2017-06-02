@@ -3,7 +3,10 @@
  */
 import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms'
-import {NavController, ViewController, Platform, LoadingController, AlertController} from 'ionic-angular';
+import {
+  NavController, ViewController, Platform, LoadingController, AlertController,
+  ModalController
+} from 'ionic-angular';
 import {Question} from '../../providers/question'
 import {User} from "../../providers/user";
 import {File} from "@ionic-native/file";
@@ -11,7 +14,8 @@ import * as firebase from 'firebase';
 import {FacebookShare} from "../../providers/facebook-share";
 import {Alert} from '../../providers/alert';
 import {Geolocation} from "@ionic-native/geolocation";
-import {QuestionDetailsPage} from "../question-details/question-details";
+import {GenreSelectPage} from "../genre-select/genre-select";
+import {LanguageSelectPage} from "../language-select/language-select";
 
 declare var Media: any;
 
@@ -23,15 +27,16 @@ declare var Media: any;
 export class UploadQuestionPage {
   public songGenres: {};
   public songLanguages: {};
+  public submitAttempt: boolean = false;
   private recordPath: string;
   private userID: string;
   private title: string;
   private uploadForm: FormGroup;
-  public submitAttempt: boolean = false;
   private recordingFile: any;
   private playing: boolean = false;
   private cordinates: any;
   private loading: any;
+  private currUserData: any;
 
   constructor(public navCtrl: NavController,
               private loadingCtrl: LoadingController,
@@ -44,13 +49,15 @@ export class UploadQuestionPage {
               private alertCtrl: AlertController,
               private alert: Alert,
               private platform: Platform,
-              private geolocation: Geolocation) {
+              private geolocation: Geolocation,
+              private modalCtrl: ModalController) {
 
     this.title = '';
 
     this.user.currentUser.first().subscribe(data => {
       this.songGenres = data.genres;
       this.songLanguages = data.languages;
+      this.currUserData = data;
     });
 
     this.geolocation.getCurrentPosition().then((data) => {
@@ -83,49 +90,51 @@ export class UploadQuestionPage {
   }
 
   public uploadRecording(): void {
-    // if (this.platform.is('mobileweb') || this.platform.is('core')) {
-    //   console.log("Running in browser");
-    // }
-    // else {
-      this.submitAttempt = true;
-      this.loading = this.loadingCtrl.create({content: "Please Wait..."});
-      this.loading.present();
-      let questionID = this.question.getNewQuestionID();
-      this.saveRecordingToDB(questionID);
-  //    this.saveRecordingToStorage(questionID);
+    this.submitAttempt = true;
+    this.loading = this.loadingCtrl.create({content: "Please Wait..."});
+    this.loading.present();
+    let questionID = this.question.getNewQuestionID();
+    this.saveRecordingToDB(questionID);
 
-      this.alertCtrl.create({
-        title: "Upload Successfully",
-        subTitle: "Your question:" + this.title + " has been uploaded successfully",
-        buttons: [{
-          text: 'Ask Another Question',
+    if (this.platform.is('mobileweb') || this.platform.is('core')) {
+      console.log("Running in browser.. not uploading recording to storage.");
+    }
+    else {
+      this.saveRecordingToStorage(questionID);
+    }
+    this.alertCtrl.create({
+      title: "Upload Successfully",
+      subTitle: "Your question:" + this.title + " has been uploaded successfully",
+      buttons: [{
+        text: 'Ask Another Question',
+        handler: () => {
+          this.viewController.dismiss("ask");
+        }
+      },
+        {
+          text: 'Go To Question',
           handler: () => {
-            this.viewController.dismiss("ask");
+            this.viewController.dismiss(questionID);
           }
         },
-          {
-            text: 'Go To Question',
-            handler: () => {
-              this.viewController.dismiss(questionID);
-            }
-          },
-          {
-            text: 'Go To Home',
-            handler: () => {
+        {
+          text: 'Go To Home',
+          handler: () => {
+            this.viewController.dismiss("home");
+          }
+        },
+        {
+          text: 'Share to Facebook',
+          handler: () => {
+            this.facebookShare.shareQuestion(questionID, this.title).then(() => {
               this.viewController.dismiss("home");
-            }},
-          {
-            text: 'Share to Facebook',
-            handler: () => {
-              this.facebookShare.shareQuestion(questionID, this.title).then(() => {
-                this.viewController.dismiss("home");
-              }).catch( () => {
-                this.viewController.dismiss("home");
-              });
-            }}]
+            }).catch(() => {
+              this.viewController.dismiss("home");
+            });
+          }
+        }]
 
-      }).present();
-    // }
+    }).present();
   }
 
   private saveRecordingToDB(questionID: string): void {
@@ -158,5 +167,13 @@ export class UploadQuestionPage {
       .catch((error) => {
         this.alert.showAlert('OOPS...', `could not read file: ${JSON.stringify(error)}`, 'OK');
       });
+  }
+
+  public editRecordingGenres() {
+    this.modalCtrl.create(GenreSelectPage, {selectedGenres: this.songGenres}).present();
+  }
+
+  public editRecordingLanguages() {
+    this.modalCtrl.create(LanguageSelectPage, {selectedLanguages: this.songLanguages}).present();
   }
 }

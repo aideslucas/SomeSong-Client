@@ -3,19 +3,24 @@ import {AlertController, ModalController, NavParams, ViewController} from 'ionic
 import {LanguageSelectPage} from "../language-select/language-select";
 import {GenreSelectPage} from "../genre-select/genre-select";
 import DictionaryHelpFunctions from "../../assets/dictionaryHelpFunctions";
+import {User} from "../../providers/user";
 
 @Component({
   selector: 'page-filter-modal',
   templateUrl: 'filter-modal.html'
 })
 export class FilterModalPage {
-  selectedFilters: any;
+
+  private selectedFilters: any;
+  private defaultFilters: any;
 
   constructor(private viewController: ViewController,
               private navParams: NavParams,
               private modalCtrl: ModalController,
-              private alertCtrl: AlertController) {
-    this.selectedFilters = this.navParams.data;
+              private alertCtrl: AlertController,
+              private user: User) {
+
+    this.selectedFilters = JSON.parse(JSON.stringify(this.navParams.data));
   }
 
   selectLocation() {
@@ -162,8 +167,28 @@ export class FilterModalPage {
     languagesModal.present();
   }
 
+  private setDefaultFilters(): void {
+    this.defaultFilters = {
+      selectedLanguages: {},
+      selectedGenres: {},
+      selectedAnswers: "All",
+      selectedFriends: "All",
+      selectedLocation: {
+        max: "All",
+        dist: {}
+      },
+      selectedTitle: ""
+    };
+
+    this.user.currentUser.first().subscribe(data => {
+      this.defaultFilters.selectedLanguages = data.languages;
+      this.defaultFilters.selectedGenres = data.genres;
+    });
+  }
+
   clear() {
-    this.selectedFilters = this.navParams.data;
+    this.setDefaultFilters();
+    this.selectedFilters = JSON.parse(JSON.stringify(this.defaultFilters));
   }
 
   cancel() {

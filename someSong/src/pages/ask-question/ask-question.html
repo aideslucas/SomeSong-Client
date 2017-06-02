@@ -19,15 +19,15 @@
       <form #loginForm="ngForm">
         <ion-row>
           <div class="container">
-            <input type="checkbox" id="btn" (click)="RecordingToggle()"/>
+            <input type="checkbox" [checked]="isChecked" id="btn" (click)="RecordingToggle()"/>
             <label for="btn"></label>
           </div>
         </ion-row>
       </form>
     </div>
     <div>
-      <progress-bar *ngIf="recording" [progress]="progress"></progress-bar>
+      <progress-bar [progress]="progress"></progress-bar>
     </div>
-    <div id="stopWatch" *ngIf="recording">{{zeroPlaceholder ? 0 : ''}}{{second}}:{{miliSecond}}</div>
+    <div id="stopWatch">{{zeroPlaceholderSec ? 0 : ''}}{{second}}:{{zeroPlaceholderMil ? 0 : ''}}{{miliSecond}}</div>
   </div>
 </ion-content>
