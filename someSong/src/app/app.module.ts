@@ -51,6 +51,7 @@ import {FilterModalPage} from "../pages/filter-modal/filter-modal";
 import {FilterQuestions} from "../assets/filterQuestions";
 import {Geolocation} from "@ionic-native/geolocation";
 import {Deletes} from "../providers/deletes";
+import {SortScore} from "../assets/sortScore";
 
 export const firebaseConfig = {
   apiKey: "AIzaSyA_MquO5E-MQKjnEdaEUC-fnEXENMjz6Ro",
@@ -88,7 +89,8 @@ export const deepLinkConfig: DeepLinkConfig = {
     SortAnswers,
     FilterModalPage,
     FilterQuestions,
-    ProgressBarComponent
+    ProgressBarComponent,
+    SortScore
   ],
   imports: [
     BrowserModule,

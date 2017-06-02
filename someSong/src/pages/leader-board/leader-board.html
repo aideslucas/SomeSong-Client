@@ -17,7 +17,7 @@
     Top 10 Players
   </ion-list-header>
   <ion-list *ngIf="scores">
-    <ion-item *ngFor="let score of scores | keyValueFilter ">
+    <ion-item *ngFor="let score of scores | keyValueFilter | sortScore">
       <ion-label>{{score.value.user}}</ion-label>
       <ion-label>{{score.value.score}}</ion-label>
     </ion-item>
