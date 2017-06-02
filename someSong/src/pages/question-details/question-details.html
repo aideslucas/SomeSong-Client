@@ -133,7 +133,7 @@
     <ion-toolbar>
       <ion-textarea placeholder="Suggest answer here..." [(ngModel)]="answer" name="answer"></ion-textarea>
       <ion-buttons end>
-        <button ion-button type="submit">Send &nbsp;<ion-icon name="send"></ion-icon>
+        <button ion-button [disabled]="answer == null || answer == ''" type="submit">Send &nbsp;<ion-icon name="send"></ion-icon>
         </button>
       </ion-buttons>
     </ion-toolbar>
