@@ -16,7 +16,8 @@ export class LanguageSelectPage {
   constructor(params: NavParams,
               private viewController: ViewController,
               private _language: Language) {
-    this.selected = params.get('selectedLanguages');
+
+    this.selected = JSON.parse(JSON.stringify(params.get('selectedLanguages')));
 
     var selectAll = false;
     if (DictionaryHelpFunctions.isEmpty(this.selected)) {

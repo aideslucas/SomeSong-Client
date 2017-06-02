@@ -15,7 +15,7 @@ export class GenreSelectPage {
   constructor(params: NavParams,
               private viewController: ViewController,
               private _genre: Genre) {
-    this.selected = params.get('selectedGenres');
+    this.selected = JSON.parse(JSON.stringify(params.get('selectedGenres')));
 
     var selectAll = false;
     if (DictionaryHelpFunctions.isEmpty(this.selected)) {
