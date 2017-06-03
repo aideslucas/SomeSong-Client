@@ -27,7 +27,7 @@ export class BrowseQuestionsPage {
     selectedTitle: ""
   };
 
-  questions: {[id: string]: any} = {};
+  questions: { [id: string]: any } = {};
   questionLoading = true;
 
   orderBy: any = "";
@@ -165,20 +165,13 @@ export class BrowseQuestionsPage {
 
   calculateDistance(questionCoords) {
     if (questionCoords && this.currentLocation) {
-      var R = 6371e3; // metres
-      var φ1 = this.currentLocation.latitude * (Math.PI / 180);
-      var φ2 = questionCoords.latitude * (Math.PI / 180);
-      var Δφ = (questionCoords.latitude - this.currentLocation.latitude) * (Math.PI / 180);
-      var Δλ = (questionCoords.longitude - this.currentLocation.longitude) * (Math.PI / 180);
+      var p = 0.017453292519943295;    // Math.PI / 180
+      var c = Math.cos;
+      var a = 0.5 - c((this.currentLocation.latitude - questionCoords.latitude) * p)/2 +
+        c(questionCoords.latitude * p) * c(this.currentLocation.latitude * p) *
+        (1 - c((this.currentLocation.longitude - questionCoords.longitude) * p))/2;
 
-      var a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-        Math.cos(φ1) * Math.cos(φ2) *
-        Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-      var d = R * c;
-
-      return d;
+      return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
     }
     return 9999999;
   }
