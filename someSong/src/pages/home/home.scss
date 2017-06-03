@@ -4,6 +4,8 @@ page-home {
   ion-card-header{
     color: #000 !important;
     font-family: Impact, Charcoal, sans-serif;
+    font-size: 1.8em !important;
+    padding-bottom: 1px;
   }
 
   .label {
@@ -44,10 +46,6 @@ page-home {
 
     ion-card {
       background: #F5F5F5;
-    }
-
-    ion-card-header {
-      padding-bottom: 1px;
     }
 
     ion-item-sliding {
