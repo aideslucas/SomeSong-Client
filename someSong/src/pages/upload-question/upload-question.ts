@@ -90,54 +90,41 @@ export class UploadQuestionPage {
   }
 
   public uploadRecording(): void {
-    alert("inside upload functio");
     this.submitAttempt = true;
-/*    this.loading = this.loadingCtrl.create({content: "Please Wait..."});
-    this.loading.present();*/
+    this.loading = this.loadingCtrl.create({content: "Please Wait..."});
+    this.loading.present();
     let questionID = this.question.getNewQuestionID();
-    alert("questionID: " + questionID);
     this.saveRecordingToDB(questionID);
 
     if (this.platform.is('mobileweb') || this.platform.is('core')) {
-      alert("Running in browser.. not uploading recording to storage.");
+      console.log("Running in browser.. not uploading recording to storage.");
     }
     else {
-      //this.saveRecordingToStorage(questionID);
+      this.saveRecordingToStorage(questionID);
     }
   }
 
   private saveRecordingToDB(questionID: string): void {
-    alert("inside svae to DB function");
     this.recordPath = `client-data/recordings/myRecording_${questionID}.amr`;
     this.user.currentUser.first().subscribe((data) => {
-      alert("inside currUser");
       this.userID = data.userID;
-      alert("userID: " + this.userID);
 
-      this.question.writeNewQuestion(questionID, this.songGenres, this.songLanguages, null, this.recordPath, this.userID, this.title, this.cordinates)
-        .then((data) => {
-          this.alert.showAlert('Success', `Song saved to DB`, 'OK');
-          //this.loading.dismiss();
-        })
-        .catch((error) => {
-          this.alert.showAlert('OOPS...', `could not save song to DB: ${JSON.stringify(error)}`, 'OK');
-        });
+      this.question.writeNewQuestion(questionID, this.songGenres, this.songLanguages, this.recordPath, this.userID, this.title, this.cordinates).then((data) => {
+        this.loading.dismiss();
+      });
     });
   }
 
   private saveRecordingToStorage(questionID: string): void {
-    alert("inside saveRecordingToStorage");
     let ref = firebase.storage().ref().child(`client-data/recordings/myRecording_${questionID}.amr`);
     let filePath = "file:///storage/emulated/0/";
     let fileName = "myRecording.amr";
 
     this.file.readAsArrayBuffer(filePath, fileName)
       .then((fileData) => {
-        alert("Successfully read file");
         let blob = new Blob([fileData], {type: "audio/amr"});
         return ref.put(blob)
           .then((_) => {
-            alert("successfully uploaded to storage");
             this.alertCtrl.create({
               title: "Upload Successfully",
               subTitle: "Your question:" + this.title + " has been uploaded successfully",
