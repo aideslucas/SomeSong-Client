@@ -5,7 +5,7 @@ import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms'
 import {
   NavController, ViewController, Platform, LoadingController, AlertController,
-  ModalController
+  ModalController, NavParams
 } from 'ionic-angular';
 import {Question} from '../../providers/question'
 import {User} from "../../providers/user";
@@ -16,6 +16,8 @@ import {Alert} from '../../providers/alert';
 import {Geolocation} from "@ionic-native/geolocation";
 import {GenreSelectPage} from "../genre-select/genre-select";
 import {LanguageSelectPage} from "../language-select/language-select";
+import {MediaFile} from "@ionic-native/media-capture";
+import {MediaObject} from "@ionic-native/media";
 
 declare var Media: any;
 
@@ -32,15 +34,16 @@ export class UploadQuestionPage {
   private userID: string;
   private title: string;
   private uploadForm: FormGroup;
-  private recordingFile: any;
+  private recordingFile: MediaObject;
   private playing: boolean = false;
-  private cordinates: any;
+  private cordinates: any = null;
   private loading: any;
   private currUserData: any;
   private alertOnUploadFinish: any;
   private questionID: string;
 
   constructor(public navCtrl: NavController,
+              private navParams: NavParams,
               private loadingCtrl: LoadingController,
               private question: Question,
               private user: User,
@@ -53,7 +56,6 @@ export class UploadQuestionPage {
               private platform: Platform,
               private geolocation: Geolocation,
               private modalCtrl: ModalController) {
-
     this.title = '';
 
     this.user.currentUser.first().subscribe(data => {
@@ -64,7 +66,10 @@ export class UploadQuestionPage {
 
     this.geolocation.getCurrentPosition().then((data) => {
       this.cordinates = data.coords;
-    });
+      console.log("ABC coords!: " + JSON.stringify(data.coords));
+    }).catch(err => {
+      console.log("ABC coords?: " + JSON.stringify(err));
+    }) ;
 
     this.uploadForm = formBuilder.group({
       recordingTitle: ['', Validators.required]
@@ -151,13 +156,26 @@ export class UploadQuestionPage {
     this.file.readAsArrayBuffer(filePath, fileName)
       .then((fileData) => {
         let blob = new Blob([fileData], {type: "audio/mp3"});
-        return ref.put(blob)
-          .then((_) => {
-            this.saveRecordingToDB();
-          })
-          .catch((error) => {
+        var metadata = {
+          contentType: 'audio/mp3'
+        };
+
+        var uploadTask = ref.put(blob, metadata);
+
+        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+          (snapshot) => {
+            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            switch (snapshot.state) {
+              case firebase.storage.TaskState.PAUSED:
+                break;
+              case firebase.storage.TaskState.RUNNING:
+                break;
+            }
+          }, (error) => {
             this.loading.dismiss();
             this.alert.showAlert('OOPS...', `could not upload song: ${JSON.stringify(error)}`, 'OK');
+          }, () => {
+            this.saveRecordingToDB();
           });
       })
       .catch((error) => {
@@ -172,9 +190,9 @@ export class UploadQuestionPage {
       this.userID = data.userID;
 
       this.question.writeNewQuestion(this.questionID, this.songGenres, this.songLanguages, this.recordPath, this.userID, this.title, this.cordinates)
-        .then((data) => {
+        .then(() => {
           this.loading.dismiss();
-         this.alertOnUploadFinish.present();
+          this.alertOnUploadFinish.present();
         })
         .catch((error) => {
           this.loading.dismiss();
