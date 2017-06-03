@@ -39,17 +39,13 @@ export class Question {
     var time = new Date();
 
     this._user.getUser(userID).then(data => {
-      alert("got user");
       var user = data.val();
-
       if (user.questions == null) {
         user.questions = {};
       }
 
       user.questions[questionID] = true;
-
       this._score.updateScore(4, userID);
-
       this._user.updateUser(user);
     });
 
