@@ -14,11 +14,12 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="no-scroll" padding="5px">
-  <div class="scrollableContent">
-    <ion-list-header class="list-header">
+<ion-content>
+  <ion-card class="scrollableContent">
+    <ion-card-header class="list-header">
       My Questions
-    </ion-list-header>
+    </ion-card-header>
+
     <ion-scroll scrollY="true">
       <ion-list no-lines no-padding *ngIf="!isEmpty(userQuestions) && !questionLoading">
         <ion-item-sliding *ngFor="let question of userQuestions | keyValueFilter | sortQuestions" #item>
@@ -57,12 +58,12 @@
         <ion-icon name="md-help"></ion-icon>
       </button>
     </ion-buttons>
-  </div>
+  </ion-card>
 
-  <div class="scrollableContent">
-    <ion-list-header class="list-header">
+  <ion-card class="scrollableContent">
+    <ion-card-header class="list-header">
       My Answers
-    </ion-list-header>
+    </ion-card-header>
     <ion-scroll scrollY="true">
       <ion-list no-lines no-padding *ngIf="!isEmpty(userAnswers) && !answerLoading">
         <ion-item-sliding *ngFor="let answer of userAnswers | keyValueFilter | sortAnswers" #item>
@@ -110,5 +111,5 @@
         <ion-icon name="search"></ion-icon>
       </button>
     </ion-buttons>
-  </div>
+  </ion-card>
 </ion-content>
