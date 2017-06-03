@@ -94,7 +94,14 @@ export class UploadQuestionPage {
     this.loading = this.loadingCtrl.create({content: "Please Wait..."});
     this.loading.present();
     let questionID = this.question.getNewQuestionID();
-    this.saveRecordingStorage(questionID);
+
+    if (this.platform.is('mobileweb') || this.platform.is('core')) {
+      alert("Running in browser.. not uploading recording to storage and DB.");
+    }
+    else {
+      this.saveRecordingStorage(questionID);
+    }
+
   }
 
   private saveRecordingStorage(questionID: string): void {
