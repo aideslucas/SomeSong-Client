@@ -35,7 +35,7 @@ export class Question {
     return firebase.database().ref().child('unresolvedQuestions').push().key;
   }
 
-  writeNewQuestion(questionID: string, genres: {}, languages: {}, location: any, record: string, userID: string, title: string, cordinates: any) {
+  writeNewQuestion(questionID: string, genres: {}, languages: {}, record: string, userID: string, title: string, cordinates: any) {
     var time = new Date();
 
     this._user.getUser(userID).then(data => {
@@ -63,7 +63,6 @@ export class Question {
         minutes: time.getUTCMinutes(),
         seconds: time.getUTCSeconds()
       },
-      location: location,
       questionID: questionID,
       record: record,
       user: userID,
