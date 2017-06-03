@@ -33,9 +33,7 @@ export class Score {
   }
 
   updateScore(type: updateType, userID: string) {
-    alert("inside update score");
     this.getScoreDetails(userID).first().subscribe((scoreDetail) => {
-      alert("got score details");
       var score = scoreDetail;
       switch (type) {
         case updateType.ADDED_ANSWER :
@@ -52,9 +50,7 @@ export class Score {
           break;
         default:
       }
-      alert("score:" + score);
       firebase.database().ref('/scores/' + userID).set(score);
-      alert("updated user's score");
     });
   }
 
