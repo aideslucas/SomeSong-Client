@@ -10,6 +10,7 @@ import {HomePage} from "../pages/home/home";
 import {User} from "../providers/user";
 import {QuestionDetailsPage} from "../pages/question-details/question-details";
 import {AskQuestionPage} from "../pages/ask-question/ask-question";
+import {FacebookShare} from "../providers/facebook-share";
 
 @Component({
   templateUrl: 'app.html'
@@ -25,7 +26,8 @@ export class MyApp {
               public splashScreen: SplashScreen,
               public auth: Auth,
               public _user: User,
-              private deeplinks: Deeplinks)
+              private deeplinks: Deeplinks,
+              private facebookShare: FacebookShare)
   {
     let loading = this.loadingCtrl.create({
       content: 'Please Wait...'
@@ -47,24 +49,21 @@ export class MyApp {
         '/askQuestion': AskQuestionPage
       }
 
-
-
-
       var authStateChanged = this.auth.authState.onAuthStateChanged(authUser => {
         if (authUser != null) {
           this._user.logIn(authUser.uid);
+
+          this.facebookShare.inviteFriends().then((data) => {
+          }).catch((err) => {
+          });
+
           this.rootPage = HomePage;
 
           this.deeplinks.route(routes).subscribe(
             match => {
-              console.log("deeplink MATCH: " + JSON.stringify(match));
               this.navChild.push(match.$route, match.$args, { animate: false, animation: "none" });
             }, (nomatch) => {
-
-              console.log('Got a deeplink that didn\'t match', JSON.stringify(nomatch));
             }, () => {
-
-              console.log('Got a deeplink completed');
             });
 
         } else {

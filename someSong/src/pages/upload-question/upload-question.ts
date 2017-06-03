@@ -36,7 +36,6 @@ export class UploadQuestionPage {
   private playing: boolean = false;
   private cordinates: any;
   private loading: any;
-  private currUserData: any;
 
   constructor(public navCtrl: NavController,
               private loadingCtrl: LoadingController,
@@ -57,7 +56,6 @@ export class UploadQuestionPage {
     this.user.currentUser.first().subscribe(data => {
       this.songGenres = data.genres;
       this.songLanguages = data.languages;
-      this.currUserData = data;
     });
 
     this.geolocation.getCurrentPosition().then((data) => {
@@ -109,7 +107,7 @@ export class UploadQuestionPage {
     this.user.currentUser.first().subscribe((data) => {
       this.userID = data.userID;
 
-      this.question.writeNewQuestion(questionID, this.songGenres, this.songLanguages, null, this.recordPath, this.userID, this.title, this.cordinates).then((data) => {
+      this.question.writeNewQuestion(questionID, this.songGenres, this.songLanguages, this.recordPath, this.userID, this.title, this.cordinates).then((data) => {
         this.loading.dismiss();
       });
     });
