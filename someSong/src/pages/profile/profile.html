@@ -7,6 +7,11 @@
     <ion-title>
       Profile
     </ion-title>
+    <ion-buttons end>
+      <button (click)="goToLeaderboard()" ion-button>
+        <ion-icon name="ribbon"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -19,7 +24,7 @@
     <ion-label>
       {{currentUser?.email}}
     </ion-label>
-   <ion-label>Score:{{userPoints}}</ion-label>
+   <ion-label>Score:{{userPoints}} (#{{userPosition}})</ion-label>
     </div>
 
     <div class="profile-block">

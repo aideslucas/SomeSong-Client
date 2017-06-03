@@ -225,8 +225,8 @@ export class HomePage {
       this.userSubscription.unsubscribe();
     }
   }
+
   goToLeaderboard(){
     this.navCtrl.push(LeaderboardPage);
-
   }
 }
