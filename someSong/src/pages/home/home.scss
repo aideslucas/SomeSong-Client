@@ -1,5 +1,4 @@
 page-home {
-  background: #E0E0E0;
   overflow-y: hidden !important;
 
   ion-card-header{
@@ -41,6 +40,10 @@ page-home {
       .right-icons {
         padding-right: 25px !important;
       }
+    }
+
+    ion-card {
+      background: #F5F5F5;
     }
 
     ion-card-header {
