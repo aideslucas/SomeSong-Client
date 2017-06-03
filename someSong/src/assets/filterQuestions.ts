@@ -15,7 +15,7 @@ export class FilterQuestions {
     return arr.filter((item) => {
       // Title Filter
       if (args.selectedTitle) {
-        if (item.value.title.toLowerCase().indexOf(args.selectedTitle) == -1) {
+        if (item.value.title.toLowerCase().indexOf(args.selectedTitle.toLowerCase()) == -1) {
           return false;
         }
       }
