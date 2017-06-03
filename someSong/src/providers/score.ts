@@ -33,7 +33,9 @@ export class Score {
   }
 
   updateScore(type: updateType, userID: string) {
+    alert("inside update score");
     this.getScoreDetails(userID).first().subscribe((scoreDetail) => {
+      alert("got score details");
       var score = scoreDetail;
       switch (type) {
         case updateType.ADDED_ANSWER :
@@ -50,12 +52,14 @@ export class Score {
           break;
         default:
       }
-      return firebase.database().ref('/scores/' + userID).set(score);
+      alert("score:" + score);
+      firebase.database().ref('/scores/' + userID).set(score);
+      alert("updated user's score");
     });
   }
 
   writeNewScore(userID: string) {
-    if (this.getScoreDetails(userID).equalTo(null)) {
+    if (this.getScoreDetails(userID) == null) {
       return firebase.database().ref('/scores/' + userID).set(0);
     }
   }

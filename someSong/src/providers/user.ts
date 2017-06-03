@@ -49,7 +49,9 @@ export class User {
   }
 
   updateUser(user) {
+    alert("inside update user");
     firebase.database().ref('/users/' + user.userID).update(user);
+    alert("updated user");
   }
 
 

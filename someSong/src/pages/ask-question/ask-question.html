@@ -12,22 +12,21 @@
 
 <ion-content class="ask-a-question" padding>
   <div id="flex-container">
-    <div></div>
-    <div id="header-btn-container" style="background-color:coral;"></div>
+    <div id="header-btn-container"></div>
     <div id="main-container"></div>
-    <div id="footer-btn-container" style="background-color:lightgreen;">
-      <form #loginForm="ngForm">
-        <ion-row>
-          <div class="container">
+    <div id="footer-btn-container">
+      <form #loginForm="ngForm" id="button-form">
+        <ion-row id="btn-row">
+          <div class="btn-container">
             <input type="checkbox" [checked]="isChecked" id="btn" (click)="RecordingToggle()"/>
-            <label for="btn"></label>
+            <label id="btn-label" for="btn"></label>
           </div>
         </ion-row>
       </form>
+      <div id="progress-time-container">
+        <div id="stopWatch">{{zeroPlaceholderSec ? 0 : ''}}{{second}}:{{zeroPlaceholderMil ? 0 : ''}}{{miliSecond}}</div>
+        <progress-bar id="progress-bar" [progress]="progress"></progress-bar>
+      </div>
     </div>
-    <div>
-      <progress-bar [progress]="progress"></progress-bar>
-    </div>
-    <div id="stopWatch">{{zeroPlaceholderSec ? 0 : ''}}{{second}}:{{zeroPlaceholderMil ? 0 : ''}}{{miliSecond}}</div>
   </div>
 </ion-content>

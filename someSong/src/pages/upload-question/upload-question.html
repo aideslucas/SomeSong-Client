@@ -30,7 +30,7 @@
       </ion-list-header>
       <ion-item>
         <ion-option *ngFor="let genre of songGenres | keyValueFilter">
-          {{genre.value}}; &nbsp;
+          {{genre.value}} &nbsp;
         </ion-option>
       </ion-item>
     </ion-list>
@@ -44,13 +44,13 @@
       </ion-list-header>
       <ion-item>
         <ion-option *ngFor="let language of songLanguages | keyValueFilter">
-          {{language.value}}; &nbsp;
+          {{language.value}} &nbsp;
         </ion-option>
       </ion-item>
     </ion-list>
 
     <ion-footer>
-      <button role="button" ion-button icon-only (click)="playRecording()" id="play-stop" class="footer-buttons">
+      <button type="button" ion-button icon-only (click)="playRecording()" id="play-stop" class="footer-buttons">
         <ion-icon name="play" *ngIf="!playing">&nbsp;Play</ion-icon>
         <ion-icon name="pause" *ngIf="playing">&nbsp;Pause</ion-icon>
       </button>

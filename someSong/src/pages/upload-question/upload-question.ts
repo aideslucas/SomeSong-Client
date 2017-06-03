@@ -36,6 +36,7 @@ export class UploadQuestionPage {
   private playing: boolean = false;
   private cordinates: any;
   private loading: any;
+  private currUserData: any;
 
   constructor(public navCtrl: NavController,
               private loadingCtrl: LoadingController,
@@ -56,6 +57,7 @@ export class UploadQuestionPage {
     this.user.currentUser.first().subscribe(data => {
       this.songGenres = data.genres;
       this.songLanguages = data.languages;
+      this.currUserData = data;
     });
 
     this.geolocation.getCurrentPosition().then((data) => {
@@ -117,6 +119,7 @@ export class UploadQuestionPage {
     let ref = firebase.storage().ref().child(`client-data/recordings/myRecording_${questionID}.amr`);
     let filePath = "file:///storage/emulated/0/";
     let fileName = "myRecording.amr";
+
 
     this.file.readAsArrayBuffer(filePath, fileName)
       .then((fileData) => {

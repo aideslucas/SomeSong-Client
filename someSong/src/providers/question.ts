@@ -39,6 +39,7 @@ export class Question {
     var time = new Date();
 
     this._user.getUser(userID).then(data => {
+      alert("got user");
       var user = data.val();
 
       if (user.questions == null) {
