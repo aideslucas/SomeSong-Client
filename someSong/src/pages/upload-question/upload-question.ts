@@ -74,7 +74,7 @@ export class UploadQuestionPage {
       console.log("Running in browser. we dont have a recording file to upload");
     }
     else {
-      this.recordingFile = new Media("file:///storage/emulated/0/myRecording.amr", () => {
+      this.recordingFile = new Media("file:///storage/emulated/0/myRecording.mp3", () => {
       }, (error) => {
         this.alert.showAlert('OOPS...', `could not find your recording: ${JSON.stringify(error)}`, 'OK');
       }, (mediaStatus) => {
@@ -144,13 +144,13 @@ export class UploadQuestionPage {
   }
 
   private saveRecordingStorage(): void {
-    let ref = firebase.storage().ref().child(`client-data/recordings/myRecording_${this.questionID}.amr`);
+    let ref = firebase.storage().ref().child(`client-data/recordings/myRecording${this.questionID}.mp3`);
     let filePath = "file:///storage/emulated/0/";
-    let fileName = "myRecording.amr";
+    let fileName = "myRecording.mp3";
 
     this.file.readAsArrayBuffer(filePath, fileName)
       .then((fileData) => {
-        let blob = new Blob([fileData], {type: "audio/amr"});
+        let blob = new Blob([fileData], {type: "audio/mp3"});
         return ref.put(blob)
           .then((_) => {
             this.saveRecordingToDB();
@@ -167,7 +167,7 @@ export class UploadQuestionPage {
   }
 
   private saveRecordingToDB(): void {
-    this.recordPath = `client-data/recordings/myRecording_${this.questionID}.amr`;
+    this.recordPath = `client-data/recordings/myRecording${this.questionID}.mp3`;
     this.user.currentUser.first().subscribe((data) => {
       this.userID = data.userID;
 
