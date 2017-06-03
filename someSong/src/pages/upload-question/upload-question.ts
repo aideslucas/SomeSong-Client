@@ -37,6 +37,8 @@ export class UploadQuestionPage {
   private cordinates: any;
   private loading: any;
   private currUserData: any;
+  private alertOnUploadFinish: any;
+  private questionID: string;
 
   constructor(public navCtrl: NavController,
               private loadingCtrl: LoadingController,
@@ -66,19 +68,57 @@ export class UploadQuestionPage {
 
     this.uploadForm = formBuilder.group({
       recordingTitle: ['', Validators.required]
-    })
+    });
+
+    if (this.platform.is('mobileweb') || this.platform.is('core')) {
+      console.log("Running in browser. we dont have a recording file to upload");
+    }
+    else {
+      this.recordingFile = new Media("file:///storage/emulated/0/myRecording.amr", () => {
+      }, (error) => {
+        this.alert.showAlert('OOPS...', `could not find your recording: ${JSON.stringify(error)}`, 'OK');
+      }, (mediaStatus) => {
+        if (mediaStatus === Media.MEDIA_STOPPED) {
+          this.playing = false;
+        }
+      });
+    }
+
+    this.alertOnUploadFinish = this.alertCtrl.create({
+      title: "Upload Successfully",
+      subTitle: "Your question:" + this.title + " has been uploaded successfully",
+      buttons: [{
+        text: 'Ask Another Question',
+        handler: () => {
+          this.viewController.dismiss("ask");
+        }
+      },
+        {
+          text: 'Go To Question',
+          handler: () => {
+            this.viewController.dismiss(this.questionID);
+          }
+        },
+        {
+          text: 'Go To Home',
+          handler: () => {
+            this.viewController.dismiss("home");
+          }
+        },
+        {
+          text: 'Share to Facebook',
+          handler: () => {
+            this.facebookShare.shareQuestion(this.questionID, this.title).then(() => {
+              this.viewController.dismiss("home");
+            }).catch(() => {
+              this.viewController.dismiss("home");
+            });
+          }
+        }]
+    });
   }
 
   public playRecording() {
-    this.recordingFile = new Media("file:///storage/emulated/0/myRecording.amr", () => {
-    }, (error) => {
-      this.alert.showAlert('OOPS...', `could not upload song: ${JSON.stringify(error)}`, 'OK');
-    }, (mediaStatus) => {
-      if (mediaStatus === Media.MEDIA_STOPPED) {
-        this.playing = false;
-      }
-    });
-
     if (this.playing) {
       this.playing = false;
       this.recordingFile.pause();
@@ -90,22 +130,21 @@ export class UploadQuestionPage {
   }
 
   public uploadRecording(): void {
-    this.submitAttempt = true;
-    this.loading = this.loadingCtrl.create({content: "Please Wait..."});
-    this.loading.present();
-    let questionID = this.question.getNewQuestionID();
-
     if (this.platform.is('mobileweb') || this.platform.is('core')) {
       alert("Running in browser.. not uploading recording to storage and DB.");
+      this.alertOnUploadFinish.present();
     }
     else {
-      this.saveRecordingStorage(questionID);
+      this.submitAttempt = true;
+      this.loading = this.loadingCtrl.create({content: "Please Wait..."});
+      this.loading.present();
+      this.questionID = this.question.getNewQuestionID();
+      this.saveRecordingStorage();
     }
-
   }
 
-  private saveRecordingStorage(questionID: string): void {
-    let ref = firebase.storage().ref().child(`client-data/recordings/myRecording_${questionID}.amr`);
+  private saveRecordingStorage(): void {
+    let ref = firebase.storage().ref().child(`client-data/recordings/myRecording_${this.questionID}.amr`);
     let filePath = "file:///storage/emulated/0/";
     let fileName = "myRecording.amr";
 
@@ -114,7 +153,7 @@ export class UploadQuestionPage {
         let blob = new Blob([fileData], {type: "audio/amr"});
         return ref.put(blob)
           .then((_) => {
-            this.saveRecordingToDB(questionID);
+            this.saveRecordingToDB();
           })
           .catch((error) => {
             this.loading.dismiss();
@@ -127,46 +166,15 @@ export class UploadQuestionPage {
       });
   }
 
-  private saveRecordingToDB(questionID: string): void {
-    this.recordPath = `client-data/recordings/myRecording_${questionID}.amr`;
+  private saveRecordingToDB(): void {
+    this.recordPath = `client-data/recordings/myRecording_${this.questionID}.amr`;
     this.user.currentUser.first().subscribe((data) => {
       this.userID = data.userID;
 
-      this.question.writeNewQuestion(questionID, this.songGenres, this.songLanguages, this.recordPath, this.userID, this.title, this.cordinates)
+      this.question.writeNewQuestion(this.questionID, this.songGenres, this.songLanguages, this.recordPath, this.userID, this.title, this.cordinates)
         .then((data) => {
           this.loading.dismiss();
-          this.alertCtrl.create({
-            title: "Upload Successfully",
-            subTitle: "Your question:" + this.title + " has been uploaded successfully",
-            buttons: [{
-              text: 'Ask Another Question',
-              handler: () => {
-                this.viewController.dismiss("ask");
-              }
-            },
-              {
-                text: 'Go To Question',
-                handler: () => {
-                  this.viewController.dismiss(questionID);
-                }
-              },
-              {
-                text: 'Go To Home',
-                handler: () => {
-                  this.viewController.dismiss("home");
-                }
-              },
-              {
-                text: 'Share to Facebook',
-                handler: () => {
-                  this.facebookShare.shareQuestion(questionID, this.title).then(() => {
-                    this.viewController.dismiss("home");
-                  }).catch(() => {
-                    this.viewController.dismiss("home");
-                  });
-                }
-              }]
-          }).present();
+         this.alertOnUploadFinish.present();
         })
         .catch((error) => {
           this.loading.dismiss();
