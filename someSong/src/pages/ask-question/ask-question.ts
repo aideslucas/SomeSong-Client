@@ -72,7 +72,7 @@ export class AskQuestionPage {
       console.log("Running in browser, not really recording.");
     }
     else {
-      this.recordingFile = new Media("myRecording.amr", ()=> {
+      this.recordingFile = new Media("myRecording.mp3", ()=> {
       }, (e) => {
         this.alert.showAlert('OOPS...', `failed to create the recording file: " ${JSON.stringify(e)}`, 'OK');
       });
