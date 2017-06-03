@@ -30,7 +30,7 @@ export class BrowseQuestionsPage {
   questions: { [id: string]: any } = {};
   questionLoading = true;
 
-  orderBy: any = "";
+  orderBy: any = "Recent";
   currentLocation: any;
 
   constructor(public navCtrl: NavController,
