@@ -2,9 +2,6 @@ import {Component} from '@angular/core';
 import {NavController, ModalController, Platform} from 'ionic-angular';
 import {File} from "@ionic-native/file";
 import {UploadQuestionPage} from "../upload-question/upload-question";
-import {LanguageSelectPage} from "../language-select/language-select";
-import {GenreSelectPage} from "../genre-select/genre-select";
-import {User} from "../../providers/user";
 import {Alert} from '../../providers/alert';
 import {QuestionDetailsPage} from "../question-details/question-details";
 import {HomePage} from "../home/home";
@@ -18,8 +15,8 @@ declare var navigator: any;
 })
 export class AskQuestionPage {
 
-  public  isChecked: boolean = false;
-  public  recording: boolean = false;
+  public isChecked: boolean = false;
+  public recording: boolean = false;
   private recordingFile: any;
   private miliSecond: number = 0;
   private second: number = 0;
@@ -32,26 +29,41 @@ export class AskQuestionPage {
   constructor(public navCtrl: NavController,
               public file: File,
               private modalCtrl: ModalController,
-              private user: User,
               private alert: Alert,
               public platform: Platform) {
   }
 
   public RecordingToggle(): void {
-    if (!this.recording) {
-      this.recording = true;
-      this.isChecked = true;
-      this.startTimeCounter();
-      this.startProgressBar();
-      this.startRecording()
-
+    if (this.platform.is('mobileweb')) {
+      if (!this.recording) {
+        this.recording = true;
+        this.isChecked = true;
+        this.startTimeCounter();
+        this.startProgressBar();
+      }
+      else {
+        this.recording = false;
+        this.isChecked = false;
+        this.clearTimeCounter();
+        this.clearProgressBar();
+        this.startUploadProcess();
+      }
     }
     else {
-      this.recording = false;
-      this.isChecked = false;
-      this.clearTimeCounter();
-      this.clearProgressBar();
-      this.stopRecording();
+      if (!this.recording) {
+        this.recording = true;
+        this.isChecked = true;
+        this.startTimeCounter();
+        this.startProgressBar();
+        this.startRecording();
+      }
+      else {
+        this.recording = false;
+        this.isChecked = false;
+        this.clearTimeCounter();
+        this.clearProgressBar();
+        this.stopRecording();
+      }
     }
   }
 
