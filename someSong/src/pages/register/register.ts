@@ -51,7 +51,6 @@ export class RegisterPage {
   }
 
   closeModal() {
-    this.loading.dismiss();
     this.viewController.dismiss();
   }
 }

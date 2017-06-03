@@ -36,9 +36,11 @@ export class Question {
   }
 
   writeNewQuestion(questionID: string, genres: {}, languages: {}, location: any, record: string, userID: string, title: string, cordinates: any) {
+    alert("inside wrtieNewQuestion functionn");
     var time = new Date();
 
     this._user.getUser(userID).then(data => {
+      alert("got user");
       var user = data.val();
 
       if (user.questions == null) {
@@ -47,9 +49,13 @@ export class Question {
 
       user.questions[questionID] = true;
 
-      this._score.updateScore(4, userID);
+      //this._score.updateScore(4, userID);
+
+      alert("after update score");
 
       this._user.updateUser(user);
+
+      alert("after update user");
     });
 
     return firebase.database().ref('/questions/' + questionID).set({
