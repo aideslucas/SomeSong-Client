@@ -12,13 +12,12 @@ export class LeaderboardPage {
   user: any;
   userPosition: any;
   userPoints: any;
-  pointsSubscription: any;
 
   constructor(private _score: Score,
               private _user: User) {
     this._user.currentUser.first().subscribe(data => {
       this.user = data;
-      this.pointsSubscription = this._score.getScoreDetails(this.user.userID).subscribe((scoreDetail) => {
+      this._score.getScoreDetails(this.user.userID).first().subscribe((scoreDetail) => {
         this.userPoints = scoreDetail;
         this._score.getPosition(data.userID).then(data => {
           this.userPosition = data;

@@ -18,23 +18,20 @@
       </ion-card-title>
       <ion-list no-lines no-padding *ngIf="scores">
         <ion-item *ngFor="let score of scores | keyValueFilter | sortScore; let i = index">
-          <ion-label *ngIf="score?.key != user?.userID" style="width:15%">#{{i + 1}}</ion-label>
-          <ion-label *ngIf="score?.key != user?.userID">{{score?.value.user}}</ion-label>
-          <ion-label *ngIf="score?.key != user?.userID" style="width:15%">{{score?.value.score}}</ion-label>
-
-          <ion-label *ngIf="score?.key == user?.userID"><b>#{{i + 1}}</b></ion-label>
-          <ion-label *ngIf="score?.key == user?.userID"><b>{{score?.value.user}}</b></ion-label>
-          <ion-label *ngIf="score?.key == user?.userID"><b>{{score?.value.score}}</b></ion-label>
+          <ion-label *ngIf="i<10 && score?.key != user?.userID">#{{i + 1}}</ion-label>
+          <ion-label *ngIf="i<10 && score?.key != user?.userID">{{score?.value.user}}</ion-label>
+          <ion-label *ngIf="i<10 && score?.key != user?.userID">{{score?.value.score}}</ion-label>
+          <ion-label *ngIf="i<10 && score?.key == user?.userID"><b>#{{i + 1}}</b></ion-label>
+          <ion-label *ngIf="i<10 && score?.key == user?.userID"><b>{{score?.value.user}}</b></ion-label>
+          <ion-label *ngIf="i<10 && score?.key == user?.userID"><b>{{score?.value.score}}</b></ion-label>
         </ion-item>
         <ion-item *ngIf="!userInTopTen()" style="text-align: center">
-          <ion-label>...</ion-label>
+          <ion-label><b>...</b></ion-label>
         </ion-item>
         <ion-item *ngIf="!userInTopTen()">
-          <b>
-            <p>#{{userPosition}}.</p>
-            <ion-label>{{user.displayName}}</ion-label>
-            <p>{{userPoints}}</p>
-          </b>
+          <ion-label><b>#{{userPosition}}.</b></ion-label>
+          <ion-label><b>{{user.displayName}}</b></ion-label>
+          <ion-label><b>{{userPoints}}</b></ion-label>
         </ion-item>
       </ion-list>
     </ion-card-content>

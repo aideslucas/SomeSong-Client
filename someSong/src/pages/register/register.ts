@@ -37,13 +37,15 @@ export class RegisterPage {
     }
 
     this.loading = this.loadingCtrl.create({
-      content: 'Please wait...'
+      content: 'Please wait register...'
     });
     this.loading.present();
 
     this._auth.createUserWithEmail(this.form.email, this.form.password).then(registerData => {
-      this._user.createUser(registerData.uid, this.form.displayName, this.form.email, "https://freeiconshop.com/wp-content/uploads/edd/person-solid.png");
+      console.log("ABCABC created user");
       this.loading.dismiss();
+      console.log("ABCABC dismiss loader");
+      this._user.createUser(registerData.uid, this.form.displayName, this.form.email, "https://freeiconshop.com/wp-content/uploads/edd/person-solid.png");
       this.closeModal();
     }, registerError => {
       this.loading.dismiss();
