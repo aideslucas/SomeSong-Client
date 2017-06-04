@@ -49,6 +49,16 @@ export class Question {
       this._user.updateUser(user);
     });
 
+    let coords = {};
+    if (cordinates != null) {
+      if (cordinates.latitude != null && cordinates.longitude != null){
+        coords = {
+          latitude: cordinates.latitude,
+          longitude: cordinates.longitude
+        };
+      }
+    }
+
     return firebase.database().ref('/questions/' + questionID).set({
       languages: languages,
       genres: genres,
@@ -64,10 +74,7 @@ export class Question {
       record: record,
       user: userID,
       title: title,
-      coordinates: {
-        latitude: cordinates.latitude,
-        longitude: cordinates.longitude
-      }
+      coordinates: coords
     });
   }
 

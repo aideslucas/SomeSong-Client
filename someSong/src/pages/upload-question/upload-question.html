@@ -20,7 +20,6 @@
       <ion-input formControlName="recordingTitle" type="text" [(ngModel)]="title"
                  [class.invalid]="!uploadForm.controls.recordingTitle.valid && (uploadForm.controls.recordingTitle.dirty || submitAttempt)"></ion-input>
     </ion-item>
-
     <ion-list *ngIf="songGenres" no-lines no-padding>
       <ion-list-header>
         Your Songs Genres

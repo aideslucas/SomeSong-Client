@@ -5,6 +5,7 @@ import {UploadQuestionPage} from "../upload-question/upload-question";
 import {Alert} from '../../providers/alert';
 import {QuestionDetailsPage} from "../question-details/question-details";
 import {HomePage} from "../home/home";
+import {MediaPlugin} from "@ionic-native/media";
 
 declare var Media: any;
 declare var navigator: any;
@@ -30,7 +31,8 @@ export class AskQuestionPage {
               public file: File,
               private modalCtrl: ModalController,
               private alert: Alert,
-              public platform: Platform) {
+              public platform: Platform,
+              private media: MediaPlugin) {
   }
 
   public RecordingToggle(): void {
@@ -53,29 +55,41 @@ export class AskQuestionPage {
       if (!this.recording) {
         this.recording = true;
         this.isChecked = true;
-        this.startTimeCounter();
-        this.startProgressBar();
         this.startRecording();
       }
       else {
         this.recording = false;
         this.isChecked = false;
-        this.clearTimeCounter();
-        this.clearProgressBar();
         this.stopRecording();
       }
     }
   }
+
+  mediaOnStatusUpdate = (status) => {
+    if (status == Media.MEDIA_RUNNING) {
+      this.startTimeCounter();
+      this.startProgressBar();
+    }
+    else if (status == Media.MEDIA_STOPPED) {
+      this.clearTimeCounter();
+      this.clearProgressBar();
+    }
+  };
+
+  mediaOnSuccess = () => {
+    this.startUploadProcess();
+  };
+
+  mediaOnError = (error) => {
+    console.log("An error has occurred: " + error.message);
+  };
 
   public startRecording() {
     if (this.platform.is('mobileweb') || this.platform.is('core')) {
       console.log("Running in browser, not really recording.");
     }
     else {
-      this.recordingFile = new Media("myRecording.mp3", ()=> {
-      }, (e) => {
-        this.alert.showAlert('OOPS...', `failed to create the recording file: " ${JSON.stringify(e)}`, 'OK');
-      });
+      this.recordingFile = this.media.create("myRecording.mp3", this.mediaOnStatusUpdate, this.mediaOnSuccess, this.mediaOnError);
       this.recordingFile.startRecord();
     }
   }
@@ -86,15 +100,16 @@ export class AskQuestionPage {
     }
     else {
       this.recordingFile.stopRecord();
-      this.recordingFile.release();
-      this.startUploadProcess();
     }
   }
 
   public startUploadProcess(): void {
+    this.recordingFile.release();
+
     let upload = this.modalCtrl.create(UploadQuestionPage);
 
     upload.onDidDismiss((data) => {
+
       if (data == "home") {
         this.navCtrl.popToRoot();
       }

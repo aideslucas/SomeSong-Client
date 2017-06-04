@@ -107,7 +107,8 @@
                 "DEEPLINK_5_HOST": " "
             },
             "cordova-plugin-geolocation": {},
-            "cordova-plugin-media": {}
+            "cordova-plugin-media": {},
+            "cordova-plugin-file": {}
         },
         "platforms": [
             "android"
