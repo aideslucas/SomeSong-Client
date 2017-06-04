@@ -31,16 +31,17 @@ export class Score {
   getPosition(userID: string) {
     return firebase.database().ref('/scores/').orderByValue().once('value').then((data) => {
       var scores = [];
-      for (let x of Object.keys(data.val()))
-      {
-        scores.push({key:x,score:data.val()[x]});
+      for (let x of Object.keys(data.val())) {
+        scores.push({key: x, score: data.val()[x]});
       }
 
       scores = scores.sort((a, b) => {
         return b.score - a.score;
       });
 
-      return (scores.findIndex((a) => {return a.key == userID}) + 1);
+      return (scores.findIndex((a) => {
+        return a.key == userID
+      }) + 1);
     });
   }
 
@@ -71,8 +72,10 @@ export class Score {
   }
 
   writeNewScore(userID: string) {
-    if (this.getScoreDetails(userID) == null) {
-      return firebase.database().ref('/scores/' + userID).set(0);
-    }
+    this.getScoreDetails(userID).first().subscribe(data => {
+      if (data == null) {
+        firebase.database().ref('/scores/' + userID).set(0);
+      }
+    });
   }
 }

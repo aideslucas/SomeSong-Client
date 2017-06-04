@@ -139,7 +139,6 @@ export class HomePage {
 
         notificationAlert.present();
       } else {
-        //if user NOT using app and push notification comes
         this.navCtrl.push(QuestionDetailsPage, notification.additionalData.questionID);
       }
     });

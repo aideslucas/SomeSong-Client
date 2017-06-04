@@ -63,8 +63,30 @@ export class LoginPage {
                 var user;
                 this._user.currentUser.first().subscribe(data => {
                   user = data;
-                  //this._score.writeNewScore(data.userID);
+
+                  this.loader.dismiss();
+
+                  var languageModal = this.modalCtrl.create(LanguageSelectPage, { selectedLanguages: {} });
+                  languageModal.onDidDismiss(data => {
+                    user.languages = data;
+                    var genreModal = this.modalCtrl.create(GenreSelectPage, { selectedGenres: {} });
+                    genreModal.onDidDismiss(data => {
+                      user.genres = data;
+                      this._user.updateUser(user);
+                      this.navCtrl.setRoot(HomePage);
+                    });
+
+                    genreModal.present();
+                  });
+                  languageModal.present();
                 });
+              });
+            }
+            else if (user.val().languages == null)
+            {
+              var user;
+              this._user.currentUser.first().subscribe(data => {
+                user = data;
 
                 this.loader.dismiss();
 
@@ -81,35 +103,12 @@ export class LoginPage {
                   genreModal.present();
                 });
                 languageModal.present();
-              });
 
-            }
-            else if (user.val().languages == null)
-            {
-              var user;
-              this._user.currentUser.first().subscribe(data => {
-                user = data;
               });
-              this.loader.dismiss();
-
-              var languageModal = this.modalCtrl.create(LanguageSelectPage, { selectedLanguages: {} });
-              languageModal.onDidDismiss(data => {
-                user.languages = data;
-                var genreModal = this.modalCtrl.create(GenreSelectPage, { selectedGenres: {} });
-                genreModal.onDidDismiss(data => {
-                  user.genres = data;
-                  this._user.updateUser(user);
-                  this.navCtrl.setRoot(HomePage);
-                });
-
-                genreModal.present();
-              });
-              languageModal.present();
             }
             else {
               this.loader.dismiss();
               this.navCtrl.setRoot(HomePage);
-
             }
           });
       }

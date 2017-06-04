@@ -43,6 +43,7 @@ export class RegisterPage {
 
     this._auth.createUserWithEmail(this.form.email, this.form.password).then(registerData => {
       this._user.createUser(registerData.uid, this.form.displayName, this.form.email, "https://freeiconshop.com/wp-content/uploads/edd/person-solid.png");
+      this.loading.dismiss();
       this.closeModal();
     }, registerError => {
       this.loading.dismiss();
