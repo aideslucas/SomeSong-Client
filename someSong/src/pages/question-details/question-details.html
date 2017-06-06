@@ -131,7 +131,7 @@
 <ion-footer>
   <form (ngSubmit)="sendAnswer()" #answerForm="ngForm">
     <ion-toolbar>
-      <ion-textarea placeholder="Suggest answer here..." [(ngModel)]="answer" name="answer"></ion-textarea>
+      <ion-textarea placeholder="Suggest answer here..." [(ngModel)]="answer" name="answer" style="color: #ffffff;"></ion-textarea>
       <ion-buttons end>
         <button ion-button [disabled]="answer == null || answer == ''" type="submit">Send &nbsp;<ion-icon name="send"></ion-icon>
         </button>
