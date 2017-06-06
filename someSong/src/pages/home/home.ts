@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component} from '@angular/core';
-import {AlertController, NavController} from 'ionic-angular';
+import {AlertController, LoadingController, NavController} from 'ionic-angular';
 
 import {ProfilePage} from "../profile/profile";
 import {QuestionDetailsPage} from "../question-details/question-details";
@@ -35,7 +35,8 @@ export class HomePage {
               private _answer: Answer,
               private _question: Question,
               private _deletes: Deletes,
-              private _push: Push) {
+              private _push: Push,
+              private loadCtrl: LoadingController) {
     if (this._user.currentUser) {
       this.userSubscription = this._user.currentUser.subscribe((data) => {
         this.user = data;

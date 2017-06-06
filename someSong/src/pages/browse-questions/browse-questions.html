@@ -33,7 +33,7 @@
     </ion-refresher-content>
   </ion-refresher>-->
 
-  <div class="scrollableContent">
+  <ion-card class="scrollableContent">
     <ion-scroll scrollY="true">
       <ion-list no-lines no-padding *ngIf="!questionLoading && !isEmpty(questions)">
         <button ion-item
@@ -77,5 +77,5 @@
         <ion-icon name="md-help"></ion-icon>
       </button>
     </ion-buttons>
-  </div>
+  </ion-card>
 </ion-content>

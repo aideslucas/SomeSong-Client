@@ -40,6 +40,7 @@ export class BrowseQuestionsPage {
               private geolocation: Geolocation,
               private _user: User,
               private _question: Question) {
+
     let paramsLang = this.params.get("language");
     if (paramsLang != null) {
       this.selectedFilters.selectedLanguages[paramsLang.key] = paramsLang.value;
