@@ -36,13 +36,10 @@ export class HomePage {
               private _question: Question,
               private _deletes: Deletes,
               private _push: Push) {
-    console.log("ABCABC got to home ");
     if (this._user.currentUser) {
       this.userSubscription = this._user.currentUser.subscribe((data) => {
         this.user = data;
-        console.log("ABCABC got to user ");
         this.initPushNotifications();
-        console.log("ABCABC got to push ");
         if (!this.user.questions) {
           this.questionLoading = false;
         }

@@ -14,6 +14,6 @@ export class SortScore {
 
     return arr.sort((a, b) => {
       return b.value.score - a.value.score;
-    });
+    }).slice(0,5);
   }
 }

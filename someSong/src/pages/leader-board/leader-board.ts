@@ -12,6 +12,7 @@ export class LeaderboardPage {
   user: any;
   userPosition: any;
   userPoints: any;
+  leaderboardLoading = true;
 
   constructor(private _score: Score,
               private _user: User) {
@@ -25,22 +26,31 @@ export class LeaderboardPage {
       });
     });
 
-    this._score.getAllScores().orderByValue().limitToLast(10).on('child_added', (data) => {
+    let loaded = 0;
+
+    this._score.getAllScores().orderByValue().on('child_added', (data) => {
       this._user.getUser(data.key).then(user => {
-        if (user) {
-          this.scores[data.key] = {'user': user.val().displayName,
-            'score': data.val() };
+
+          if (user) {
+            this.scores[data.key] = {
+              'user': user.val().displayName,
+              'score': data.val()
+            };
+          } else {
+            this.scores[data.key] = {'user': data.key, 'score': data.val()}
+          }
+
+
+        loaded++;
+        if (loaded == 5) {
+          this.leaderboardLoading = false;
         }
       });
     });
   }
 
 
-  userInTopTen() {
-    if (this.userPosition) {
-      return (this.userPosition <= 10);
-    }
-
-    return false;
+  userInTopFive() {
+    return (this.userPosition <= 5);
   }
 }
