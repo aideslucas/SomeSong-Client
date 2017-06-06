@@ -42,9 +42,7 @@ export class RegisterPage {
     this.loading.present();
 
     this._auth.createUserWithEmail(this.form.email, this.form.password).then(registerData => {
-      console.log("ABCABC created user");
       this.loading.dismiss();
-      console.log("ABCABC dismiss loader");
       this._user.createUser(registerData.uid, this.form.displayName, this.form.email, "https://freeiconshop.com/wp-content/uploads/edd/person-solid.png");
       this.closeModal();
     }, registerError => {

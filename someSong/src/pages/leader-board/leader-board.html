@@ -14,26 +14,35 @@
     <img src="assets/images/leaderboard-icon.png" class="image-row"/>
     <ion-card-content>
       <ion-card-title class="list-header">
-        Top 10 Players
+        Top 5 Players
       </ion-card-title>
-      <ion-list no-lines no-padding *ngIf="scores">
+      <ion-list no-lines no-padding *ngIf="scores && !leaderboardLoading">
         <ion-item *ngFor="let score of scores | keyValueFilter | sortScore; let i = index">
-          <ion-label *ngIf="i<10 && score?.key != user?.userID">#{{i + 1}}</ion-label>
-          <ion-label *ngIf="i<10 && score?.key != user?.userID">{{score?.value.user}}</ion-label>
-          <ion-label *ngIf="i<10 && score?.key != user?.userID">{{score?.value.score}}</ion-label>
-          <ion-label *ngIf="i<10 && score?.key == user?.userID"><b>#{{i + 1}}</b></ion-label>
-          <ion-label *ngIf="i<10 && score?.key == user?.userID"><b>{{score?.value.user}}</b></ion-label>
-          <ion-label *ngIf="i<10 && score?.key == user?.userID"><b>{{score?.value.score}}</b></ion-label>
+          <ion-label *ngIf="score?.key != user?.userID" class="position">#{{i + 1}}</ion-label>
+          <ion-label *ngIf="score?.key != user?.userID" class="displayName">{{score?.value.user}}</ion-label>
+          <ion-label *ngIf="score?.key != user?.userID" class="score">{{score?.value.score}}</ion-label>
+          <ion-label *ngIf="score?.key == user?.userID" class="position"><b>#{{i + 1}}</b></ion-label>
+          <ion-label *ngIf="score?.key == user?.userID" class="displayName"><b>{{score?.value.user}}</b></ion-label>
+          <ion-label *ngIf="score?.key == user?.userID" class="score"><b>{{score?.value.score}}</b></ion-label>
         </ion-item>
-        <ion-item *ngIf="!userInTopTen()" style="text-align: center">
+        <ion-item *ngIf="!userInTopFive()" style="text-align: center">
           <ion-label><b>...</b></ion-label>
         </ion-item>
-        <ion-item *ngIf="!userInTopTen()">
-          <ion-label><b>#{{userPosition}}.</b></ion-label>
-          <ion-label><b>{{user.displayName}}</b></ion-label>
-          <ion-label><b>{{userPoints}}</b></ion-label>
+        <ion-item *ngIf="!userInTopFive()">
+          <ion-label class="position"><b>#{{userPosition}}.</b></ion-label>
+          <ion-label class="displayName"><b>{{user.displayName}}</b></ion-label>
+          <ion-label class="score"><b>{{userPoints}}</b></ion-label>
         </ion-item>
       </ion-list>
+      <div *ngIf="!scores && !leaderboardLoading" class="contentCentered">
+        <div>
+          Scores are not available.<br>
+          Please try again later.
+        </div>
+      </div>
+      <div *ngIf="leaderboardLoading" class="contentCentered">
+        <div class="loader"></div>
+      </div>
     </ion-card-content>
   </ion-card>
 </ion-content>
