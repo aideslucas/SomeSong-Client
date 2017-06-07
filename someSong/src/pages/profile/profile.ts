@@ -102,6 +102,7 @@ export class ProfilePage {
         }
       ]
     });
+
     confirmModal.present();
   }
 

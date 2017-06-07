@@ -127,7 +127,7 @@ export class Avatar {
         loader.dismiss().then(() => {
           switch (error.name) {
             case 'storage/unauthorized':
-              // User doesn't have permission to access the object
+              // User doesn't have permission to  access the object
               break;
 
             case 'storage/canceled':

@@ -63,7 +63,6 @@ export class User {
   }
 
   getUserImage(userID) {
-
     return firebase.storage().ref().child('images/' + userID + '/profile.png').getDownloadURL();
   }
 }
