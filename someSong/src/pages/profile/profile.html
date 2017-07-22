@@ -8,7 +8,7 @@
       Profile
     </ion-title>
     <ion-buttons end>
-      <button (click)="goToLeaderboard()" ion-button>
+      <button (tap)="goToLeaderboard()" ion-button>
         <ion-icon name="ribbon"></ion-icon>
       </button>
     </ion-buttons>
@@ -31,7 +31,7 @@
     <ion-list *ngIf="currentUser?.genres" no-lines no-padding>
       <ion-list-header>
         My Genres
-        <button ion-button item-right (click)="goToGenreSelect()">
+        <button ion-button item-right (tap)="goToGenreSelect()">
           <ion-icon name="build"></ion-icon>
         </button>
       </ion-list-header>
@@ -47,7 +47,7 @@
     <ion-list *ngIf="currentUser?.languages" no-lines no-padding>
       <ion-list-header>
         My Languages
-        <button ion-button item-right (click)="goToLanguageSelect()">
+        <button ion-button item-right (tap)="goToLanguageSelect()">
           <ion-icon name="build"></ion-icon>
         </button>
       </ion-list-header>
@@ -61,7 +61,7 @@
 </ion-content>
 
 <ion-footer>
-  <button (click)="confirmLogout()" class="logout-btn" ion-button>
+  <button (tap)="confirmLogout()" class="logout-btn" ion-button>
     Logout &nbsp;<ion-icon name="exit"></ion-icon>
   </button>
 </ion-footer>
