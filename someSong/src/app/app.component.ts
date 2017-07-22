@@ -29,11 +29,11 @@ export class MyApp {
               private deeplinks: Deeplinks,
               private facebookShare: FacebookShare)
   {
-    // let loading = this.loadingCtrl.create({
-    //   content: 'Please Wait...'
-    // });
-    //
-    // loading.present();
+    let loading = this.loadingCtrl.create({
+      content: 'Please Wait...'
+    });
+
+    loading.present();
 
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
@@ -47,31 +47,31 @@ export class MyApp {
         '/home': HomePage,
         '/question/:questionID': QuestionDetailsPage,
         '/askQuestion': AskQuestionPage
-      }
+      };
 
-      // var authStateChanged = this.auth.authState.onAuthStateChanged(authUser => {
-      //   if (authUser != null) {
-      //     this._user.logIn(authUser.uid);
-          //
-          // this.facebookShare.inviteFriends().then((data) => {
-          // }).catch((err) => {
-          // });
-          //this.rootPage = HomePage;
+      var authStateChanged = this.auth.authState.onAuthStateChanged(authUser => {
+        if (authUser != null) {
+          this._user.logIn(authUser.uid);
 
-          // this.deeplinks.route(routes).subscribe(
-          //   match => {
-          //     this.navChild.push(match.$route, match.$args, { animate: false, animation: "none" });
-          //   }, (nomatch) => {
-          //   }, () => {
-          //   });
+          this.facebookShare.inviteFriends().then((data) => {
+          }).catch((err) => {
+          });
+          this.rootPage = HomePage;
 
-        // } else {
+          this.deeplinks.route(routes).subscribe(
+            match => {
+              this.navChild.push(match.$route, match.$args, { animate: false, animation: "none" });
+            }, (nomatch) => {
+            }, () => {
+            });
+
+        } else {
           this.rootPage = LoginPage;
-        // }
-        //
-        // authStateChanged();
-        // loading.dismiss();
+        }
+
+        authStateChanged();
+        loading.dismiss();
       });
-    // });
+    });
   }
 }
