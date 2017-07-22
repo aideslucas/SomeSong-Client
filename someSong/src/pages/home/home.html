@@ -4,10 +4,10 @@
       SomeSong
     </ion-title>
     <ion-buttons end>
-      <button (click)="goToLeaderboard()" ion-button>
+      <button (tap)="goToLeaderboard()" ion-button>
         <ion-icon name="ribbon"></ion-icon>
       </button>
-      <button ion-button (click)="goToProfile()">
+      <button ion-button (tap)="goToProfile()">
         <ion-icon name="settings"></ion-icon>
       </button>
     </ion-buttons>
@@ -23,7 +23,7 @@
     <ion-scroll scrollY="true">
       <ion-list no-lines no-padding *ngIf="!isEmpty(userQuestions) && !questionLoading">
         <ion-item-sliding *ngFor="let question of userQuestions | keyValueFilter | sortQuestions" #item>
-          <button ion-item (click)="goToQuestion(question.key)">
+          <button ion-item (tap)="goToQuestion(question.key)">
             {{question.value.title}}
             <ion-icon name="checkmark-circle" item-left color="secondary"
                       *ngIf="question.value.correctAnswer"></ion-icon>
@@ -34,7 +34,7 @@
             </ion-icon>
           </button>
           <ion-item-options side="right">
-            <button ion-button small circle (click)="deleteQuestion(item, question.value)">
+            <button ion-button (tap)="deleteQuestion(item, question.value)">
               <ion-icon name="trash"></ion-icon>
               Delete
             </button>
@@ -54,7 +54,7 @@
       </div>
     </ion-scroll>
     <ion-buttons end class="footer-button">
-      <button (click)="askAQuestion()" round ion-button color="light">
+      <button (tap)="askAQuestion()" round ion-button color="light">
         <ion-icon name="md-help"></ion-icon>
       </button>
     </ion-buttons>
@@ -67,7 +67,7 @@
     <ion-scroll scrollY="true">
       <ion-list no-lines no-padding *ngIf="!isEmpty(userAnswers) && !answerLoading">
         <ion-item-sliding *ngFor="let answer of userAnswers | keyValueFilter | sortAnswers" #item>
-          <button ion-item (click)="goToQuestion(answer.value.question.questionID)">
+          <button ion-item (tap)="goToQuestion(answer.value.question.questionID)">
             {{answer.value.question.title}}
             <ion-icon name="checkmark-circle" *ngIf="answer.value.question.correctAnswer === answer.key"
                       color="secondary"
@@ -87,7 +87,7 @@
             </ion-icon>
           </button>
           <ion-item-options side="right">
-            <button ion-button small circle (click)="deleteAnswer(item, answer.value)">
+            <button ion-button (tap)="deleteAnswer(item, answer.value)">
               <ion-icon name="trash"></ion-icon>
               Delete
             </button>
@@ -107,7 +107,7 @@
       </div>
     </ion-scroll>
     <ion-buttons end class="footer-button">
-      <button (click)="browseQuestions()" round ion-button color="light">
+      <button (tap)="browseQuestions()" round ion-button color="light">
         <ion-icon name="search"></ion-icon>
       </button>
     </ion-buttons>

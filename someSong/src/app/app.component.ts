@@ -29,11 +29,11 @@ export class MyApp {
               private deeplinks: Deeplinks,
               private facebookShare: FacebookShare)
   {
-    let loading = this.loadingCtrl.create({
-      content: 'Please Wait...'
-    });
-
-    loading.present();
+    // let loading = this.loadingCtrl.create({
+    //   content: 'Please Wait...'
+    // });
+    //
+    // loading.present();
 
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
@@ -49,31 +49,29 @@ export class MyApp {
         '/askQuestion': AskQuestionPage
       }
 
-      var authStateChanged = this.auth.authState.onAuthStateChanged(authUser => {
-        if (authUser != null) {
-          this._user.logIn(authUser.uid);
+      // var authStateChanged = this.auth.authState.onAuthStateChanged(authUser => {
+      //   if (authUser != null) {
+      //     this._user.logIn(authUser.uid);
+          //
+          // this.facebookShare.inviteFriends().then((data) => {
+          // }).catch((err) => {
+          // });
+          //this.rootPage = HomePage;
 
-          this.facebookShare.inviteFriends().then((data) => {
-          }).catch((err) => {
-          });
+          // this.deeplinks.route(routes).subscribe(
+          //   match => {
+          //     this.navChild.push(match.$route, match.$args, { animate: false, animation: "none" });
+          //   }, (nomatch) => {
+          //   }, () => {
+          //   });
 
-          this.rootPage = HomePage;
-
-          this.deeplinks.route(routes).subscribe(
-            match => {
-              this.navChild.push(match.$route, match.$args, { animate: false, animation: "none" });
-            }, (nomatch) => {
-            }, () => {
-            });
-
-        } else {
+        // } else {
           this.rootPage = LoginPage;
-        }
-
-        loading.dismiss();
-
-        authStateChanged();
+        // }
+        //
+        // authStateChanged();
+        // loading.dismiss();
       });
-    });
+    // });
   }
 }
