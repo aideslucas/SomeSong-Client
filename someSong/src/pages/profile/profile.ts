@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import {
-  LoadingController, NavController, ModalController, AlertController, ActionSheetController} from 'ionic-angular';
-//import {Camera, CameraOptions } from '@ionic-native/camera';
+import { LoadingController, NavController, ModalController, AlertController, ActionSheetController} from 'ionic-angular';
 
 import {Auth} from "../../providers/auth";
 
@@ -10,6 +8,7 @@ import {User} from "../../providers/user";
 import {GenreSelectPage} from "../genre-select/genre-select";
 import {LanguageSelectPage} from "../language-select/language-select";
 import {Score} from "../../providers/score";
+import {LeaderboardPage} from "../leader-board/leader-board";
 import {Avatar} from "../../providers/avatar";
 
 
@@ -21,7 +20,9 @@ import {Avatar} from "../../providers/avatar";
 export class ProfilePage {
   currentUser: any;
   userSubscription: any;
+  pointsSubscription: any;
   userPoints: any;
+  userPosition: any;
 
   constructor(public navCtrl: NavController,
               public modalCtrl: ModalController,
@@ -36,18 +37,22 @@ export class ProfilePage {
   {
     this.userSubscription = this._user.currentUser.subscribe((data) => {
       this.currentUser = data;
-      this._score.getScoreDetails(this.currentUser.userID).subscribe((scoreDetail) => {
+      this.pointsSubscription = this._score.getScoreDetails(this.currentUser.userID).subscribe((scoreDetail) => {
         this.userPoints = scoreDetail;
+        this._score.getPosition(data.userID).then(data => {
+          this.userPosition = data;
+        });
       });
     });
   }
 
   ionViewWillUnload() {
+    this.pointsSubscription.unsubscribe();
     this.userSubscription.unsubscribe();
   }
 
   goToLanguageSelect(){
-    var languageModal = this.modalCtrl.create(LanguageSelectPage,  { selectedLanguages: this.currentUser.languages });
+    var languageModal = this.modalCtrl.create(LanguageSelectPage, {selectedLanguages: this.currentUser.languages});
     languageModal.onDidDismiss(data => {
       this.currentUser.languages = data;
       this._user.updateUser(this.currentUser);
@@ -57,7 +62,7 @@ export class ProfilePage {
   }
 
   goToGenreSelect() {
-    var genreModal = this.modalCtrl.create(GenreSelectPage,  { selectedGenres: this.currentUser.genres });
+    var genreModal = this.modalCtrl.create(GenreSelectPage,  {selectedGenres: this.currentUser.genres});
     genreModal.onDidDismiss(data => {
       this.currentUser.genres = data;
       this._user.updateUser(this.currentUser);
@@ -107,9 +112,14 @@ export class ProfilePage {
   }
 
   logout() {
+    this.pointsSubscription.unsubscribe();
     this.userSubscription.unsubscribe();
     this._user.logOut();
     this._auth.signOut();
     this.navCtrl.setRoot(LoginPage);
+  }
+  
+  goToLeaderboard(){
+    this.navCtrl.push(LeaderboardPage);
   }
 }
