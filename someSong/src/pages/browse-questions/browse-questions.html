@@ -9,10 +9,10 @@
   </ion-navbar>
 
   <ion-toolbar>
-    <button ion-button class="toolbar-buttons" (click)="order()">
+    <button ion-button class="toolbar-buttons" (tap)="order()">
       <ion-icon name="reorder">&nbsp;Order by</ion-icon>
     </button>
-    <button ion-button class="toolbar-buttons" (click)="filter()">
+    <button ion-button class="toolbar-buttons" (tap)="filter()">
       <ion-icon name="funnel">&nbsp;Filter by</ion-icon>
     </button>
     <ion-searchbar
@@ -38,7 +38,7 @@
       <ion-list no-lines no-padding *ngIf="!questionLoading && !isEmpty(questions)">
         <button ion-item
                 *ngFor="let question of questions | keyValueFilter | filterQuestions:selectedFilters | sortQuestions:orderBy"
-                (click)="goToQuestion(question.key)">
+                (tap)="goToQuestion(question.key)">
           {{question.value.title}}
           <ion-icon name="checkmark-circle" item-left color="secondary" *ngIf="question.value.correctAnswer"></ion-icon>
           <ion-icon name="help-circle" item-left color="dark" *ngIf="!question.value.correctAnswer"></ion-icon>
@@ -73,7 +73,7 @@
       </div>
     </ion-scroll>
     <ion-buttons end class="footer-button">
-      <button (click)="askAQuestion()" round ion-button color="light">
+      <button (tap)="askAQuestion()" round ion-button color="light">
         <ion-icon name="md-help"></ion-icon>
       </button>
     </ion-buttons>
