@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import {DeepLinkConfig, IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
 
+
 import { MyApp } from './app.component';
 
 // Pages
@@ -24,6 +25,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Facebook } from "@ionic-native/facebook";
 import { File } from "@ionic-native/file";
 import { MediaPlugin } from "@ionic-native/media";
+import { Camera,  CameraOptions } from "@ionic-native/camera";
+
 
 // Providers
 import { Auth } from '../providers/auth';
@@ -35,6 +38,7 @@ import {Language} from "../providers/language";
 import {Record} from "../providers/record";
 import {Score} from "../providers/score";
 import {Alert} from "../providers/alert";
+import {Avatar} from "../providers/avatar";
 
 // Firebase
 import firebase from 'firebase'
@@ -134,6 +138,8 @@ export const deepLinkConfig: DeepLinkConfig = {
     FacebookShare,
     Alert,
     Geolocation,
+    Avatar,
+    Camera,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

@@ -61,4 +61,8 @@ export class User {
   getUserAnswers(userID) {
     return firebase.database().ref('/users/' + userID + '/answers/');
   }
+
+  getUserImage(userID) {
+    return firebase.storage().ref().child('images/' + userID + '/profile.png').getDownloadURL();
+  }
 }

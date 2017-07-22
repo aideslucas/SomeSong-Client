@@ -11,6 +11,9 @@
       <button (tap)="goToLeaderboard()" ion-button>
         <ion-icon name="ribbon"></ion-icon>
       </button>
+      <button (click)="openImageOptions()" ion-button>
+        <ion-icon name="camera"></ion-icon>
+      </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
@@ -27,7 +30,7 @@
    <ion-label>Score:{{userPoints}} (#{{userPosition}})</ion-label>
     </div>
 
-    <div class="profile-block">
+  <div class="profile-block">
     <ion-list *ngIf="currentUser?.genres" no-lines no-padding>
       <ion-list-header>
         My Genres
