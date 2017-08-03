@@ -10,7 +10,6 @@ import * as firebase from 'firebase';
 @Injectable()
 export class Avatar {
   currentUser: any;
-  private userID: string;
 
   constructor(public actionSheeCtrl: ActionSheetController,
               public loadingCtrl: LoadingController,
@@ -112,7 +111,7 @@ export class Avatar {
       var uploadTask = firebase.storage().ref().child('client-data/images/' + uid + '/profile.jpeg').put(file, metadata);
       // Listen for state changes, errors, and completion of the upload.
       uploadTask.on('state_changed',
-        function (snapshot) {
+        function (snapshot : firebase.storage.UploadTaskSnapshot) {
           // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
           progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         }, function (error) {
@@ -131,14 +130,16 @@ export class Avatar {
                 break;
             }
           });
-        }, function () {
-          loader.dismiss().then(() => {
-            // Upload completed successfully, now we can get the download URL
-            var downloadURL = uploadTask.snapshot.downloadURL;
-            self.currentUser.image = downloadURL;
-            self._user.updateUser(self.currentUser);
-          });
         });
+
+      uploadTask.then(()  => {
+        loader.dismiss().then(() => {
+          // Upload completed successfully, now we can get the download URL
+          var downloadURL = uploadTask.snapshot.downloadURL;
+          self.currentUser.image = downloadURL;
+          self._user.updateUser(self.currentUser);
+        });
+      });
     });
   }
 }
