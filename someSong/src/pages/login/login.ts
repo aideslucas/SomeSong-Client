@@ -119,7 +119,7 @@ export class LoginPage {
     this.registerModal.onDidDismiss(data => {
       this.listenToLogin();
     });
-    this.authStateChanged();
+    this.authStateChanged.unsubscribe();
     this.registerModal.present();
   }
 
