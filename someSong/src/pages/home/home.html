@@ -4,10 +4,10 @@
       SomeSong
     </ion-title>
     <ion-buttons end>
-      <button (tap)="goToLeaderboard()" ion-button>
+      <button (click)="goToLeaderboard()" ion-button>
         <ion-icon name="ribbon"></ion-icon>
       </button>
-      <button ion-button (tap)="goToProfile()">
+      <button ion-button (click)="goToProfile()">
         <ion-icon name="settings"></ion-icon>
       </button>
     </ion-buttons>
@@ -24,7 +24,7 @@
       <ion-list no-lines no-padding *ngIf="questions | async; else loadingQuestions; let questionsDetails">
         <span *ngIf="questionsDetails.length > 0; else noQuestions">
           <ion-item-sliding *ngFor="let question of questionsDetails" #item>
-            <button ion-item (tap)="goToQuestion(details)"
+            <button ion-item (click)="goToQuestion(details)"
                     *ngIf="questionDetails[question.$key] | async; else loadingQuestions; let details">
               {{details.title}}
               <ion-icon name="checkmark-circle" item-left color="secondary"
@@ -36,7 +36,7 @@
               </ion-icon>
             </button>
             <ion-item-options side="right">
-              <button ion-button (tap)="deleteQuestion(item, details)">
+              <button ion-button (click)="deleteQuestion(item, details)">
                 <ion-icon name="trash"></ion-icon>
                 Delete
               </button>
@@ -61,7 +61,7 @@
       </ng-template>
     </ion-scroll>
     <ion-buttons end class="footer-button">
-      <button (tap)="askAQuestion()" round ion-button color="light">
+      <button (click)="askAQuestion()" round ion-button color="light">
         <ion-icon name="md-help"></ion-icon>
       </button>
     </ion-buttons>
@@ -75,7 +75,7 @@
       <ion-list no-lines no-padding *ngIf="answers | async; else loadingAnswers; let answersDetails">
         <span *ngIf="answersDetails.length > 0; else noAnswers">
           <ion-item-sliding *ngFor="let answer of answersDetails" #item>
-            <button ion-item (tap)="goToQuestion(ansDetails.question)"
+            <button ion-item (click)="goToQuestion(ansDetails.question)"
                     *ngIf="answerDetails[answer.$key] | async; else loadingAnswers; let ansDetails">
             <span *ngIf="answerQuestionDetails[answer.$key] | async; else loadingAnswers; let questDetails">
             {{questDetails.title}}
@@ -98,7 +98,7 @@
               </span>
             </button>
             <ion-item-options side="right">
-              <button ion-button (tap)="deleteAnswer(item, answer)">
+              <button ion-button (click)="deleteAnswer(item, answer)">
                 <ion-icon name="trash"></ion-icon>
                 Delete
               </button>
@@ -123,7 +123,7 @@
       </ng-template>
     </ion-scroll>
     <ion-buttons end class="footer-button">
-      <button (tap)="browseQuestions()" round ion-button color="light">
+      <button (click)="browseQuestions()" round ion-button color="light">
         <ion-icon name="search"></ion-icon>
       </button>
     </ion-buttons>
