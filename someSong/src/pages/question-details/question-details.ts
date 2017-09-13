@@ -150,6 +150,10 @@ export class QuestionDetailsPage {
     this._answer.updateAnswer(answer);
   }
 
+  parseTime(timeUTC): string {
+    return this._answer.getLocalTime(timeUTC);
+  }
+
   resolve(item, answer) {
     item.close();
     this.question.correctAnswer = answer.answerID;
