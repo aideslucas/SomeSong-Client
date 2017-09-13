@@ -10,8 +10,6 @@ import {HomePage} from "../pages/home/home";
 import {User} from "../providers/user";
 import {QuestionDetailsPage} from "../pages/question-details/question-details";
 import {AskQuestionPage} from "../pages/ask-question/ask-question";
-import {FacebookShare} from "../providers/facebook-share";
-import {TestHomePage} from "../pages/test-home/test-home";
 
 @Component({
   templateUrl: 'app.html'
