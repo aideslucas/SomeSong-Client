@@ -71,7 +71,7 @@ export class Question {
   }
 
   updateQuestion(question) {
-    return firebase.database().ref('/questions/' + question.questionID).set(question);
+    return this.afDB.object('/questions/' + question.questionID).set(question);
   }
 
   getQuestionAnswersNew(questionID) {

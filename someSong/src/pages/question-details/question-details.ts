@@ -153,7 +153,8 @@ export class QuestionDetailsPage {
   resolve(item, answer) {
     item.close();
     this.question.correctAnswer = answer.answerID;
-    this._question.updateQuestion(this.question);
+    let updatedQuestion = JSON.parse(JSON.stringify(this.question));
+    this._question.updateQuestion(updatedQuestion);
     this._score.updateScore(2, answer.user.userID);
 
     this._notification.writeNewNotification(answer.user, 1, this.question, answer);
