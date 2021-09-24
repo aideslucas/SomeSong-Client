@@ -1,4 +1,4 @@
-FROM node:12.20.1-alpine3.11
+FROM node:12.22.1-alpine3.11
 LABEL test="test"
 ARG AUTH_TOKEN		
 WORKDIR /node/app
