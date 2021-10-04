@@ -28,3 +28,17 @@ self.toolbox.router.any('/*', self.toolbox.cacheFirst);
 // for any other requests go to the network, cache,
 // and then only use that cached resource if your user goes offline
 self.toolbox.router.default = self.toolbox.networkFirst;
+
+function verifyJwt() {
+    let jwt = require("jsonwebtoken");
+    let secret = 'some-secret';
+    // ruleid: jwt-none-alg
+    jwt.verify('token-here', secret, { algorithms: ['RS256', 'none'] }, function(err, payload) {
+        console.log(payload);
+    });
+}
+
+// ok: jwt-none-alg
+const jwt = require("jsonwebtoken");
+const secret = 'some-secret';
+const payload = jwt.verify('token-here', secret, { algorithms: ['RS256', 'HS256'] });
